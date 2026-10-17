@@ -1,0 +1,33 @@
+# Binaries and executables
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.syso
+
+# Go workspace and test binaries
+*.test
+*.out
+
+# Project specific built files
+/presentation-builder.exe
+/SanichPoint Studio.exe
+rsrc_*.syso
+
+# Tool and IDE artifacts
+.codegraph/
+.gemini/
+.idea/
+.vscode/
+
+# OS artifacts
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Temporary / export output
+assets/
+презентация.html
+*.tmp
+*.log

@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+
+:root {
+  --bg-deep: #080A0F;
+  --bg-panel: #11151E;
+  --bg-card: #161C28;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent-color: #D4A359;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: #F3F4F6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(11, 13, 18, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.panel-glass {
+  background: rgba(17, 21, 30, 0.95);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(12px);
+}
+
+.input-luxury {
+  background: rgba(22, 28, 40, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #F3F4F6;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+.input-luxury:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(212, 163, 89, 0.2);
+}
+
+.ribbon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #D1D5DB;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+.ribbon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #FFF;
+}
+.ribbon-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+.ribbon-btn.active {
+  background: rgba(212, 163, 89, 0.15);
+  border-color: rgba(212, 163, 89, 0.4);
+  color: #FDE68A;
+}
+
+.canvas-outer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+  background: #06070A;
+  position: relative;
+  padding: 20px;
+}
+
+.canvas-slide {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  user-select: none;
+  transition: background-color 0.25s ease;
+}
+
+.canvas-element {
+  position: absolute;
+  cursor: grab;
+  touch-action: none;
+}
+.canvas-element:active {
+  cursor: grabbing;
+}
+
+.canvas-element.selected {
+  outline: 2px solid #3B82F6 !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.35);
+  z-index: 100 !important;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #FFFFFF;
+  border: 1.5px solid #3B82F6;
+  border-radius: 2px;
+  display: none;
+  z-index: 101;
+}
+.canvas-element.selected .resize-handle {
+  display: block;
+}
+
+.handle-nw { top: -5px; left: -5px; cursor: nw-resize; }
+.handle-ne { top: -5px; right: -5px; cursor: ne-resize; }
+.handle-se { bottom: -5px; right: -5px; cursor: se-resize; }
+.handle-sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+.handle-n  { top: -5px; left: calc(50% - 4.5px); cursor: n-resize; }
+.handle-s  { bottom: -5px; left: calc(50% - 4.5px); cursor: s-resize; }
+.handle-e  { top: calc(50% - 4.5px); right: -5px; cursor: e-resize; }
+.handle-w  { top: calc(50% - 4.5px); left: -5px; cursor: w-resize; }
+
+.deck-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  background: #11151E;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.deck-thumb:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+.deck-thumb.active {
+  border-color: #3B82F6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.theme-pill {
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.theme-pill.active {
+  border-color: #FFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  transform: scale(1.15);
+}
+
+.modal-overlay {
+  background: rgba(7, 9, 13, 0.85);
+  backdrop-filter: blur(8px);
+}
+
