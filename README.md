@@ -4,16 +4,6 @@
 
 ---
 
-## ⚡ Быстрый запуск
-
-Дважды кликните по файлу:
-```
-Запустить_Конструктор.bat
-```
-*(Либо запустите напрямую `приложение/presentation-builder.exe`)*
-
----
-
 ## 🛠️ Главные возможности SanichPoint
 
 ### 1. Визуальный 16:9 холст (как в PowerPoint)
@@ -69,7 +59,7 @@
 ### Инструкция по сборке:
 ```bash
 # 1. Клонирование репозитория
-git clone https://github.com/username/SanichPoint.git
+git clone https://github.com/pavlyska/SanichPoint.git
 cd SanichPoint
 
 # 2. Установка утилиты для вшивания иконки Windows

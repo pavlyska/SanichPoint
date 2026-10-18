@@ -31,3 +31,4 @@ assets/
 презентация.html
 *.tmp
 *.log
+.codegraph
