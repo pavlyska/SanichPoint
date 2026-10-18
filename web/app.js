@@ -1,4 +1,29 @@
 
+function generateId() {
+  return "el_" + Math.random().toString(36).substring(2, 9) + "_" + Date.now().toString(36);
+}
+
+const MENU_ICONS = {
+  duplicate: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>`,
+  addSlide: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
+  plus: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>`,
+  trash: `<svg class="w-3.5 h-3.5 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>`,
+  moveUp: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>`,
+  moveDown: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>`,
+  copy: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>`,
+  cut: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879a3 3 0 11-4.242-4.242 3 3 0 014.242 0L12 12zm0 0L9.121 9.121a3 3 0 114.242-4.242 3 3 0 010 4.242L12 12z"/></svg>`,
+  paste: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>`,
+  layerForward: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"/></svg>`,
+  layerBackward: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"/></svg>`,
+  badge: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>`,
+  title: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h7"/></svg>`,
+  text: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h10"/></svg>`,
+  image: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`,
+  panel: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`,
+  bullets: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`,
+  quote: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>`
+};
+
 let currentProject = {
   title: "Иосип Броз Тито (1892–1980)",
   subtitle: "Биография, партизанская война и политическая карьера лидера СФРЮ",
@@ -377,7 +402,7 @@ function getCurrentTheme() {
   };
 }
 
-function getSlideThumbnailHTML(slide, theme, thumbWidth = 158) {
+function getSlideThumbnailHTML(slide, theme, thumbWidth = 130) {
   const baseWidth = 960;
   const baseHeight = 540;
   const scale = thumbWidth / baseWidth;
@@ -390,17 +415,39 @@ function getSlideThumbnailHTML(slide, theme, thumbWidth = 158) {
       .replace(/pointer-events-auto/g, '');
 
     elementsHTML += `
-      <div style="position:absolute; left:${el.x}%; top:${el.y}%; width:${el.w}%; z-index:${el.zIndex || 1}; pointer-events:none;">
+      <div style="position:absolute; left:${el.x}%; top:${el.y}%; width:${el.w}%; z-index:${el.zIndex || 1}; pointer-events:none; box-sizing:border-box;">
         ${contentHTML}
       </div>
     `;
   });
 
   return `
-    <div style="width:${baseWidth}px; height:${baseHeight}px; position:absolute; top:0; left:0; transform-origin:0 0; transform:scale(${scale}); pointer-events:none; user-select:none; background-color:${theme.darkBg};">
+    <div class="deck-thumb-inner" style="width:${baseWidth}px; height:${baseHeight}px; position:absolute; top:0; left:0; transform-origin:0 0; transform:scale(${scale}); pointer-events:none; user-select:none; background-color:${theme.darkBg}; container-type:inline-size; overflow:hidden; isolation:isolate;">
       ${elementsHTML}
     </div>
   `;
+}
+
+function updateThumbnailsScale() {
+  const thumbs = document.querySelectorAll(".deck-thumb");
+  thumbs.forEach(thumb => {
+    const inner = thumb.querySelector(".deck-thumb-inner");
+    if (inner) {
+      const w = thumb.clientWidth;
+      if (w > 0) {
+        inner.style.transform = `scale(${w / 960})`;
+      }
+    }
+  });
+}
+window.addEventListener("resize", updateThumbnailsScale);
+
+let draggedSlideIndex = null;
+
+function clearDragIndicators() {
+  document.querySelectorAll(".deck-row").forEach(r => {
+    r.classList.remove("drop-indicator-top", "drop-indicator-bottom", "dragging");
+  });
 }
 
 function renderDeckList() {
@@ -409,17 +456,96 @@ function renderDeckList() {
   container.innerHTML = "";
 
   const theme = getCurrentTheme();
-  const availWidth = container.clientWidth > 40 ? (container.clientWidth - 28) : 158;
-  const thumbWidth = Math.max(availWidth, 120);
+  const containerW = container.clientWidth || 176;
+  const thumbWidth = Math.max(80, containerW - 46);
+
+  container.ondragover = (e) => {
+    e.preventDefault();
+    if (draggedSlideIndex === null) return;
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  container.ondrop = (e) => {
+    if (e.target === container && draggedSlideIndex !== null) {
+      e.preventDefault();
+      clearDragIndicators();
+      container.classList.remove("is-reordering");
+      const fromIdx = draggedSlideIndex;
+      draggedSlideIndex = null;
+      const toIdx = currentProject.slides.length - 1;
+      if (fromIdx !== toIdx) {
+        moveSlide(fromIdx, toIdx);
+      }
+    }
+  };
 
   currentProject.slides.forEach((slide, idx) => {
     const isSelected = idx === activeSlideIndex;
 
     const row = document.createElement("div");
-    row.className = "flex items-start space-x-2";
+    row.className = "flex items-start space-x-2 deck-row";
+    row.draggable = true;
+    row.dataset.slideIndex = idx;
+
+    row.ondragstart = (e) => {
+      draggedSlideIndex = idx;
+      e.dataTransfer.setData("text/plain", String(idx));
+      e.dataTransfer.effectAllowed = "move";
+      container.classList.add("is-reordering");
+      setTimeout(() => row.classList.add("dragging"), 0);
+    };
+
+    row.ondragend = () => {
+      clearDragIndicators();
+      container.classList.remove("is-reordering");
+      draggedSlideIndex = null;
+    };
+
+    row.ondragover = (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      if (draggedSlideIndex === null || draggedSlideIndex === idx) return;
+
+      const rect = row.getBoundingClientRect();
+      const isBottom = (e.clientY - rect.top) > (rect.height / 2);
+      clearDragIndicators();
+      row.classList.add(isBottom ? "drop-indicator-bottom" : "drop-indicator-top");
+    };
+
+    row.ondragleave = (e) => {
+      if (e.relatedTarget && row.contains(e.relatedTarget)) return;
+      row.classList.remove("drop-indicator-top", "drop-indicator-bottom");
+    };
+
+    row.ondrop = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      clearDragIndicators();
+      container.classList.remove("is-reordering");
+      if (draggedSlideIndex === null) return;
+
+      const fromIdx = draggedSlideIndex;
+      const rect = row.getBoundingClientRect();
+      const isBottom = (e.clientY - rect.top) > (rect.height / 2);
+
+      let targetPos = isBottom ? idx + 1 : idx;
+      let toIdx = (fromIdx < targetPos) ? targetPos - 1 : targetPos;
+      draggedSlideIndex = null;
+
+      if (fromIdx !== toIdx) {
+        moveSlide(fromIdx, toIdx);
+      }
+    };
+
+    row.oncontextmenu = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      selectSlide(idx);
+      openSlideContextMenu(e.clientX, e.clientY, idx);
+    };
 
     const num = document.createElement("div");
-    num.className = "text-[11px] font-mono font-bold text-slate-500 pt-1 w-3.5 text-right shrink-0 select-none";
+    num.className = "text-[11px] font-mono font-bold text-slate-500 pt-1 w-3.5 text-right shrink-0 select-none cursor-grab";
     num.innerText = (idx + 1);
 
     const thumb = document.createElement("div");
@@ -432,6 +558,8 @@ function renderDeckList() {
     row.appendChild(thumb);
     container.appendChild(row);
   });
+
+  requestAnimationFrame(() => updateThumbnailsScale());
 }
 
 function selectSlide(index) {
@@ -440,6 +568,32 @@ function selectSlide(index) {
   renderDeckList();
   renderCanvas();
   renderInspector();
+}
+
+function moveSlide(fromIdx, toIdx) {
+  if (fromIdx === toIdx || fromIdx < 0 || toIdx < 0 ||
+      fromIdx >= currentProject.slides.length || toIdx >= currentProject.slides.length) {
+    return;
+  }
+  const [moved] = currentProject.slides.splice(fromIdx, 1);
+  currentProject.slides.splice(toIdx, 0, moved);
+
+  if (activeSlideIndex === fromIdx) {
+    activeSlideIndex = toIdx;
+  } else if (fromIdx < activeSlideIndex && toIdx >= activeSlideIndex) {
+    activeSlideIndex--;
+  } else if (fromIdx > activeSlideIndex && toIdx <= activeSlideIndex) {
+    activeSlideIndex++;
+  }
+
+  currentProject.slides.forEach((s, i) => {
+    s.id = i + 1;
+  });
+
+  renderDeckList();
+  renderCanvas();
+  renderInspector();
+  updateHeaderUI();
 }
 
 function addNewSlide() {
@@ -498,16 +652,39 @@ function addNewSlide() {
   renderInspector();
 }
 
+function addNewSlideAfter(idx) {
+  const newSlide = {
+    id: currentProject.slides.length + 1,
+    title: "Новый слайд " + (currentProject.slides.length + 1),
+    elements: [
+      { id: generateId(), type: "badge", x: 5, y: 8, w: 30, zIndex: 1, text: "Новый раздел" },
+      { id: generateId(), type: "title", x: 5, y: 18, w: 55, zIndex: 2, text: "Заголовок темы", accentText: "Акцент" },
+      { id: generateId(), type: "panel", x: 5, y: 42, w: 55, zIndex: 3, icon: "✦", title: "Ключевой факт", description: "Нажмите и редактируйте текст прямо на слайде.", bullets: [] },
+      { id: generateId(), type: "image", x: 64, y: 18, w: 32, zIndex: 4, imageSrc: "", imageCaption: "Подпись к фото" }
+    ]
+  };
+  currentProject.slides.splice(idx + 1, 0, newSlide);
+  activeSlideIndex = idx + 1;
+  selectedElementId = null;
+  renderDeckList();
+  renderCanvas();
+  renderInspector();
+}
+
 function duplicateCurrentSlide() {
-  const current = currentProject.slides[activeSlideIndex];
-  if (!current) return;
-  const copy = JSON.parse(JSON.stringify(current));
+  duplicateSlideAtIndex(activeSlideIndex);
+}
+
+function duplicateSlideAtIndex(idx) {
+  if (idx < 0 || idx >= currentProject.slides.length) return;
+  const target = currentProject.slides[idx];
+  const copy = JSON.parse(JSON.stringify(target));
   copy.id = currentProject.slides.length + 1;
   copy.title += " (копия)";
   (copy.elements || []).forEach(el => el.id = generateId());
 
-  currentProject.slides.splice(activeSlideIndex + 1, 0, copy);
-  activeSlideIndex++;
+  currentProject.slides.splice(idx + 1, 0, copy);
+  activeSlideIndex = idx + 1;
   selectedElementId = null;
   renderDeckList();
   renderCanvas();
@@ -515,6 +692,10 @@ function duplicateCurrentSlide() {
 }
 
 async function deleteCurrentSlide() {
+  await deleteSlideAtIndex(activeSlideIndex);
+}
+
+async function deleteSlideAtIndex(idx) {
   if (currentProject.slides.length <= 1) {
     showCustomAlert({
       type: "warning",
@@ -526,25 +707,270 @@ async function deleteCurrentSlide() {
   const confirmed = await showCustomConfirm({
     type: "danger",
     title: "Удалить слайд?",
-    message: `Вы действительно хотите удалить слайд #${activeSlideIndex + 1}?\nВсе элементы на этом слайде будут удалены.`,
+    message: `Вы действительно хотите удалить слайд #${idx + 1}?\nВсе элементы на этом слайде будут удалены.`,
     confirmText: "Удалить слайд",
     cancelText: "Отмена"
   });
   if (!confirmed) return;
 
-  currentProject.slides.splice(activeSlideIndex, 1);
+  currentProject.slides.splice(idx, 1);
   if (activeSlideIndex >= currentProject.slides.length) {
     activeSlideIndex = currentProject.slides.length - 1;
+  } else if (activeSlideIndex > idx) {
+    activeSlideIndex--;
   }
   selectedElementId = null;
   renderDeckList();
   renderCanvas();
   renderInspector();
-  showCustomToast({ title: "Слайд удален", message: `Слайд успешно удален`, type: "info" });
+  showCustomToast({ title: "Слайд удален", message: `Слайд #${idx + 1} успешно удален`, type: "info" });
 }
 
-function generateId() {
-  return "el_" + Math.random().toString(36).substr(2, 9);
+function copySelectedElement() {
+  const currentSlide = currentProject.slides[activeSlideIndex];
+  if (!currentSlide || !selectedElementId) return;
+  const el = currentSlide.elements.find(item => item.id === selectedElementId);
+  if (el) {
+    clipboardElement = JSON.parse(JSON.stringify(el));
+    showCustomToast({ title: "Скопировано", message: "Объект скопирован в буфер (Ctrl+V)", type: "info" });
+  }
+}
+
+function cutSelectedElement() {
+  copySelectedElement();
+  deleteSelectedElement();
+}
+
+function showContextMenu(x, y, items) {
+  const menu = document.getElementById("customContextMenu");
+  if (!menu) return;
+
+  menu.innerHTML = "";
+
+  items.forEach(item => {
+    if (item.divider) {
+      const div = document.createElement("div");
+      div.className = "context-menu-divider";
+      menu.appendChild(div);
+      return;
+    }
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `context-menu-item ${item.danger ? "danger" : ""} ${item.disabled ? "disabled" : ""}`;
+    btn.innerHTML = `
+      <div class="flex items-center gap-2.5 pointer-events-none">
+        <span class="w-4 h-4 flex items-center justify-center shrink-0">${item.icon || ""}</span>
+        <span class="font-medium">${escapeHTML(item.label)}</span>
+      </div>
+      ${item.shortcut ? `<span class="text-[10px] text-slate-500 font-mono ml-4 pointer-events-none">${escapeHTML(item.shortcut)}</span>` : ""}
+    `;
+
+    if (!item.disabled && item.action) {
+      btn.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        hideContextMenu();
+        try {
+          item.action();
+        } catch (err) {
+          console.error("Context menu action error:", err);
+        }
+      });
+    }
+
+    menu.appendChild(btn);
+  });
+
+  menu.classList.remove("hidden");
+
+  const menuWidth = 230;
+  const menuHeight = menu.offsetHeight || (items.length * 30);
+  const posX = (x + menuWidth > window.innerWidth) ? (window.innerWidth - menuWidth - 12) : x;
+  const posY = (y + menuHeight > window.innerHeight) ? Math.max(10, window.innerHeight - menuHeight - 12) : y;
+
+  menu.style.left = `${Math.max(10, posX)}px`;
+  menu.style.top = `${Math.max(10, posY)}px`;
+}
+
+function hideContextMenu() {
+  const menu = document.getElementById("customContextMenu");
+  if (menu && !menu.classList.contains("hidden")) {
+    menu.classList.add("hidden");
+  }
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#customContextMenu")) {
+    hideContextMenu();
+  }
+});
+document.addEventListener("contextmenu", (e) => {
+  if (!e.target.closest("#customContextMenu")) {
+    hideContextMenu();
+  }
+}, true);
+window.addEventListener("resize", () => hideContextMenu());
+window.addEventListener("scroll", () => hideContextMenu(), true);
+
+function openSlideContextMenu(x, y, idx) {
+  const total = currentProject.slides.length;
+  showContextMenu(x, y, [
+    {
+      icon: MENU_ICONS.duplicate,
+      label: "Дублировать слайд",
+      shortcut: "Ctrl+D",
+      action: () => duplicateSlideAtIndex(idx)
+    },
+    {
+      icon: MENU_ICONS.addSlide,
+      label: "Добавить слайд после этого",
+      action: () => addNewSlideAfter(idx)
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.moveUp,
+      label: "Переместить выше",
+      disabled: idx === 0,
+      action: () => moveSlide(idx, idx - 1)
+    },
+    {
+      icon: MENU_ICONS.moveDown,
+      label: "Переместить ниже",
+      disabled: idx === total - 1,
+      action: () => moveSlide(idx, idx + 1)
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.trash,
+      label: "Удалить слайд",
+      shortcut: "Ctrl+Del",
+      danger: true,
+      disabled: total <= 1,
+      action: () => deleteSlideAtIndex(idx)
+    }
+  ]);
+}
+
+function openElementContextMenu(x, y, elId) {
+  const currentSlide = currentProject.slides[activeSlideIndex];
+  const el = currentSlide && currentSlide.elements.find(e => e.id === elId);
+  if (!el) return;
+
+  showContextMenu(x, y, [
+    {
+      icon: MENU_ICONS.duplicate,
+      label: "Дублировать",
+      shortcut: "Ctrl+D",
+      action: () => duplicateSelectedElement()
+    },
+    {
+      icon: MENU_ICONS.copy,
+      label: "Копировать",
+      shortcut: "Ctrl+C",
+      action: () => copySelectedElement()
+    },
+    {
+      icon: MENU_ICONS.cut,
+      label: "Вырезать",
+      shortcut: "Ctrl+X",
+      action: () => cutSelectedElement()
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.layerForward,
+      label: "На передний план",
+      shortcut: "]",
+      action: () => bringElementForward()
+    },
+    {
+      icon: MENU_ICONS.layerBackward,
+      label: "На задний план",
+      shortcut: "[",
+      action: () => sendElementBackward()
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.trash,
+      label: "Удалить объект",
+      shortcut: "Delete",
+      danger: true,
+      action: () => deleteSelectedElement()
+    }
+  ]);
+}
+
+function openCanvasContextMenu(x, y) {
+  const hasClipboard = !!clipboardElement;
+  showContextMenu(x, y, [
+    {
+      icon: MENU_ICONS.paste,
+      label: "Вставить объект",
+      shortcut: "Ctrl+V",
+      disabled: !hasClipboard,
+      action: () => pasteClipboardElement()
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.badge,
+      label: "Добавить бейдж",
+      action: () => addCanvasElement("badge")
+    },
+    {
+      icon: MENU_ICONS.title,
+      label: "Добавить заголовок",
+      action: () => addCanvasElement("title")
+    },
+    {
+      icon: MENU_ICONS.text,
+      label: "Добавить текст",
+      action: () => addCanvasElement("text")
+    },
+    {
+      icon: MENU_ICONS.image,
+      label: "Добавить фото (пакетно)...",
+      action: () => triggerNewImageUpload()
+    },
+    {
+      icon: MENU_ICONS.panel,
+      label: "Добавить карточку (панель)",
+      action: () => addCanvasElement("panel")
+    },
+    {
+      icon: MENU_ICONS.bullets,
+      label: "Добавить тезисы",
+      action: () => addCanvasElement("bullets")
+    },
+    {
+      icon: MENU_ICONS.quote,
+      label: "Добавить цитату",
+      action: () => addCanvasElement("quote")
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.addSlide,
+      label: "Создать новый слайд",
+      action: () => addNewSlide()
+    },
+    {
+      icon: MENU_ICONS.duplicate,
+      label: "Дублировать этот слайд",
+      shortcut: "Ctrl+D",
+      action: () => duplicateCurrentSlide()
+    },
+    {
+      icon: MENU_ICONS.trash,
+      label: "Удалить этот слайд",
+      shortcut: "Ctrl+Del",
+      danger: true,
+      disabled: currentProject.slides.length <= 1,
+      action: () => deleteCurrentSlide()
+    }
+  ]);
 }
 
 function renderCanvas() {
@@ -581,7 +1007,16 @@ function renderCanvas() {
       <div class="resize-handle handle-w"  data-handle="w"></div>
     `;
 
-    elDiv.addEventListener("mousedown", (e) => startElementDrag(e, el.id));
+    elDiv.addEventListener("mousedown", (e) => {
+      if (e.button === 0) startElementDrag(e, el.id);
+    });
+
+    elDiv.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      selectElement(el.id);
+      openElementContextMenu(e.clientX, e.clientY, el.id);
+    });
 
     canvas.appendChild(elDiv);
   });
@@ -621,7 +1056,7 @@ function getElementCanvasHTML(el, theme) {
     case "image":
       const src = el.imageSrc ? getImagePreviewUrl(el.imageSrc) : "";
       return `
-        <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl">
+        <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border">
           <div class="w-full aspect-[4/3] max-h-[30cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
             ${src ? `<img src="${src}" class="w-full h-full object-contain pointer-events-none" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><rect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22 rx=%222%22/><circle cx=%228.5%22 cy=%228.5%22 r=%221.5%22/><path d=%22M21 15l-5-5L5 21%22/></svg>'">` : `
               <div class="flex flex-col items-center justify-center text-slate-500 space-y-1">
@@ -787,6 +1222,26 @@ function setupCanvasEvents() {
       renderDeckList();
     }
   });
+
+  const canvas = document.getElementById("slideCanvas");
+  if (canvas) {
+    canvas.addEventListener("contextmenu", (e) => {
+      if (e.target.closest(".canvas-element")) return;
+      e.preventDefault();
+      clearSelection();
+      openCanvasContextMenu(e.clientX, e.clientY);
+    });
+  }
+
+  const canvasOuter = document.querySelector(".canvas-outer");
+  if (canvasOuter) {
+    canvasOuter.addEventListener("contextmenu", (e) => {
+      if (e.target.closest(".canvas-element") || e.target.closest("#slideCanvas")) return;
+      e.preventDefault();
+      clearSelection();
+      openCanvasContextMenu(e.clientX, e.clientY);
+    });
+  }
 }
 
 function selectElement(elementId) {
@@ -1070,6 +1525,11 @@ function setupGlobalShortcuts() {
   window.addEventListener("keydown", (e) => {
 
     if (e.key === "Escape") {
+      const ctxMenu = document.getElementById("customContextMenu");
+      if (ctxMenu && !ctxMenu.classList.contains("hidden")) {
+        hideContextMenu();
+        return;
+      }
       const slideshow = document.getElementById("slideshowModal");
       const exportModal = document.getElementById("exportModal");
       const aiModal = document.getElementById("aiModal");
@@ -1109,11 +1569,15 @@ function setupGlobalShortcuts() {
 
     if ((e.ctrlKey || e.metaKey) && (e.key === "c" || e.key === "с" || e.key === "C")) {
       if (selectedElementId) {
-        const currentSlide = currentProject.slides[activeSlideIndex];
-        const el = currentSlide && currentSlide.elements.find(item => item.id === selectedElementId);
-        if (el) {
-          clipboardElement = JSON.parse(JSON.stringify(el));
-        }
+        copySelectedElement();
+      }
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && (e.key === "x" || e.key === "ч" || e.key === "X")) {
+      if (selectedElementId) {
+        e.preventDefault();
+        cutSelectedElement();
       }
       return;
     }
@@ -1540,6 +2004,12 @@ function getImagePreviewUrl(src) {
 }
 
 async function openSlideshow() {
+  if (selectedElementId !== null) {
+    selectedElementId = null;
+    renderCanvas();
+    renderInspector();
+  }
+
   const modal = document.getElementById("slideshowModal");
   const frame = document.getElementById("slideshowFrame");
   if (!modal || !frame) return;
@@ -1575,6 +2045,12 @@ window.addEventListener("keydown", (e) => {
 });
 
 function openExportModal() {
+  if (selectedElementId !== null) {
+    selectedElementId = null;
+    renderCanvas();
+    renderInspector();
+  }
+
   const modal = document.getElementById("exportModal");
   const resultBox = document.getElementById("exportResultBox");
   if (resultBox) resultBox.classList.add("hidden");
@@ -1585,7 +2061,57 @@ function openExportModal() {
     nameInput.value = cleanTitle || "презентация";
   }
 
+  const uiToggle = document.getElementById("exportToggleUI");
+  const voiceToggle = document.getElementById("exportToggleVoice");
+  const voiceRow = document.getElementById("exportVoiceOptionRow");
+  if (uiToggle) uiToggle.checked = true;
+  if (voiceToggle) {
+    voiceToggle.checked = true;
+    voiceToggle.disabled = false;
+  }
+  if (voiceRow) {
+    voiceRow.classList.remove("opacity-40", "pointer-events-none");
+  }
+
   if (modal) modal.classList.remove("hidden");
+}
+
+function handleExportUIToggle(isChecked) {
+  const voiceToggle = document.getElementById("exportToggleVoice");
+  const voiceRow = document.getElementById("exportVoiceOptionRow");
+  if (!voiceToggle) return;
+
+  if (!isChecked) {
+    // ВНИМАНИЕ: если интерфейс отключается, управление голосом также выключается
+    voiceToggle.checked = false;
+    voiceToggle.disabled = true;
+    if (voiceRow) {
+      voiceRow.classList.add("opacity-40", "pointer-events-none");
+    }
+  } else {
+    voiceToggle.disabled = false;
+    voiceToggle.checked = true;
+    if (voiceRow) {
+      voiceRow.classList.remove("opacity-40", "pointer-events-none");
+    }
+  }
+}
+
+async function chooseExportFolder() {
+  const currentDir = document.getElementById("exportOutputDir").value.trim();
+  try {
+    const res = await fetch("/api/choose-folder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentDir: currentDir })
+    });
+    const data = await res.json();
+    if (data.folder) {
+      document.getElementById("exportOutputDir").value = data.folder;
+    }
+  } catch (err) {
+    console.error("Failed to select folder:", err);
+  }
 }
 
 function sanitizeFileName(input) {
@@ -1612,6 +2138,11 @@ async function submitExport() {
   const resultMsg = document.getElementById("exportResultMsg");
   const resultPath = document.getElementById("exportResultPath");
 
+  const uiToggle = document.getElementById("exportToggleUI");
+  const voiceToggle = document.getElementById("exportToggleVoice");
+  const includeUI = uiToggle ? uiToggle.checked : true;
+  const enableVoiceControl = includeUI && voiceToggle ? voiceToggle.checked : false;
+
   submitBtn.disabled = true;
   submitBtn.innerText = "Генерация...";
 
@@ -1620,7 +2151,9 @@ async function submitExport() {
       presentation: currentProject,
       outputDir: outDir,
       fileName: fileName,
-      assetsSubdir: assetsDir
+      assetsSubdir: assetsDir,
+      includeUI: includeUI,
+      enableVoiceControl: enableVoiceControl
     };
 
     const res = await fetch("/api/export", {
@@ -1637,7 +2170,11 @@ async function submitExport() {
       lastExportedFilePath = data.filePath;
       resultBox.classList.remove("hidden");
       resultMsg.innerText = data.message;
-      resultPath.innerText = `Файл: ${data.filePath}\nПапка фото: ${data.assetsPath}`;
+      if (data.assetsPath) {
+        resultPath.innerText = `Файл: ${data.filePath}\nПапка фото: ${data.assetsPath}`;
+      } else {
+        resultPath.innerText = `Файл: ${data.filePath}\nФото: онлайн-ссылки/встроены (папка ассетов не требовалась)`;
+      }
       showCustomToast({ title: "Экспорт выполнен", message: "Презентация успешно сохранена", type: "success" });
     } else {
       showCustomAlert({
@@ -1825,6 +2362,12 @@ function loadHTMLPresentation(event) {
 
 
 function openAIModal() {
+  if (selectedElementId !== null) {
+    selectedElementId = null;
+    renderCanvas();
+    renderInspector();
+  }
+
   const modal = document.getElementById("aiModal");
   if (modal) {
     modal.classList.remove("hidden");
@@ -2224,6 +2767,39 @@ function parseAICode(rawText) {
   return project;
 }
 
+function estimateTextHeight(text, widthPercent) {
+  if (!text) return 0;
+  const charsPerLine = Math.max(22, Math.floor(widthPercent * 1.3));
+  const lines = Math.ceil(text.length / charsPerLine);
+  return Math.max(7, lines * 4.2 + 2.5);
+}
+
+function estimateTitleHeight(title, accentText, widthPercent) {
+  const charsPerLine = Math.max(16, Math.floor(widthPercent * 0.7));
+  const lines = Math.ceil((title || "").length / charsPerLine);
+  let h = lines * 6.5 + 3;
+  if (accentText) {
+    h += 6.5;
+  }
+  return Math.max(10, h);
+}
+
+function estimatePanelHeight(item) {
+  let h = 8;
+  if (item.title) h += 4;
+  if (item.description) {
+    h += Math.max(5, Math.ceil(item.description.length / 42) * 3.8);
+  }
+  if (item.bullets && item.bullets.length > 0) {
+    item.bullets.forEach(b => {
+      const bLen = (b.title ? b.title.length + 2 : 0) + (b.text ? b.text.length : 0);
+      const bLines = Math.max(1, Math.ceil(bLen / 42));
+      h += bLines * 4.2 + 2;
+    });
+  }
+  return Math.max(16, Math.min(h, 45));
+}
+
 function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   const elements = [];
   let zCounter = 1;
@@ -2262,7 +2838,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           zIndex: zCounter++,
           text: item.text
         });
-        topY += 8;
+        topY += 7.5;
       } else if (item.type === "title") {
         elements.push({
           id: generateId(),
@@ -2274,7 +2850,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           fontSize: isCover ? 38 : 30,
           textAlign: slideAlign
         });
-        topY += (item.accentText ? 18 : 12);
+        topY += estimateTitleHeight(item.text, item.accentText, 92);
       } else if (item.type === "text") {
         elements.push({
           id: generateId(),
@@ -2285,11 +2861,11 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           fontSize: 14,
           textAlign: slideAlign
         });
-        topY += 12;
+        topY += estimateTextHeight(item.text, 92);
       }
     });
 
-    const bodyY = Math.max(topY + 2, 34);
+    const bodyY = Math.max(topY + 2, 32);
     if (images.length === 1 && bodyItems.length >= 1) {
       elements.push({
         id: generateId(),
@@ -2315,7 +2891,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           quoteAuthor: b.author || "Цитата",
           quoteRole: b.role || ""
         });
-        rightY += 28;
+        rightY += estimatePanelHeight(b) + 3;
       });
     } else if (bodyItems.length >= 2) {
       elements.push({
@@ -2351,7 +2927,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           description: b.description,
           bullets: b.bullets || []
         });
-        cy += 28;
+        cy += estimatePanelHeight(b) + 3;
       });
     }
     return elements;
@@ -2371,7 +2947,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           zIndex: zCounter++,
           text: item.text
         });
-        topY += 8;
+        topY += 7.5;
       } else if (item.type === "title") {
         elements.push({
           id: generateId(),
@@ -2383,7 +2959,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           fontSize: isCover ? 38 : 32,
           textAlign: slideAlign
         });
-        topY += (item.accentText ? 18 : 12);
+        topY += estimateTitleHeight(item.text, item.accentText, 92);
       } else if (item.type === "text") {
         elements.push({
           id: generateId(),
@@ -2394,11 +2970,11 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           fontSize: 14,
           textAlign: slideAlign
         });
-        topY += 12;
+        topY += estimateTextHeight(item.text, 92);
       }
     });
 
-    const cardY = Math.max(topY + 3, 34);
+    const cardY = Math.max(topY + 2.5, 32);
     const count = bodyCards.length;
     if (count === 1) {
       elements.push({
@@ -2471,7 +3047,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
       elements.push({
         id: generateId(),
         type: "image",
-        x: 24, y: 10, w: 19,
+        x: 25, y: 10, w: 19,
         zIndex: zCounter++,
         imageSrc: images[1].url,
         imageCaption: images[1].caption,
@@ -2479,11 +3055,14 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
       });
     }
 
-    const rightX = hasImages ? 46 : 4;
-    const contentWidth = hasImages ? 50 : 92;
+    const rightX = hasImages ? (images.length >= 2 ? 47 : 45) : 4;
+    const contentWidth = hasImages ? (images.length >= 2 ? 49 : 51) : 92;
     let currentY = 7;
 
-    nonImages.forEach(item => {
+    const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
+    const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
+
+    headerItems.forEach(item => {
       switch (item.type) {
         case "badge":
           elements.push({
@@ -2493,7 +3072,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             zIndex: zCounter++,
             text: item.text
           });
-          currentY += 9;
+          currentY += 7.5;
           break;
         case "title":
           elements.push({
@@ -2503,10 +3082,10 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             zIndex: zCounter++,
             text: item.text,
             accentText: item.accentText || "",
-            fontSize: isCover ? 38 : 32,
+            fontSize: isCover ? 38 : 30,
             textAlign: slideAlign
           });
-          currentY += (item.accentText ? 20 : 14);
+          currentY += estimateTitleHeight(item.text, item.accentText, contentWidth);
           break;
         case "text":
           elements.push({
@@ -2518,8 +3097,13 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             fontSize: 15,
             textAlign: slideAlign
           });
-          currentY += 14;
+          currentY += estimateTextHeight(item.text, contentWidth);
           break;
+      }
+    });
+
+    bodyItems.forEach(item => {
+      switch (item.type) {
         case "panel":
           elements.push({
             id: generateId(),
@@ -2531,7 +3115,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             description: item.description,
             bullets: item.bullets || []
           });
-          currentY += 28;
+          currentY += estimatePanelHeight(item) + 2.5;
           break;
         case "bullets":
           elements.push({
@@ -2542,7 +3126,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             title: item.title,
             bullets: item.bullets || []
           });
-          currentY += 26;
+          currentY += estimatePanelHeight(item) + 2.5;
           break;
         case "quote":
           elements.push({
@@ -2563,7 +3147,10 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
 
   if (layout === "center" || layout === "hero" || layout === "quote-hero") {
     let currentY = 8;
-    nonImages.forEach(item => {
+    const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
+    const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
+
+    headerItems.forEach(item => {
       switch (item.type) {
         case "badge":
           elements.push({
@@ -2573,7 +3160,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             zIndex: zCounter++,
             text: item.text
           });
-          currentY += 9;
+          currentY += 8;
           break;
         case "title":
           elements.push({
@@ -2583,10 +3170,10 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             zIndex: zCounter++,
             text: item.text,
             accentText: item.accentText || "",
-            fontSize: isCover ? 42 : 36,
+            fontSize: isCover ? 42 : 34,
             textAlign: "center"
           });
-          currentY += (item.accentText ? 22 : 16);
+          currentY += estimateTitleHeight(item.text, item.accentText, 84);
           break;
         case "text":
           elements.push({
@@ -2598,8 +3185,13 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             fontSize: 16,
             textAlign: "center"
           });
-          currentY += 15;
+          currentY += estimateTextHeight(item.text, 76);
           break;
+      }
+    });
+
+    bodyItems.forEach(item => {
+      switch (item.type) {
         case "quote":
           elements.push({
             id: generateId(),
@@ -2623,7 +3215,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             description: item.description,
             bullets: item.bullets || []
           });
-          currentY += 28;
+          currentY += estimatePanelHeight(item) + 2.5;
           break;
         case "bullets":
           elements.push({
@@ -2634,7 +3226,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
             title: item.title,
             bullets: item.bullets || []
           });
-          currentY += 26;
+          currentY += estimatePanelHeight(item) + 2.5;
           break;
       }
     });
@@ -2653,11 +3245,12 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     return elements;
   }
 
+  // Default: right-image
   if (images.length === 1) {
     elements.push({
       id: generateId(),
       type: "image",
-      x: 60, y: 10, w: 36,
+      x: 58, y: 10, w: 38,
       zIndex: zCounter++,
       imageSrc: images[0].url,
       imageCaption: images[0].caption,
@@ -2667,7 +3260,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     elements.push({
       id: generateId(),
       type: "image",
-      x: 55, y: 10, w: 20,
+      x: 53, y: 10, w: 21,
       zIndex: zCounter++,
       imageSrc: images[0].url,
       imageCaption: images[0].caption,
@@ -2676,7 +3269,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     elements.push({
       id: generateId(),
       type: "image",
-      x: 77, y: 10, w: 20,
+      x: 76, y: 10, w: 21,
       zIndex: zCounter++,
       imageSrc: images[1].url,
       imageCaption: images[1].caption,
@@ -2685,10 +3278,13 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   }
 
   const leftX = 4;
-  const contentWidth = hasImages ? 54 : 92;
+  const contentWidth = hasImages ? (images.length >= 2 ? 46 : 51) : 92;
   let currentY = 7;
 
-  nonImages.forEach(item => {
+  const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
+  const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
+
+  headerItems.forEach(item => {
     switch (item.type) {
       case "badge":
         elements.push({
@@ -2698,7 +3294,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           zIndex: zCounter++,
           text: item.text
         });
-        currentY += 9;
+        currentY += 7.5;
         break;
       case "title":
         elements.push({
@@ -2708,10 +3304,10 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           zIndex: zCounter++,
           text: item.text,
           accentText: item.accentText || "",
-          fontSize: isCover ? 38 : 32,
+          fontSize: isCover ? 38 : 30,
           textAlign: slideAlign
         });
-        currentY += (item.accentText ? 20 : 14);
+        currentY += estimateTitleHeight(item.text, item.accentText, contentWidth);
         break;
       case "text":
         elements.push({
@@ -2723,8 +3319,13 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           fontSize: 15,
           textAlign: slideAlign
         });
-        currentY += 14;
+        currentY += estimateTextHeight(item.text, contentWidth);
         break;
+    }
+  });
+
+  bodyItems.forEach(item => {
+    switch (item.type) {
       case "panel":
         elements.push({
           id: generateId(),
@@ -2736,7 +3337,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           description: item.description,
           bullets: item.bullets || []
         });
-        currentY += 28;
+        currentY += estimatePanelHeight(item) + 2.5;
         break;
       case "bullets":
         elements.push({
@@ -2747,7 +3348,7 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
           title: item.title,
           bullets: item.bullets || []
         });
-        currentY += 26;
+        currentY += estimatePanelHeight(item) + 2.5;
         break;
       case "quote":
         elements.push({

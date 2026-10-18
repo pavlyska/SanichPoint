@@ -9,6 +9,17 @@ import (
 )
 
 func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
+	return GenerateHTMLWithOptions(p, assetsRelativePath, GeneratorOptions{
+		EnableVoiceControl: true,
+		IncludeUI:          true,
+	})
+}
+
+func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts GeneratorOptions) (string, error) {
+	if !opts.IncludeUI {
+		opts.EnableVoiceControl = false
+	}
+
 	theme := GetTheme(p.ThemeID, p.CustomTheme)
 	projectJSON, _ := json.Marshal(p)
 
@@ -115,7 +126,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
       pointer-events: auto;
       z-index: 10;
     }
+`)
 
+	if opts.EnableVoiceControl {
+		buf.WriteString(`
     @keyframes mic-glow {
       0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
       70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
@@ -127,7 +141,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
       background: rgba(239, 68, 68, 0.2) !important;
       color: #FCA5A5 !important;
     }
+`)
+	}
 
+	buf.WriteString(`
     .panel-box {
       background: ` + theme.PanelBg + `;
       border: 1px solid ` + theme.BorderColor + `;
@@ -138,7 +155,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
     }
   </style>
 </head>
+`)
 
+	if opts.IncludeUI {
+		buf.WriteString(`
 <body class="h-full w-full flex flex-col justify-between select-none">
 
   <header class="relative z-20 w-full px-6 lg:px-12 py-3.5 border-b border-slate-800 bg-[#0B0D12]/95 backdrop-blur-md flex items-center justify-between">
@@ -153,7 +173,9 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
     </div>
 
     <div class="flex items-center space-x-3">
-
+`)
+		if opts.EnableVoiceControl {
+			buf.WriteString(`
       <div id="voiceFeedback" class="hidden text-xs md:text-sm px-3.5 py-1.5 rounded-full bg-accent-400 text-black font-bold font-mono shadow-lg transition">
         Слайд переключен
       </div>
@@ -164,7 +186,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
         <span id="micDot" class="w-2.5 h-2.5 rounded-full bg-accent-400"></span>
         <span id="voiceText">🎤 Включить режим голоса</span>
       </button>
+`)
+		}
 
+		buf.WriteString(`
       <button onclick="toggleFullscreen()" class="p-2 text-slate-400 hover:text-white transition cursor-pointer" title="Полный экран">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -175,6 +200,12 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
 
   <main class="relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 lg:px-8 py-3 flex flex-col justify-center overflow-hidden">
 `)
+	} else {
+		buf.WriteString(`
+<body class="h-full w-full flex flex-col justify-center items-center select-none bg-darkbg overflow-hidden m-0 p-0">
+  <main class="relative z-10 w-full h-full max-w-7xl mx-auto px-4 lg:px-8 py-3 flex flex-col justify-center overflow-hidden">
+`)
+	}
 
 	for i, slide := range p.Slides {
 		slideNum := i + 1
@@ -192,8 +223,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
 		buf.WriteString("    </section>\n\n")
 	}
 
-	buf.WriteString(`  </main>
+	buf.WriteString(`  </main>` + "\n")
 
+	if opts.IncludeUI {
+		buf.WriteString(`
   <footer class="relative z-20 w-full px-6 lg:px-12 py-3.5 border-t border-slate-800 bg-[#0B0D12]/95 backdrop-blur-md flex items-center justify-between">
 
     <button id="prevBtn" onclick="prevSlide()"
@@ -209,10 +242,14 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
       <span id="slideCounter" class="text-sm font-mono font-bold text-accent-400 ml-2">
         1 / ` + fmt.Sprintf("%d", totalSlides) + `
       </span>
-      <span class="text-xs text-slate-500 hidden sm:inline border-l border-slate-800 pl-3">
+`)
+		if opts.EnableVoiceControl {
+			buf.WriteString(`      <span class="text-xs text-slate-500 hidden sm:inline border-l border-slate-800 pl-3">
         Команды голосом: <span class="text-accent-400 font-medium">«Дальше»</span>, <span class="text-slate-400 font-medium">«Назад»</span>, <span class="text-red-400 font-medium">«Конец»</span>
       </span>
-    </div>
+`)
+		}
+		buf.WriteString(`    </div>
 
     <button id="nextBtn" onclick="nextSlide()"
             class="flex items-center space-x-2 px-5 py-2 rounded-lg bg-accent-500 hover:bg-accent-400 text-black text-sm font-bold transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shadow-md">
@@ -223,7 +260,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
     </button>
 
   </footer>
+`)
+	}
 
+	buf.WriteString(`
   <script>
     let currentSlide = 1;
     const totalSlides = ` + fmt.Sprintf("%d", totalSlides) + `;
@@ -234,6 +274,7 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
     const nextBtn = document.getElementById('nextBtn');
 
     function initDots() {
+      if (!dotsContainer) return;
       dotsContainer.innerHTML = '';
       for (let i = 1; i <= totalSlides; i++) {
         const dot = document.createElement('button');
@@ -251,11 +292,11 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
       currentSlide = n;
       const active = document.querySelector('.slide[data-slide="' + currentSlide + '"]');
       if (active) active.classList.add('active');
-      slideCounter.innerText = currentSlide + ' / ' + totalSlides;
+      if (slideCounter) slideCounter.innerText = currentSlide + ' / ' + totalSlides;
       initDots();
 
-      prevBtn.disabled = (currentSlide === 1);
-      nextBtn.disabled = (currentSlide === totalSlides);
+      if (prevBtn) prevBtn.disabled = (currentSlide === 1);
+      if (nextBtn) nextBtn.disabled = (currentSlide === totalSlides);
     }
 
     function nextSlide() {
@@ -280,6 +321,12 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
       }
     });
 
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('a, button, input, textarea, select')) {
+        nextSlide();
+      }
+    });
+
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => console.log(err));
@@ -287,7 +334,10 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
         if (document.exitFullscreen) document.exitFullscreen();
       }
     }
+`)
 
+	if opts.EnableVoiceControl {
+		buf.WriteString(`
     let recognition = null;
     let isVoiceListening = false;
 
@@ -297,6 +347,7 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
     const voiceFeedback = document.getElementById('voiceFeedback');
 
     function notifyVoice(msg) {
+      if (!voiceFeedback) return;
       voiceFeedback.innerText = msg;
       voiceFeedback.classList.remove('hidden');
       setTimeout(() => voiceFeedback.classList.add('hidden'), 2200);
@@ -321,7 +372,7 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
     function initSpeechRecognition() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        voiceText.innerText = "Голос не поддерживается";
+        if (voiceText) voiceText.innerText = "Голос не поддерживается";
         return null;
       }
 
@@ -332,9 +383,9 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
 
       recognizer.onstart = () => {
         isVoiceListening = true;
-        voiceBtn.classList.add('mic-active');
-        micDot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-ping";
-        voiceText.innerText = "Голос активен: «Дальше» / «Конец»";
+        if (voiceBtn) voiceBtn.classList.add('mic-active');
+        if (micDot) micDot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-ping";
+        if (voiceText) voiceText.innerText = "Голос активен: «Дальше» / «Конец»";
       };
 
       recognizer.onresult = (event) => {
@@ -428,11 +479,14 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
       if (recognition) {
         try { recognition.stop(); } catch(e) {}
       }
-      voiceBtn.classList.remove('mic-active');
-      micDot.className = "w-2.5 h-2.5 rounded-full bg-accent-400";
-      voiceText.innerText = "🎤 Включить режим голоса";
+      if (voiceBtn) voiceBtn.classList.remove('mic-active');
+      if (micDot) micDot.className = "w-2.5 h-2.5 rounded-full bg-accent-400";
+      if (voiceText) voiceText.innerText = "🎤 Включить режим голоса";
     }
+`)
+	}
 
+	buf.WriteString(`
     initDots();
     goToSlide(1);
   </script>

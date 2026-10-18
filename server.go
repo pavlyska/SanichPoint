@@ -32,6 +32,7 @@ func (s *Server) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/api/upload", s.handleUpload)
 	mux.HandleFunc("/api/temp-asset/", s.handleTempAsset)
 	mux.HandleFunc("/api/export", s.handleExport)
+	mux.HandleFunc("/api/choose-folder", s.handleChooseFolder)
 	mux.HandleFunc("/api/open-folder", s.handleOpenFolder)
 	mux.HandleFunc("/api/open-file", s.handleOpenFile)
 	mux.HandleFunc("/api/info", s.handleInfo)
@@ -178,6 +179,31 @@ func (s *Server) handleTempAsset(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
+func (s *Server) handleChooseFolder(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		CurrentDir string `json:"currentDir"`
+	}
+	_ = json.NewDecoder(r.Body).Decode(&body)
+
+	targetDir := strings.TrimSpace(body.CurrentDir)
+	if targetDir == "" {
+		targetDir = s.workspaceDir
+	}
+
+	selected, err := pickFolderDialog(targetDir)
+	if err != nil || selected == "" {
+		writeJSON(w, http.StatusOK, map[string]interface{}{
+			"canceled": true,
+		})
+		return
+	}
+
+	writeJSON(w, http.StatusOK, map[string]interface{}{
+		"canceled": false,
+		"folder":   selected,
+	})
+}
+
 func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -219,53 +245,90 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	assetsFullDir := filepath.Join(outDir, assetsSubdir)
-	if err := os.MkdirAll(assetsFullDir, 0755); err != nil {
-		writeJSON(w, http.StatusInternalServerError, ExportResponse{
-			Success: false,
-			Error:   "Не удалось создать папку ассетов: " + err.Error(),
-		})
-		return
-	}
-
+	hasLocalImages := false
 	for _, slide := range req.Presentation.Slides {
 		for _, el := range slide.Elements {
-			if el.Type != ElemImage || el.ImageSrc == "" {
-				continue
-			}
-			src := el.ImageSrc
-			if strings.HasPrefix(src, "http://") || strings.HasPrefix(src, "https://") || strings.HasPrefix(src, "data:") {
-				continue
-			}
-
-			baseName := filepath.Base(src)
-			targetFile := filepath.Join(assetsFullDir, baseName)
-
-			s.mu.Lock()
-			cachedData, hasCached := s.uploadedImgs[baseName]
-			s.mu.Unlock()
-
-			if hasCached {
-				_ = os.WriteFile(targetFile, cachedData, 0644)
-				continue
-			}
-
-			possibleSources := []string{
-				src,
-				filepath.Join(s.workspaceDir, "images", baseName),
-				filepath.Join(s.workspaceDir, "assets", baseName),
-				filepath.Join(s.workspaceDir, baseName),
-			}
-			for _, ps := range possibleSources {
-				if data, err := os.ReadFile(ps); err == nil {
-					_ = os.WriteFile(targetFile, data, 0644)
+			if el.Type == ElemImage && el.ImageSrc != "" {
+				src := el.ImageSrc
+				if !strings.HasPrefix(src, "http://") && !strings.HasPrefix(src, "https://") && !strings.HasPrefix(src, "data:") {
+					hasLocalImages = true
 					break
+				}
+			}
+		}
+		if hasLocalImages {
+			break
+		}
+	}
+
+	assetsFullDir := ""
+	assetsSubdirPath := ""
+	if hasLocalImages {
+		assetsFullDir = filepath.Join(outDir, assetsSubdir)
+		assetsSubdirPath = assetsSubdir + "/"
+
+		if err := os.MkdirAll(assetsFullDir, 0755); err != nil {
+			writeJSON(w, http.StatusInternalServerError, ExportResponse{
+				Success: false,
+				Error:   "Не удалось создать папку ассетов: " + err.Error(),
+			})
+			return
+		}
+
+		for _, slide := range req.Presentation.Slides {
+			for _, el := range slide.Elements {
+				if el.Type != ElemImage || el.ImageSrc == "" {
+					continue
+				}
+				src := el.ImageSrc
+				if strings.HasPrefix(src, "http://") || strings.HasPrefix(src, "https://") || strings.HasPrefix(src, "data:") {
+					continue
+				}
+
+				baseName := filepath.Base(src)
+				targetFile := filepath.Join(assetsFullDir, baseName)
+
+				s.mu.Lock()
+				cachedData, hasCached := s.uploadedImgs[baseName]
+				s.mu.Unlock()
+
+				if hasCached {
+					_ = os.WriteFile(targetFile, cachedData, 0644)
+					continue
+				}
+
+				possibleSources := []string{
+					src,
+					filepath.Join(s.workspaceDir, "images", baseName),
+					filepath.Join(s.workspaceDir, "assets", baseName),
+					filepath.Join(s.workspaceDir, baseName),
+				}
+				for _, ps := range possibleSources {
+					if data, err := os.ReadFile(ps); err == nil {
+						_ = os.WriteFile(targetFile, data, 0644)
+						break
+					}
 				}
 			}
 		}
 	}
 
-	htmlContent, err := GenerateHTML(&req.Presentation, assetsSubdir+"/")
+	includeUI := true
+	if req.IncludeUI != nil {
+		includeUI = *req.IncludeUI
+	}
+	enableVoice := true
+	if req.EnableVoiceControl != nil {
+		enableVoice = *req.EnableVoiceControl
+	}
+	if !includeUI {
+		enableVoice = false
+	}
+
+	htmlContent, err := GenerateHTMLWithOptions(&req.Presentation, assetsSubdirPath, GeneratorOptions{
+		EnableVoiceControl: enableVoice,
+		IncludeUI:          includeUI,
+	})
 	if err != nil {
 		writeJSON(w, http.StatusInternalServerError, ExportResponse{
 			Success: false,
@@ -283,10 +346,15 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	displayAssetsPath := assetsFullDir
+	if !hasLocalImages {
+		displayAssetsPath = "(не требуется — все изображения загружаются по интернет-ссылкам)"
+	}
+
 	writeJSON(w, http.StatusOK, ExportResponse{
 		Success:    true,
 		FilePath:   targetHTMLPath,
-		AssetsPath: assetsFullDir,
+		AssetsPath: displayAssetsPath,
 		Message:    fmt.Sprintf("Презентация успешно сохранена: %s", fileName),
 	})
 }

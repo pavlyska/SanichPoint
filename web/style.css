@@ -152,6 +152,7 @@ body {
   user-select: none;
   transition: background-color 0.25s ease;
   container-type: inline-size;
+  isolation: isolate;
 }
 
 .canvas-element {
@@ -226,5 +227,101 @@ body {
 .modal-overlay {
   background: rgba(7, 9, 13, 0.85);
   backdrop-filter: blur(8px);
+}
+
+.deck-row {
+  position: relative;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  cursor: grab;
+}
+.deck-row:active {
+  cursor: grabbing;
+}
+.deck-row.dragging {
+  opacity: 0.35;
+  transform: scale(0.96);
+}
+
+#deckThumbsList.is-reordering .deck-row * {
+  pointer-events: none;
+}
+
+.deck-thumb-inner {
+  width: 960px;
+  height: 540px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  user-select: none;
+  container-type: inline-size;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.deck-row.drop-indicator-top::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #3B82F6;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.9);
+  z-index: 40;
+}
+
+.deck-row.drop-indicator-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #3B82F6;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.9);
+  z-index: 40;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #E2E8F0;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+  user-select: none;
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+.context-menu-item:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #FFFFFF;
+}
+.context-menu-item.danger {
+  color: #F87171;
+}
+.context-menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+}
+.context-menu-item.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.context-menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 6px;
 }
 

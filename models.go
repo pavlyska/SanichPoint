@@ -73,10 +73,17 @@ type Presentation struct {
 }
 
 type ExportRequest struct {
-	Presentation Presentation `json:"presentation"`
-	OutputDir    string       `json:"outputDir"`
-	FileName     string       `json:"fileName"`
-	AssetsSubdir string       `json:"assetsSubdir"`
+	Presentation       Presentation `json:"presentation"`
+	OutputDir          string       `json:"outputDir"`
+	FileName           string       `json:"fileName"`
+	AssetsSubdir       string       `json:"assetsSubdir"`
+	EnableVoiceControl *bool        `json:"enableVoiceControl,omitempty"`
+	IncludeUI          *bool        `json:"includeUI,omitempty"`
+}
+
+type GeneratorOptions struct {
+	EnableVoiceControl bool
+	IncludeUI          bool
 }
 
 type ExportResponse struct {

@@ -13,6 +13,7 @@
 # Project specific built files
 /presentation-builder.exe
 /SanichPoint Studio.exe
+/SanichPoint.exe
 rsrc_*.syso
 
 # Tool and IDE artifacts
@@ -32,3 +33,4 @@ assets/
 *.tmp
 *.log
 .codegraph
+
