@@ -56,6 +56,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setupGlobalShortcuts();
   setupCanvasEvents();
+  updateCanvasSize();
+
+  const outer = document.querySelector(".canvas-outer");
+  if (outer && window.ResizeObserver) {
+    new ResizeObserver(() => updateCanvasSize()).observe(outer);
+  }
 });
 
 function initCustomTitlebar() {
@@ -440,7 +446,10 @@ function updateThumbnailsScale() {
     }
   });
 }
-window.addEventListener("resize", updateThumbnailsScale);
+window.addEventListener("resize", () => {
+  updateCanvasSize();
+  updateThumbnailsScale();
+});
 
 let draggedSlideIndex = null;
 
@@ -973,7 +982,32 @@ function openCanvasContextMenu(x, y) {
   ]);
 }
 
+function updateCanvasSize() {
+  const outer = document.querySelector(".canvas-outer");
+  const canvas = document.getElementById("slideCanvas");
+  if (!outer || !canvas) return;
+
+  const padX = 24;
+  const padY = 24;
+  const availW = Math.max(320, outer.clientWidth - padX);
+  const availH = Math.max(180, outer.clientHeight - padY);
+  const targetRatio = 16 / 9;
+
+  let width, height;
+  if (availW / availH > targetRatio) {
+    height = availH;
+    width = height * targetRatio;
+  } else {
+    width = availW;
+    height = width / targetRatio;
+  }
+
+  canvas.style.width = `${Math.floor(width)}px`;
+  canvas.style.height = `${Math.floor(height)}px`;
+}
+
 function renderCanvas() {
+  updateCanvasSize();
   const canvas = document.getElementById("slideCanvas");
   if (!canvas) return;
   canvas.innerHTML = "";
@@ -1029,7 +1063,7 @@ function getElementCanvasHTML(el, theme) {
     case "badge":
       return `
         <div class="inline-block px-[1.2cqw] py-[0.4cqw] rounded border font-semibold tracking-wider uppercase pointer-events-auto leading-normal"
-             style="background: ${theme.accent400}18; border-color: ${theme.accent400}44; color: ${theme.accent400}; font-size: clamp(9px, 1.15cqw, 12px);"
+             style="background: ${theme.accent400}18; border-color: ${theme.accent400}44; color: ${theme.accent400}; font-size: max(10px, 1.15cqw);"
              contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
           ${escapeHTML(el.text || 'Бейдж')}
         </div>
@@ -1038,7 +1072,7 @@ function getElementCanvasHTML(el, theme) {
     case "title":
       const titleFs = el.fontSize || 32;
       return `
-        <div class="font-serif font-bold text-white leading-tight" style="font-size: clamp(15px, calc(${titleFs} * 0.105cqw), ${titleFs}px); text-align: ${el.textAlign || 'left'};">
+        <div class="font-serif font-bold text-white leading-tight" style="font-size: max(16px, calc(${titleFs} * 0.085cqw)); text-align: ${el.textAlign || 'left'};">
           <span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">${escapeHTML(el.text || 'Заголовок')}</span>
           ${el.accentText ? `<br><span class="font-normal italic" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'accentText', this.innerText)">${escapeHTML(el.accentText)}</span>` : ''}
         </div>
@@ -1047,7 +1081,7 @@ function getElementCanvasHTML(el, theme) {
     case "text":
       const textFs = el.fontSize || 15;
       return `
-        <div class="text-slate-300 font-light leading-relaxed" style="font-size: clamp(10px, calc(${textFs} * 0.105cqw), ${textFs}px); text-align: ${el.textAlign || 'left'};"
+        <div class="text-slate-300 font-light leading-relaxed" style="font-size: max(11px, calc(${textFs} * 0.085cqw)); text-align: ${el.textAlign || 'left'};"
              contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
           ${escapeHTML(el.text || 'Текст описания или факта.')}
         </div>
@@ -1057,28 +1091,28 @@ function getElementCanvasHTML(el, theme) {
       const src = el.imageSrc ? getImagePreviewUrl(el.imageSrc) : "";
       return `
         <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border">
-          <div class="w-full aspect-[4/3] max-h-[30cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
+          <div class="w-full aspect-[4/3] max-h-[46cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
             ${src ? `<img src="${src}" class="w-full h-full object-contain pointer-events-none" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><rect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22 rx=%222%22/><circle cx=%228.5%22 cy=%228.5%22 r=%221.5%22/><path d=%22M21 15l-5-5L5 21%22/></svg>'">` : `
               <div class="flex flex-col items-center justify-center text-slate-500 space-y-1">
                 <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span class="text-[clamp(9px,1.1cqw,11px)]">Загрузите фото справа</span>
+                <span class="text-[max(10px,1.1cqw)]">Загрузите фото справа</span>
               </div>
             `}
           </div>
-          ${el.imageCaption ? `<div class="text-center pt-[0.8cqw] text-[clamp(9px,1.1cqw,11px)] text-slate-400 font-medium" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'imageCaption', this.innerText)">${escapeHTML(el.imageCaption)}</div>` : ''}
+          ${el.imageCaption ? `<div class="text-center pt-[0.8cqw] text-[max(10px,1.1cqw)] text-slate-400 font-medium" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'imageCaption', this.innerText)">${escapeHTML(el.imageCaption)}</div>` : ''}
         </div>
       `;
 
     case "panel":
       return `
-        <div class="p-[1.6cqw] rounded-xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: clamp(10px, 1.25cqw, 13px);">
-          <div class="font-bold flex items-center gap-1.5" style="color:${theme.accent400}; font-size: clamp(11px, 1.4cqw, 15px);">
-            <span class="text-[clamp(11px,1.5cqw,16px)]">${escapeHTML(el.icon || '✦')}</span>
+        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: max(11px, 1.2cqw);">
+          <div class="font-bold flex items-center gap-1.5" style="color:${theme.accent400}; font-size: max(12px, 1.45cqw);">
+            <span class="text-[max(12px,1.5cqw)]">${escapeHTML(el.icon || '✦')}</span>
             <span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title || 'Заголовок панели')}</span>
           </div>
-          ${el.description ? `<p class="text-slate-300 leading-relaxed text-[clamp(9px,1.18cqw,12px)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'description', this.innerText)">${escapeHTML(el.description)}</p>` : ''}
+          ${el.description ? `<p class="text-slate-300 leading-relaxed text-[max(11px,1.2cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'description', this.innerText)">${escapeHTML(el.description)}</p>` : ''}
           ${(el.bullets && el.bullets.length > 0) ? `
-            <ul class="space-y-[0.5cqw] text-slate-300 text-[clamp(9px,1.18cqw,12px)] pt-0.5">
+            <ul class="space-y-[0.6cqw] text-slate-300 text-[max(11px,1.2cqw)] pt-0.5">
               ${el.bullets.map(b => `<li class="flex items-start gap-1.5"><span style="color:${theme.accent400}; font-bold;">${escapeHTML(b.icon || '•')}</span><span>${b.title ? `<b>${escapeHTML(b.title)}</b> ` : ''}${escapeHTML(b.text)}</span></li>`).join('')}
             </ul>
           ` : ''}
@@ -1087,9 +1121,9 @@ function getElementCanvasHTML(el, theme) {
 
     case "bullets":
       return `
-        <div class="p-[1.6cqw] rounded-xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: clamp(10px, 1.25cqw, 13px);">
-          ${el.title ? `<div class="font-semibold text-white text-[clamp(11px,1.4cqw,15px)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title)}</div>` : ''}
-          <ul class="space-y-[0.6cqw] text-slate-300 text-[clamp(9.5px,1.2cqw,13px)]">
+        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: max(11px, 1.2cqw);">
+          ${el.title ? `<div class="font-semibold text-white text-[max(12px,1.45cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title)}</div>` : ''}
+          <ul class="space-y-[0.6cqw] text-slate-300 text-[max(11px,1.2cqw)]">
             ${(el.bullets || []).map(b => `<li class="flex items-start gap-1.5"><span style="color:${theme.accent400}; font-bold;">${escapeHTML(b.icon || '•')}</span><span>${b.title ? `<b>${escapeHTML(b.title)}</b> ` : ''}${escapeHTML(b.text)}</span></li>`).join('')}
           </ul>
         </div>
@@ -1097,14 +1131,14 @@ function getElementCanvasHTML(el, theme) {
 
     case "quote":
       return `
-        <div class="p-[2cqw] rounded-2xl panel-box space-y-[0.9cqw] text-center" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor};">
-          <div class="text-[clamp(18px,3.2cqw,36px)] leading-none select-none font-serif opacity-40" style="color:${theme.accent400};">“</div>
-          <blockquote class="font-serif italic text-white leading-relaxed text-[clamp(11px,1.5cqw,18px)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
+        <div class="p-[2cqw] rounded-3xl panel-box space-y-[1cqw] text-center" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor};">
+          <div class="text-[max(24px,3.8cqw)] leading-none select-none font-serif opacity-40" style="color:${theme.accent400};">“</div>
+          <blockquote class="font-serif italic text-white leading-relaxed text-[max(13px,1.7cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
             «${escapeHTML(el.text || 'Текст важной мысли или цитаты')}»
           </blockquote>
-          <div class="pt-1.5 border-t border-slate-800">
-            <div class="font-bold font-serif text-[clamp(10px,1.3cqw,14px)]" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteAuthor', this.innerText)">${escapeHTML(el.quoteAuthor || 'Автор цитаты')}</div>
-            <div class="text-[clamp(9px,1.05cqw,11px)] text-slate-400 mt-0.5" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteRole', this.innerText)">${escapeHTML(el.quoteRole || 'Роль / Источник')}</div>
+          <div class="pt-[0.8cqw] border-t border-slate-800">
+            <div class="font-bold font-serif text-[max(11px,1.3cqw)]" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteAuthor', this.innerText)">${escapeHTML(el.quoteAuthor || 'Автор цитаты')}</div>
+            <div class="text-[max(10px,1.1cqw)] text-slate-400 mt-0.5" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteRole', this.innerText)">${escapeHTML(el.quoteRole || 'Роль / Источник')}</div>
           </div>
         </div>
       `;
@@ -1178,8 +1212,8 @@ function setupCanvasEvents() {
       let newLeft = Math.round(elementStartLeft + deltaXPercent);
       let newTop = Math.round(elementStartTop + deltaYPercent);
 
-      newLeft = Math.max(0, Math.min(newLeft, 95));
-      newTop = Math.max(0, Math.min(newTop, 95));
+      newLeft = Math.max(0, Math.min(newLeft, 100));
+      newTop = Math.max(0, Math.min(newTop, 100));
 
       el.x = newLeft;
       el.y = newTop;
@@ -1192,13 +1226,13 @@ function setupCanvasEvents() {
     } else if (isResizing) {
       if (resizeHandleType.includes("e")) {
         let newWidth = Math.round(elementStartWidth + deltaXPercent);
-        newWidth = Math.max(8, Math.min(newWidth, 100 - el.x));
+        newWidth = Math.max(4, Math.min(newWidth, 100 - el.x));
         el.w = newWidth;
       }
       if (resizeHandleType.includes("w")) {
         let newWidth = Math.round(elementStartWidth - deltaXPercent);
         let newLeft = Math.round(elementStartLeft + deltaXPercent);
-        if (newWidth >= 8 && newLeft >= 0) {
+        if (newWidth >= 4 && newLeft >= 0) {
           el.w = newWidth;
           el.x = newLeft;
         }
@@ -1905,8 +1939,8 @@ function nudgeSelectedElement(dx, dy) {
   if (!currentSlide || !selectedElementId) return;
   const el = currentSlide.elements.find(e => e.id === selectedElementId);
   if (el) {
-    el.x = Math.max(0, Math.min(95, el.x + dx));
-    el.y = Math.max(0, Math.min(95, el.y + dy));
+    el.x = Math.max(0, Math.min(100, el.x + dx));
+    el.y = Math.max(0, Math.min(100, el.y + dy));
     const dom = document.getElementById(el.id);
     if (dom) {
       dom.style.left = `${el.x}%`;

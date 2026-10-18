@@ -115,8 +115,10 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
+      overflow: hidden;
     }
 
     .slide.active {
@@ -125,6 +127,26 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
       transform: translateY(0);
       pointer-events: auto;
       z-index: 10;
+    }
+
+    .slide-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: calc(100vh * 16 / 9);
+      max-height: calc(100vw * 9 / 16);
+      aspect-ratio: 16 / 9;
+      margin: auto;
+      overflow: hidden;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    #presentationNav.nav-idle {
+      opacity: 0.15;
+    }
+    #presentationNav:hover {
+      opacity: 1 !important;
     }
 `)
 
@@ -157,55 +179,10 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
 </head>
 `)
 
-	if opts.IncludeUI {
-		buf.WriteString(`
-<body class="h-full w-full flex flex-col justify-between select-none">
-
-  <header class="relative z-20 w-full px-6 lg:px-12 py-3.5 border-b border-slate-800 bg-[#0B0D12]/95 backdrop-blur-md flex items-center justify-between">
-
-    <div class="flex items-center space-x-3">
-      <div>
-        <h1 class="text-sm md:text-base font-semibold text-white tracking-wide">
-          ` + html.EscapeString(title) + `
-        </h1>
-        <p class="text-xs text-slate-400">` + html.EscapeString(subtitle) + `</p>
-      </div>
-    </div>
-
-    <div class="flex items-center space-x-3">
+	buf.WriteString(`
+<body class="h-full w-full select-none bg-darkbg overflow-hidden m-0 p-0">
+  <main class="relative w-full h-full flex items-center justify-center overflow-hidden m-0 p-0">
 `)
-		if opts.EnableVoiceControl {
-			buf.WriteString(`
-      <div id="voiceFeedback" class="hidden text-xs md:text-sm px-3.5 py-1.5 rounded-full bg-accent-400 text-black font-bold font-mono shadow-lg transition">
-        Слайд переключен
-      </div>
-
-      <button id="voiceBtn" onclick="toggleVoiceControl()"
-              title="Нажмите, чтобы включить голосовое управление: слова «Дальше», «Назад», «Конец»"
-              class="flex items-center space-x-2 px-4 py-2 rounded-xl border border-accent-500/50 bg-accent-500/10 hover:bg-accent-500/20 text-xs md:text-sm font-semibold text-accent-300 transition shadow-sm cursor-pointer">
-        <span id="micDot" class="w-2.5 h-2.5 rounded-full bg-accent-400"></span>
-        <span id="voiceText">🎤 Включить режим голоса</span>
-      </button>
-`)
-		}
-
-		buf.WriteString(`
-      <button onclick="toggleFullscreen()" class="p-2 text-slate-400 hover:text-white transition cursor-pointer" title="Полный экран">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <main class="relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 lg:px-8 py-3 flex flex-col justify-center overflow-hidden">
-`)
-	} else {
-		buf.WriteString(`
-<body class="h-full w-full flex flex-col justify-center items-center select-none bg-darkbg overflow-hidden m-0 p-0">
-  <main class="relative z-10 w-full h-full max-w-7xl mx-auto px-4 lg:px-8 py-3 flex flex-col justify-center overflow-hidden">
-`)
-	}
 
 	for i, slide := range p.Slides {
 		slideNum := i + 1
@@ -215,7 +192,7 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
 		}
 
 		buf.WriteString(fmt.Sprintf(`    <section class="slide%s" data-slide="%d">`+"\n", activeClass, slideNum))
-		buf.WriteString(`      <div class="relative w-full h-full max-w-6xl mx-auto">` + "\n")
+		buf.WriteString(`      <div class="slide-stage">` + "\n")
 
 		renderCanvasElements(&buf, slide.Elements, theme, assetsRelativePath)
 
@@ -226,40 +203,64 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
 	buf.WriteString(`  </main>` + "\n")
 
 	if opts.IncludeUI {
-		buf.WriteString(`
-  <footer class="relative z-20 w-full px-6 lg:px-12 py-3.5 border-t border-slate-800 bg-[#0B0D12]/95 backdrop-blur-md flex items-center justify-between">
-
-    <button id="prevBtn" onclick="prevSlide()"
-            class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-sm font-semibold text-slate-200 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-      <span>Назад (←)</span>
-    </button>
-
-    <div class="flex items-center space-x-3">
-      <div id="dotsContainer" class="flex items-center space-x-2"></div>
-      <span id="slideCounter" class="text-sm font-mono font-bold text-accent-400 ml-2">
-        1 / ` + fmt.Sprintf("%d", totalSlides) + `
-      </span>
-`)
 		if opts.EnableVoiceControl {
-			buf.WriteString(`      <span class="text-xs text-slate-500 hidden sm:inline border-l border-slate-800 pl-3">
-        Команды голосом: <span class="text-accent-400 font-medium">«Дальше»</span>, <span class="text-slate-400 font-medium">«Назад»</span>, <span class="text-red-400 font-medium">«Конец»</span>
-      </span>
+			buf.WriteString(`
+  <div id="voiceFeedback" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 text-xs md:text-sm px-4 py-2 rounded-full bg-accent-400 text-black font-bold font-mono shadow-2xl transition">
+    Слайд переключен
+  </div>
 `)
 		}
-		buf.WriteString(`    </div>
+
+		buf.WriteString(`
+  <div id="presentationNav" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-2xl bg-[#0B0D12]/90 border border-slate-800/80 backdrop-blur-md shadow-2xl flex items-center space-x-3 transition-opacity duration-300 hover:opacity-100 opacity-80 select-none">
+
+    <button id="prevBtn" onclick="prevSlide()"
+            class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span>Назад</span>
+    </button>
+
+    <div class="flex items-center space-x-2">
+      <div id="dotsContainer" class="flex items-center space-x-1.5"></div>
+      <span id="slideCounter" class="text-xs font-mono font-bold text-accent-400 ml-1">
+        1 / ` + fmt.Sprintf("%d", totalSlides) + `
+      </span>
+    </div>
+`)
+
+		if opts.EnableVoiceControl {
+			buf.WriteString(`
+    <span class="text-[11px] text-slate-500 hidden sm:inline border-l border-slate-800 pl-2.5">
+      Голос: <span class="text-accent-400 font-medium">«Дальше»</span>, <span class="text-slate-400 font-medium">«Назад»</span>, <span class="text-red-400 font-medium">«Конец»</span>
+    </span>
+
+    <button id="voiceBtn" onclick="toggleVoiceControl()"
+            title="Голосовое управление: «Дальше», «Назад», «Конец»"
+            class="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-accent-500/50 bg-accent-500/10 hover:bg-accent-500/20 text-xs font-semibold text-accent-300 transition cursor-pointer">
+      <span id="micDot" class="w-2 h-2 rounded-full bg-accent-400"></span>
+      <span id="voiceText">🎤 Голос</span>
+    </button>
+`)
+		}
+
+		buf.WriteString(`
+    <button onclick="toggleFullscreen()" class="p-1.5 text-slate-400 hover:text-white transition cursor-pointer" title="Полный экран">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+      </svg>
+    </button>
 
     <button id="nextBtn" onclick="nextSlide()"
-            class="flex items-center space-x-2 px-5 py-2 rounded-lg bg-accent-500 hover:bg-accent-400 text-black text-sm font-bold transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shadow-md">
-      <span>Дальше (→ / Пробел)</span>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-accent-500 hover:bg-accent-400 text-black text-xs font-bold transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shadow-md">
+      <span>Дальше</span>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
     </button>
 
-  </footer>
+  </div>
 `)
 	}
 
@@ -334,6 +335,19 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
         if (document.exitFullscreen) document.exitFullscreen();
       }
     }
+
+    let idleTimer = null;
+    const navBar = document.getElementById('presentationNav');
+    function resetIdleTimer() {
+      if (!navBar) return;
+      navBar.classList.remove('nav-idle');
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        navBar.classList.add('nav-idle');
+      }, 3500);
+    }
+    document.addEventListener('mousemove', resetIdleTimer);
+    resetIdleTimer();
 `)
 
 	if opts.EnableVoiceControl {
@@ -517,44 +531,40 @@ func resolveImageSrc(src, assetsRelativePath string) string {
 
 func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, assetsRelativePath string) {
 	for _, el := range elements {
-		posStyle := fmt.Sprintf("position:absolute; left:%.2f%%; top:%.2f%%; width:%.2f%%; z-index:%d;", el.X, el.Y, el.W, el.ZIndex)
+		posStyle := fmt.Sprintf("position:absolute; left:%.2f%%; top:%.2f%%; width:%.2f%%; z-index:%d; box-sizing:border-box;", el.X, el.Y, el.W, el.ZIndex)
 
 		buf.WriteString(fmt.Sprintf(`        <div style="%s">`+"\n", posStyle))
 
 		switch el.Type {
 		case ElemBadge:
-			buf.WriteString(fmt.Sprintf(`          <div class="inline-block px-3.5 py-1.5 rounded bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs md:text-sm font-semibold tracking-wider uppercase">%s</div>`+"\n", html.EscapeString(el.Text)))
+			buf.WriteString(fmt.Sprintf(`          <div class="inline-block px-[1.2cqw] py-[0.4cqw] rounded border font-semibold tracking-wider uppercase leading-normal" style="background:%s18; border-color:%s44; color:%s; font-size:max(10px, 1.15cqw);">%s</div>`+"\n", t.Accent400, t.Accent400, t.Accent400, html.EscapeString(el.Text)))
 
 		case ElemTitle:
-			fontSizeStyle := ""
-			if el.FontSize > 0 {
-				fontSizeStyle = fmt.Sprintf("font-size:%dpx;", el.FontSize)
+			fontSize := el.FontSize
+			if fontSize <= 0 {
+				fontSize = 32
 			}
-			alignClass := "text-left"
-			if el.TextAlign == "center" {
-				alignClass = "text-center"
-			} else if el.TextAlign == "right" {
-				alignClass = "text-right"
+			align := el.TextAlign
+			if align == "" {
+				align = "left"
 			}
-			buf.WriteString(fmt.Sprintf(`          <h2 class="text-3xl md:text-5xl font-serif font-bold text-white leading-tight %s" style="%s">`+"\n", alignClass, fontSizeStyle))
+			buf.WriteString(fmt.Sprintf(`          <div class="font-serif font-bold text-white leading-tight" style="font-size:max(16px, calc(%d * 0.085cqw)); text-align:%s;">`+"\n", fontSize, align))
 			buf.WriteString(`            ` + html.EscapeString(el.Text) + "\n")
 			if el.AccentText != "" {
-				buf.WriteString(`            <br><span class="text-accent-400 font-normal italic">` + html.EscapeString(el.AccentText) + `</span>` + "\n")
+				buf.WriteString(fmt.Sprintf(`            <br><span class="font-normal italic" style="color:%s;">%s</span>`+"\n", t.Accent400, html.EscapeString(el.AccentText)))
 			}
-			buf.WriteString(`          </h2>` + "\n")
+			buf.WriteString(`          </div>` + "\n")
 
 		case ElemText:
-			fontSizeStyle := ""
-			if el.FontSize > 0 {
-				fontSizeStyle = fmt.Sprintf("font-size:%dpx;", el.FontSize)
+			fontSize := el.FontSize
+			if fontSize <= 0 {
+				fontSize = 15
 			}
-			alignClass := "text-left"
-			if el.TextAlign == "center" {
-				alignClass = "text-center"
-			} else if el.TextAlign == "right" {
-				alignClass = "text-right"
+			align := el.TextAlign
+			if align == "" {
+				align = "left"
 			}
-			buf.WriteString(fmt.Sprintf(`          <p class="text-base md:text-lg text-slate-300 font-light leading-relaxed %s" style="%s">%s</p>`+"\n", alignClass, fontSizeStyle, html.EscapeString(el.Text)))
+			buf.WriteString(fmt.Sprintf(`          <div class="text-slate-300 font-light leading-relaxed" style="font-size:max(11px, calc(%d * 0.085cqw)); text-align:%s;">%s</div>`+"\n", fontSize, align, html.EscapeString(el.Text)))
 
 		case ElemImage:
 			resolved := resolveImageSrc(el.ImageSrc, assetsRelativePath)
@@ -564,11 +574,11 @@ func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, a
 			}
 			captionHtml := ""
 			if el.ImageCaption != "" {
-				captionHtml = fmt.Sprintf(`<div class="text-center pt-2 text-xs md:text-sm text-slate-400">%s</div>`, html.EscapeString(el.ImageCaption))
+				captionHtml = fmt.Sprintf(`<div class="text-center pt-[0.8cqw] text-[max(10px,1.1cqw)] text-slate-400 font-medium">%s</div>`, html.EscapeString(el.ImageCaption))
 			}
 			buf.WriteString(fmt.Sprintf(`
-          <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-3 shadow-2xl">
-            <div class="w-full h-72 md:h-80 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
+          <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border">
+            <div class="w-full aspect-[4/3] max-h-[46cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
               <img src="%s" alt="" class="w-full h-full object-contain"%s>
             </div>
             %s
@@ -576,50 +586,62 @@ func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, a
 `, html.EscapeString(resolved), onerrorAttr, captionHtml))
 
 		case ElemPanel:
-			buf.WriteString(`          <div class="p-5 rounded-2xl panel-box space-y-3">` + "\n")
+			buf.WriteString(fmt.Sprintf(`          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:%s; border:1px solid %s; font-size:max(11px, 1.2cqw);">`+"\n", t.PanelBg, t.BorderColor))
 			if el.Title != "" || el.Icon != "" {
-				buf.WriteString(fmt.Sprintf(`            <div class="text-accent-400 font-bold text-lg flex items-center gap-2"><span>%s</span> <span>%s</span></div>`+"\n", html.EscapeString(el.Icon), html.EscapeString(el.Title)))
+				icon := el.Icon
+				if icon == "" {
+					icon = "✦"
+				}
+				buf.WriteString(fmt.Sprintf(`            <div class="font-bold flex items-center gap-1.5" style="color:%s; font-size:max(12px, 1.45cqw);"><span class="text-[max(12px,1.5cqw)]">%s</span> <span>%s</span></div>`+"\n", t.Accent400, html.EscapeString(icon), html.EscapeString(el.Title)))
 			}
 			if el.Description != "" {
-				buf.WriteString(fmt.Sprintf(`            <p class="text-slate-300 text-sm md:text-base leading-relaxed">%s</p>`+"\n", html.EscapeString(el.Description)))
+				buf.WriteString(fmt.Sprintf(`            <p class="text-slate-300 leading-relaxed text-[max(11px,1.2cqw)]">%s</p>`+"\n", html.EscapeString(el.Description)))
 			}
 			if len(el.Bullets) > 0 {
-				buf.WriteString(`            <ul class="space-y-2 text-slate-300 text-sm md:text-base pt-1">` + "\n")
+				buf.WriteString(`            <ul class="space-y-[0.6cqw] text-slate-300 text-[max(11px,1.2cqw)] pt-0.5">` + "\n")
 				for _, b := range el.Bullets {
 					icon := b.Icon
 					if icon == "" {
 						icon = "•"
 					}
-					buf.WriteString(fmt.Sprintf(`              <li class="flex items-start gap-2.5"><span class="text-accent-400 font-bold">%s</span><span><b>%s</b> %s</span></li>`+"\n", html.EscapeString(icon), html.EscapeString(b.Title), html.EscapeString(b.Text)))
+					titlePart := ""
+					if b.Title != "" {
+						titlePart = fmt.Sprintf("<b>%s</b> ", html.EscapeString(b.Title))
+					}
+					buf.WriteString(fmt.Sprintf(`              <li class="flex items-start gap-1.5"><span style="color:%s; font-bold;">%s</span><span>%s%s</span></li>`+"\n", t.Accent400, html.EscapeString(icon), titlePart, html.EscapeString(b.Text)))
 				}
 				buf.WriteString(`            </ul>` + "\n")
 			}
 			buf.WriteString(`          </div>` + "\n")
 
 		case ElemBullets:
-			buf.WriteString(`          <div class="p-4 md:p-5 rounded-2xl panel-box space-y-2.5">` + "\n")
+			buf.WriteString(fmt.Sprintf(`          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:%s; border:1px solid %s; font-size:max(11px, 1.2cqw);">`+"\n", t.PanelBg, t.BorderColor))
 			if el.Title != "" {
-				buf.WriteString(fmt.Sprintf(`            <p class="font-semibold text-white text-base md:text-lg">%s</p>`+"\n", html.EscapeString(el.Title)))
+				buf.WriteString(fmt.Sprintf(`            <div class="font-semibold text-white text-[max(12px,1.45cqw)]">%s</div>`+"\n", html.EscapeString(el.Title)))
 			}
-			buf.WriteString(`            <ul class="space-y-2 text-slate-300 text-base">` + "\n")
+			buf.WriteString(`            <ul class="space-y-[0.6cqw] text-slate-300 text-[max(11px,1.2cqw)]">` + "\n")
 			for _, b := range el.Bullets {
 				icon := b.Icon
 				if icon == "" {
 					icon = "•"
 				}
-				buf.WriteString(fmt.Sprintf(`              <li class="flex items-start gap-2.5"><span class="text-accent-400 font-bold">%s</span><span><b>%s</b> %s</span></li>`+"\n", html.EscapeString(icon), html.EscapeString(b.Title), html.EscapeString(b.Text)))
+				titlePart := ""
+				if b.Title != "" {
+					titlePart = fmt.Sprintf("<b>%s</b> ", html.EscapeString(b.Title))
+				}
+				buf.WriteString(fmt.Sprintf(`              <li class="flex items-start gap-1.5"><span style="color:%s; font-bold;">%s</span><span>%s%s</span></li>`+"\n", t.Accent400, html.EscapeString(icon), titlePart, html.EscapeString(b.Text)))
 			}
 			buf.WriteString(`            </ul>` + "\n")
 			buf.WriteString(`          </div>` + "\n")
 
 		case ElemQuote:
-			buf.WriteString(`          <div class="p-6 md:p-8 rounded-3xl panel-box relative shadow-2xl space-y-4 border border-accent-500/30 text-center">` + "\n")
-			buf.WriteString(`            <div class="text-5xl text-accent-400/40 font-serif leading-none select-none">“</div>` + "\n")
-			buf.WriteString(fmt.Sprintf(`            <blockquote class="text-xl md:text-3xl font-serif italic text-white leading-relaxed">«%s»</blockquote>`+"\n", html.EscapeString(el.Text)))
-			buf.WriteString(`            <div class="pt-3 border-t border-slate-800">` + "\n")
-			buf.WriteString(fmt.Sprintf(`              <div class="text-lg font-bold text-accent-400 font-serif">%s</div>`+"\n", html.EscapeString(el.QuoteAuthor)))
+			buf.WriteString(fmt.Sprintf(`          <div class="p-[2cqw] rounded-3xl panel-box space-y-[1cqw] text-center" style="background:%s; border:1px solid %s;">`+"\n", t.PanelBg, t.BorderColor))
+			buf.WriteString(fmt.Sprintf(`            <div class="text-[max(24px,3.8cqw)] leading-none select-none font-serif opacity-40" style="color:%s;">“</div>`+"\n", t.Accent400))
+			buf.WriteString(fmt.Sprintf(`            <blockquote class="font-serif italic text-white leading-relaxed text-[max(13px,1.7cqw)]">«%s»</blockquote>`+"\n", html.EscapeString(el.Text)))
+			buf.WriteString(`            <div class="pt-[0.8cqw] border-t border-slate-800">` + "\n")
+			buf.WriteString(fmt.Sprintf(`              <div class="font-bold font-serif text-[max(11px,1.3cqw)]" style="color:%s;">%s</div>`+"\n", t.Accent400, html.EscapeString(el.QuoteAuthor)))
 			if el.QuoteRole != "" {
-				buf.WriteString(fmt.Sprintf(`              <div class="text-xs text-slate-400 mt-0.5">%s</div>`+"\n", html.EscapeString(el.QuoteRole)))
+				buf.WriteString(fmt.Sprintf(`              <div class="text-slate-400 mt-0.5 text-[max(10px,1.1cqw)]">%s</div>`+"\n", html.EscapeString(el.QuoteRole)))
 			}
 			buf.WriteString(`            </div>` + "\n")
 			buf.WriteString(`          </div>` + "\n")
