@@ -22,6 +22,46 @@ body {
   height: 100vh;
 }
 
+#customTitlebar {
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+#customTitlebar button,
+#customTitlebar input,
+#customTitlebar a {
+  -webkit-app-region: no-drag;
+}
+
+.win-control-btn {
+  width: 44px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94A3B8;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.win-control-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #F8FAFC;
+}
+
+.win-control-btn.close-btn:hover {
+  background-color: #E81123 !important;
+  color: #FFFFFF !important;
+}
+
+.win-control-btn.close-btn:active {
+  background-color: #BF0F1D !important;
+  color: #FFFFFF !important;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -104,13 +144,14 @@ body {
 .canvas-slide {
   position: relative;
   width: 100%;
-  max-width: 1000px;
+  max-width: 960px;
   aspect-ratio: 16 / 9;
   border-radius: 8px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
   overflow: hidden;
   user-select: none;
   transition: background-color 0.25s ease;
+  container-type: inline-size;
 }
 
 .canvas-element {

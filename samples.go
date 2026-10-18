@@ -4,7 +4,7 @@ func GetSamplePresentation() Presentation {
 	return Presentation{
 		Title:    "Иосип Броз Тито (1892–1980)",
 		Subtitle: "Биография, партизанская война и политическая карьера лидера СФРЮ",
-		Monogram: "ИБТ",
+		Monogram: "",
 		ThemeID:  "gorkygold",
 		Slides: []Slide{
 			{

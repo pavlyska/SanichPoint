@@ -15,54 +15,70 @@
 
 <body class="h-full flex flex-col bg-[#080A0F] text-[#F3F4F6] select-none font-sans">
 
+  <div id="customTitlebar" class="h-8 bg-[#0a0c13] border-b border-slate-800/80 flex items-center justify-between shrink-0 select-none text-xs z-50">
+    <div class="flex items-center space-x-2.5 px-3 h-full pointer-events-none">
+      <img src="logo.png" class="w-4 h-4 rounded object-cover shadow-sm" alt="SP">
+      <span class="text-slate-300 font-medium text-[11px] tracking-wide">SanichPoint Studio — Конструктор Презентаций</span>
+    </div>
+
+    <div id="titlebarDragRegion" class="flex-1 h-full cursor-default"></div>
+
+    <div class="flex items-stretch h-full">
+      <button id="winMinBtn" onclick="handleWinMinimize()" class="win-control-btn" title="Свернуть">
+        <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 10 10"><path stroke-linecap="round" stroke-width="1.2" d="M1 5h8"/></svg>
+      </button>
+      <button id="winMaxBtn" onclick="handleWinMaximize()" class="win-control-btn" title="Развернуть">
+        <svg id="winMaxIcon" class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" rx="0.5" stroke-width="1.2"/></svg>
+      </button>
+      <button id="winCloseBtn" onclick="handleWinClose()" class="win-control-btn close-btn" title="Закрыть">
+        <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 10 10"><path stroke-linecap="round" stroke-width="1.2" d="M2 2l6 6m0-6l-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+
   <header class="border-b border-slate-800 bg-[#10141D] shrink-0 z-30">
 
-    <div class="h-10 px-4 border-b border-slate-800/80 flex items-center justify-between text-xs">
-      <div class="flex items-center space-x-3">
-        <div id="headerMonogram" class="w-7 h-7 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center font-serif font-bold text-amber-400 text-xs shadow-inner">
-          SP
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="font-bold text-white tracking-wide font-serif text-sm">SanichPoint</span>
-          <span class="text-[10px] text-slate-500">•</span>
-          <input type="text" id="presTitleInput" class="bg-transparent hover:bg-slate-800/80 focus:bg-slate-800 px-2 py-0.5 rounded text-slate-200 text-xs border border-transparent focus:border-slate-700 outline-none w-64 truncate font-medium" value="Иосип Броз Тито (1892–1980)" oninput="updatePresTitle(this.value)" title="Нажмите, чтобы изменить название">
-        </div>
+    <div class="h-10 px-3.5 border-b border-slate-800/80 flex items-center justify-between text-xs gap-2 overflow-x-hidden">
+      <div class="flex items-center space-x-2 shrink-0">
+        <span class="font-bold text-white tracking-wide font-serif text-sm">SanichPoint</span>
+        <span class="text-[10px] text-slate-500">•</span>
+        <input type="text" id="presTitleInput" class="bg-transparent hover:bg-slate-800/80 focus:bg-slate-800 px-2 py-0.5 rounded text-slate-200 text-xs border border-transparent focus:border-slate-700 outline-none w-52 truncate font-medium" value="Иосип Броз Тито (1892–1980)" oninput="updatePresTitle(this.value)" title="Нажмите, чтобы изменить название">
       </div>
 
-      <div class="flex items-center space-x-2 bg-[#080A0F] px-3 py-1 rounded-lg border border-slate-800">
+      <div class="flex items-center space-x-1.5 bg-[#080A0F] px-2.5 py-1 rounded-lg border border-slate-800 shrink-0">
         <span class="text-[11px] text-slate-400 font-medium">Стиль:</span>
         <div id="themeSelector" class="flex items-center space-x-1.5">
 
         </div>
       </div>
 
-      <div class="flex items-center space-x-2">
-        <button onclick="saveProjectJSON()" class="px-2.5 py-1 text-slate-300 hover:text-white rounded hover:bg-slate-800 text-[11px] flex items-center gap-1.5 border border-transparent hover:border-slate-700 transition" title="Сохранить проект в JSON">
+      <div class="flex items-center space-x-1.5 shrink-0">
+        <button onclick="saveProjectJSON()" class="px-2.5 py-1 text-slate-300 hover:text-white rounded hover:bg-slate-800 text-[11px] flex items-center gap-1.5 border border-transparent hover:border-slate-700 transition whitespace-nowrap" title="Сохранить проект в JSON">
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
           <span>Сохранить</span>
         </button>
 
-        <label class="px-2.5 py-1 text-slate-300 hover:text-white rounded hover:bg-slate-800 text-[11px] flex items-center gap-1.5 border border-transparent hover:border-slate-700 transition cursor-pointer" title="Открыть презентацию HTML (созданную в SanichPoint)">
+        <label class="px-2.5 py-1 text-slate-300 hover:text-white rounded hover:bg-slate-800 text-[11px] flex items-center gap-1.5 border border-transparent hover:border-slate-700 transition cursor-pointer whitespace-nowrap" title="Открыть презентацию HTML (созданную в SanichPoint)">
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/></svg>
           <span>Открыть HTML</span>
           <input type="file" id="htmlFileInput" accept=".html,.htm" class="hidden" onchange="loadHTMLPresentation(event)">
         </label>
-        <button onclick="openSlideshow()" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold flex items-center gap-1.5 border border-slate-700 transition" title="Полноэкранный показ с голосовым управлением (F5)">
+        <button onclick="openSlideshow()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold flex items-center gap-1.5 border border-slate-700 transition whitespace-nowrap" title="Полноэкранный показ с голосовым управлением (F5)">
           <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <span>Показ слайдов (F5)</span>
         </button>
-        <button onclick="openAIModal()" class="px-3 py-1 rounded bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-purple-950/40 border border-purple-400/30 transition cursor-pointer" title="Сгенерировать презентацию через AI">
+        <button onclick="openAIModal()" class="px-2.5 py-1 rounded bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-purple-950/40 border border-purple-400/30 transition cursor-pointer whitespace-nowrap" title="Сгенерировать презентацию через AI">
           <svg class="w-3.5 h-3.5 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           <span>✨ AI Презентация</span>
         </button>
-        <button onclick="openExportModal()" class="px-3.5 py-1 rounded bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs flex items-center gap-1.5 shadow-md transition" title="Экспорт (Ctrl+S)">
+        <button onclick="openExportModal()" class="px-3 py-1 rounded bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs flex items-center gap-1.5 shadow-md transition whitespace-nowrap shrink-0" title="Экспорт (Ctrl+S)">
           <svg class="w-3.5 h-3.5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           <span>Экспорт презентации</span>
         </button>
       </div>
     </div>
 
-    <div class="h-16 px-4 flex items-center space-x-4 overflow-x-auto">
+    <div class="h-16 px-4 flex items-center space-x-3 overflow-x-auto">
 
       <div class="flex items-center space-x-1 pr-3 border-r border-slate-800">
         <button onclick="addNewSlide()" class="ribbon-btn" title="Создать новый слайд">
@@ -133,17 +149,13 @@
         </button>
       </div>
 
-      <div class="text-[11px] text-slate-500 pl-2">
-        <span>Перетаскивайте фото и блоки мышкой • Загружайте несколько фото сразу</span>
-      </div>
-
     </div>
 
   </header>
 
   <div class="flex-1 flex overflow-hidden">
 
-    <aside class="w-52 border-r border-slate-800 bg-[#0C1017] flex flex-col shrink-0 select-none">
+    <aside class="w-44 border-r border-slate-800 bg-[#0C1017] flex flex-col shrink-0 select-none">
       <div class="p-2.5 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400 font-semibold">
         <span>Слайды</span>
         <button onclick="addNewSlide()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold" title="Добавить слайд">+</button>
@@ -162,7 +174,7 @@
 
     </main>
 
-    <aside class="w-72 border-l border-slate-800 bg-[#0E121A] flex flex-col shrink-0 overflow-y-auto p-4 text-xs select-none">
+    <aside class="w-64 border-l border-slate-800 bg-[#0E121A] flex flex-col shrink-0 overflow-y-auto p-3.5 text-xs select-none">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
         <span class="font-bold text-slate-200 uppercase tracking-wider text-[11px]">Свойства объекта</span>
         <span id="selectedElementTypeBadge" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-medium">Ничего не выбрано</span>
@@ -298,7 +310,11 @@
           <label for="aiCodeInput" class="font-semibold text-slate-300">Код презентации от AI:</label>
           <button onclick="loadSampleAIPutin()" class="text-[11px] text-amber-400 hover:text-amber-300 underline cursor-pointer">Вставить готовый пример про Владимира Путина</button>
         </div>
-        <textarea id="aiCodeInput" class="w-full flex-1 p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200 font-mono text-xs focus:border-purple-500 focus:outline-none resize-none leading-relaxed" placeholder="Вставьте сюда код с префиксом SANICHPOINT_AI или JSON..."></textarea>
+        <textarea id="aiCodeInput" oninput="clearAIInputError()" class="w-full flex-1 p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200 font-mono text-xs focus:border-purple-500 focus:outline-none resize-none leading-relaxed transition-all" placeholder="Вставьте сюда код с префиксом SANICHPOINT_AI или JSON..."></textarea>
+        <div id="aiInputError" class="hidden text-[11px] text-red-400 flex items-center gap-1.5 pt-0.5">
+          <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span id="aiInputErrorText">Пожалуйста, вставьте код презентации от AI</span>
+        </div>
       </div>
 
       <div class="pt-2 flex items-center justify-between border-t border-slate-800">
@@ -316,6 +332,21 @@
 
     </div>
   </div>
+
+  <div id="customDialogModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay">
+    <div id="customDialogCard" class="w-full max-w-md rounded-2xl panel-glass p-6 border shadow-2xl space-y-4">
+      <div class="flex items-start space-x-3.5">
+        <div id="customDialogIconContainer" class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"></div>
+        <div class="flex-1 min-w-0">
+          <h3 id="customDialogTitle" class="text-base font-bold text-white font-serif tracking-wide"></h3>
+          <p id="customDialogMessage" class="text-xs text-slate-300 mt-1.5 leading-relaxed whitespace-pre-line"></p>
+        </div>
+      </div>
+      <div id="customDialogButtons" class="pt-2 flex items-center justify-end space-x-2.5 border-t border-slate-800/80"></div>
+    </div>
+  </div>
+
+  <div id="customToastContainer" class="fixed bottom-5 right-5 z-[110] flex flex-col space-y-2.5 pointer-events-none max-w-sm w-full"></div>
 
   <input type="file" id="standaloneImageUploader" accept="image/*" multiple class="hidden" onchange="handleStandaloneImageUpload(event)">
 

@@ -86,6 +86,8 @@ func main() {
 
 	if w != nil {
 		defer w.Destroy()
+		setupCustomWindow(w)
+		w.SetSize(1240, 760, webview2.HintMin)
 		w.SetSize(1280, 800, webview2.HintNone)
 		w.Navigate(appURL)
 		w.Run()

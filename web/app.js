@@ -2,7 +2,7 @@
 let currentProject = {
   title: "Иосип Броз Тито (1892–1980)",
   subtitle: "Биография, партизанская война и политическая карьера лидера СФРЮ",
-  monogram: "ИБТ",
+  monogram: "",
   themeId: "gorkygold",
   slides: []
 };
@@ -24,6 +24,7 @@ let elementStartWidth = 0;
 let elementStartHeight = 0;
 
 document.addEventListener("DOMContentLoaded", async () => {
+  initCustomTitlebar();
   await fetchInfo();
   await fetchThemes();
   await loadSampleProject();
@@ -31,6 +32,257 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupGlobalShortcuts();
   setupCanvasEvents();
 });
+
+function initCustomTitlebar() {
+  const tb = document.getElementById("customTitlebar");
+  if (!tb) return;
+
+  tb.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;
+    if (e.target.closest("button, input, select, a")) return;
+
+    if (e.detail === 2) {
+      handleWinMaximize();
+    } else {
+      if (window.nativeStartDrag) {
+        window.nativeStartDrag();
+      }
+    }
+  });
+
+  window.addEventListener("resize", updateMaximizeButtonState);
+  setTimeout(updateMaximizeButtonState, 250);
+}
+
+function handleWinMinimize() {
+  if (window.nativeMinimize) {
+    window.nativeMinimize();
+  }
+}
+
+function handleWinMaximize() {
+  if (window.nativeMaximize) {
+    window.nativeMaximize().then(() => {
+      setTimeout(updateMaximizeButtonState, 100);
+    });
+  }
+}
+
+function handleWinClose() {
+  if (window.nativeClose) {
+    window.nativeClose();
+  } else {
+    window.close();
+  }
+}
+
+async function updateMaximizeButtonState() {
+  if (window.nativeIsMaximized) {
+    try {
+      const isMax = await window.nativeIsMaximized();
+      const icon = document.getElementById("winMaxIcon");
+      if (icon) {
+        if (isMax) {
+          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1" d="M2.5 2.5V1.5A0.5 0.5 0 013 1h5a0.5 0.5 0 010.5 0.5v5a0.5 0.5 0 01-0.5 0.5H7M1.5 3h5a0.5 0.5 0 010.5 0.5v5a0.5 0.5 0 01-0.5 0.5h-5A0.5 0.5 0 011 8.5v-5A0.5 0.5 0 011.5 3z"/>`;
+        } else {
+          icon.innerHTML = `<rect x="1" y="1" width="8" height="8" rx="0.5" stroke-width="1.2"/>`;
+        }
+      }
+    } catch (e) {}
+  }
+}
+
+
+let dialogResolveCallback = null;
+
+function showCustomAlert(options) {
+  return new Promise((resolve) => {
+    const opts = typeof options === 'string' ? { message: options } : (options || {});
+    const modal = document.getElementById("customDialogModal");
+    const card = document.getElementById("customDialogCard");
+    const titleEl = document.getElementById("customDialogTitle");
+    const msgEl = document.getElementById("customDialogMessage");
+    const iconContainer = document.getElementById("customDialogIconContainer");
+    const btnContainer = document.getElementById("customDialogButtons");
+
+    if (!modal || !card) {
+      console.log("Alert:", opts.message);
+      resolve(true);
+      return;
+    }
+
+    const type = opts.type || "info";
+    titleEl.innerText = opts.title || (type === "danger" ? "Ошибка" : type === "warning" ? "Внимание" : type === "success" ? "Успешно" : "Сообщение");
+    msgEl.innerText = opts.message || "";
+
+    let iconSvg = "";
+    let iconBg = "";
+    let btnClass = "";
+    card.className = "w-full max-w-md rounded-2xl panel-glass p-6 border shadow-2xl space-y-4";
+
+    if (type === "danger") {
+      card.classList.add("border-red-500/40", "shadow-red-950/40");
+      iconBg = "bg-red-500/20 text-red-400 border border-red-500/30";
+      iconSvg = `<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+      btnClass = "bg-red-600 hover:bg-red-500 text-white font-bold";
+    } else if (type === "warning") {
+      card.classList.add("border-amber-500/40", "shadow-amber-950/40");
+      iconBg = "bg-amber-500/20 text-amber-400 border border-amber-500/30";
+      iconSvg = `<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+      btnClass = "bg-amber-500 hover:bg-amber-400 text-black font-bold";
+    } else if (type === "success") {
+      card.classList.add("border-purple-500/40", "shadow-purple-950/40");
+      iconBg = "bg-gradient-to-br from-purple-500/30 to-indigo-500/30 text-purple-300 border border-purple-400/40";
+      iconSvg = `<svg class="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
+      btnClass = "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold";
+    } else {
+      card.classList.add("border-slate-700/60", "shadow-black/50");
+      iconBg = "bg-slate-800 text-slate-300 border border-slate-700";
+      iconSvg = `<svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+      btnClass = "bg-slate-800 hover:bg-slate-700 text-white font-bold";
+    }
+
+    iconContainer.className = `w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`;
+    iconContainer.innerHTML = iconSvg;
+
+    btnContainer.innerHTML = `
+      <button id="customDialogConfirmBtn" class="px-5 py-2 rounded-lg text-xs transition cursor-pointer shadow-md ${btnClass}">
+        ${escapeHTML(opts.confirmText || "Понятно")}
+      </button>
+    `;
+
+    dialogResolveCallback = resolve;
+    modal.classList.remove("hidden");
+
+    const confirmBtn = document.getElementById("customDialogConfirmBtn");
+    if (confirmBtn) {
+      confirmBtn.focus();
+      confirmBtn.onclick = () => closeCustomDialog(true);
+    }
+  });
+}
+
+function showCustomConfirm(options) {
+  return new Promise((resolve) => {
+    const opts = typeof options === 'string' ? { message: options } : (options || {});
+    const modal = document.getElementById("customDialogModal");
+    const card = document.getElementById("customDialogCard");
+    const titleEl = document.getElementById("customDialogTitle");
+    const msgEl = document.getElementById("customDialogMessage");
+    const iconContainer = document.getElementById("customDialogIconContainer");
+    const btnContainer = document.getElementById("customDialogButtons");
+
+    if (!modal || !card) {
+      resolve(false);
+      return;
+    }
+
+    const type = opts.type || "warning";
+    titleEl.innerText = opts.title || (type === "danger" ? "Подтвердите удаление" : "Подтверждение");
+    msgEl.innerText = opts.message || "Вы уверены?";
+
+    let iconSvg = "";
+    let iconBg = "";
+    let btnClass = "";
+    card.className = "w-full max-w-md rounded-2xl panel-glass p-6 border shadow-2xl space-y-4";
+
+    if (type === "danger") {
+      card.classList.add("border-red-500/40", "shadow-red-950/40");
+      iconBg = "bg-red-500/20 text-red-400 border border-red-500/30";
+      iconSvg = `<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>`;
+      btnClass = "bg-red-600 hover:bg-red-500 text-white font-bold";
+    } else {
+      card.classList.add("border-amber-500/40", "shadow-amber-950/40");
+      iconBg = "bg-amber-500/20 text-amber-400 border border-amber-500/30";
+      iconSvg = `<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+      btnClass = "bg-amber-500 hover:bg-amber-400 text-black font-bold";
+    }
+
+    iconContainer.className = `w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`;
+    iconContainer.innerHTML = iconSvg;
+
+    btnContainer.innerHTML = `
+      <button id="customDialogCancelBtn" class="px-4 py-2 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+        ${escapeHTML(opts.cancelText || "Отмена")}
+      </button>
+      <button id="customDialogConfirmBtn" class="px-5 py-2 rounded-lg text-xs transition cursor-pointer shadow-lg ${btnClass}">
+        ${escapeHTML(opts.confirmText || "Подтвердить")}
+      </button>
+    `;
+
+    dialogResolveCallback = resolve;
+    modal.classList.remove("hidden");
+
+    const cancelBtn = document.getElementById("customDialogCancelBtn");
+    const confirmBtn = document.getElementById("customDialogConfirmBtn");
+
+    if (cancelBtn) {
+      cancelBtn.onclick = () => closeCustomDialog(false);
+    }
+    if (confirmBtn) {
+      confirmBtn.focus();
+      confirmBtn.onclick = () => closeCustomDialog(true);
+    }
+  });
+}
+
+function closeCustomDialog(result) {
+  const modal = document.getElementById("customDialogModal");
+  if (modal) modal.classList.add("hidden");
+  if (dialogResolveCallback) {
+    const cb = dialogResolveCallback;
+    dialogResolveCallback = null;
+    cb(result);
+  }
+}
+
+function showCustomToast(options) {
+  const opts = typeof options === 'string' ? { message: options } : (options || {});
+  const container = document.getElementById("customToastContainer");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  const type = opts.type || "info";
+
+  let borderBg = "bg-slate-900/95 border-slate-700/70 text-slate-200";
+  let iconHtml = `<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+
+  if (type === "success") {
+    borderBg = "bg-slate-900/95 border-purple-500/50 text-purple-200 shadow-purple-950/40";
+    iconHtml = `<svg class="w-4 h-4 text-purple-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
+  } else if (type === "danger" || type === "error") {
+    borderBg = "bg-slate-900/95 border-red-500/50 text-red-200 shadow-red-950/40";
+    iconHtml = `<svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+  } else if (type === "warning") {
+    borderBg = "bg-slate-900/95 border-amber-500/50 text-amber-200 shadow-amber-950/40";
+    iconHtml = `<svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+  }
+
+  toast.className = `p-3 rounded-xl border shadow-xl flex items-start space-x-2.5 text-xs pointer-events-auto transform transition-all duration-300 translate-y-2 opacity-0 ${borderBg}`;
+  toast.innerHTML = `
+    ${iconHtml}
+    <div class="flex-1 min-w-0">
+      ${opts.title ? `<div class="font-bold text-white text-xs">${escapeHTML(opts.title)}</div>` : ''}
+      <div class="text-[11px] text-slate-300 leading-tight mt-0.5">${escapeHTML(opts.message || '')}</div>
+    </div>
+  `;
+
+  container.appendChild(toast);
+  requestAnimationFrame(() => {
+    toast.classList.remove("translate-y-2", "opacity-0");
+  });
+
+  setTimeout(() => {
+    toast.classList.add("opacity-0", "translate-y-1");
+    setTimeout(() => {
+      if (toast.parentElement) toast.parentElement.removeChild(toast);
+    }, 300);
+  }, opts.duration || 3200);
+}
+
+window.alert = function(msg) {
+  return showCustomAlert({ message: String(msg), type: "info" });
+};
 
 async function fetchInfo() {
   try {
@@ -125,44 +377,60 @@ function getCurrentTheme() {
   };
 }
 
+function getSlideThumbnailHTML(slide, theme, thumbWidth = 158) {
+  const baseWidth = 960;
+  const baseHeight = 540;
+  const scale = thumbWidth / baseWidth;
+
+  let elementsHTML = "";
+  (slide.elements || []).forEach(el => {
+    const contentHTML = getElementCanvasHTML(el, theme)
+      .replace(/contenteditable="true"/g, '')
+      .replace(/onblur="[^"]*"/g, '')
+      .replace(/pointer-events-auto/g, '');
+
+    elementsHTML += `
+      <div style="position:absolute; left:${el.x}%; top:${el.y}%; width:${el.w}%; z-index:${el.zIndex || 1}; pointer-events:none;">
+        ${contentHTML}
+      </div>
+    `;
+  });
+
+  return `
+    <div style="width:${baseWidth}px; height:${baseHeight}px; position:absolute; top:0; left:0; transform-origin:0 0; transform:scale(${scale}); pointer-events:none; user-select:none; background-color:${theme.darkBg};">
+      ${elementsHTML}
+    </div>
+  `;
+}
+
 function renderDeckList() {
   const container = document.getElementById("deckThumbsList");
   if (!container) return;
   container.innerHTML = "";
 
   const theme = getCurrentTheme();
+  const availWidth = container.clientWidth > 40 ? (container.clientWidth - 28) : 158;
+  const thumbWidth = Math.max(availWidth, 120);
 
   currentProject.slides.forEach((slide, idx) => {
     const isSelected = idx === activeSlideIndex;
+
+    const row = document.createElement("div");
+    row.className = "flex items-start space-x-2";
+
+    const num = document.createElement("div");
+    num.className = "text-[11px] font-mono font-bold text-slate-500 pt-1 w-3.5 text-right shrink-0 select-none";
+    num.innerText = (idx + 1);
+
     const thumb = document.createElement("div");
-    thumb.className = `deck-thumb ${isSelected ? "active ring-2 ring-blue-500" : ""}`;
+    thumb.className = `deck-thumb flex-1 ${isSelected ? "active ring-2 ring-blue-500" : ""}`;
     thumb.style.backgroundColor = theme.darkBg;
     thumb.onclick = () => selectSlide(idx);
+    thumb.innerHTML = getSlideThumbnailHTML(slide, theme, thumbWidth);
 
-    let miniHTML = `<div class="w-full h-full relative p-1.5 overflow-hidden pointer-events-none scale-75 origin-top-left" style="width:133%; height:133%;">`;
-    (slide.elements || []).forEach(el => {
-      let snippet = "";
-      if (el.type === 'title') {
-        snippet = `<div class="text-[9px] font-bold text-white truncate font-serif">${escapeHTML(el.text)}</div>`;
-      } else if (el.type === 'badge') {
-        snippet = `<div class="text-[7px] text-amber-400 font-semibold uppercase truncate bg-amber-500/10 px-1 rounded inline-block">${escapeHTML(el.text)}</div>`;
-      } else if (el.type === 'image') {
-        snippet = `<div class="w-full h-8 bg-slate-800 rounded flex items-center justify-center text-[8px] text-slate-400"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>`;
-      } else {
-        snippet = `<div class="text-[8px] text-slate-400 truncate">${escapeHTML(el.title || el.text || 'Блок')}</div>`;
-      }
-      miniHTML += `<div style="position:absolute; left:${el.x}%; top:${el.y}%; width:${el.w}%;">${snippet}</div>`;
-    });
-    miniHTML += `</div>`;
-
-    thumb.innerHTML = `
-      <div class="absolute top-1 left-1.5 z-10 w-4 h-4 rounded bg-black/70 flex items-center justify-center text-[9px] font-mono font-bold text-white">
-        ${idx + 1}
-      </div>
-      ${miniHTML}
-    `;
-
-    container.appendChild(thumb);
+    row.appendChild(num);
+    row.appendChild(thumb);
+    container.appendChild(row);
   });
 }
 
@@ -246,12 +514,24 @@ function duplicateCurrentSlide() {
   renderInspector();
 }
 
-function deleteCurrentSlide() {
+async function deleteCurrentSlide() {
   if (currentProject.slides.length <= 1) {
-    alert("В презентации должен быть как минимум один слайд!");
+    showCustomAlert({
+      type: "warning",
+      title: "Невозможно удалить",
+      message: "В презентации должен оставаться как минимум один слайд."
+    });
     return;
   }
-  if (!confirm(`Удалить слайд #${activeSlideIndex + 1}?`)) return;
+  const confirmed = await showCustomConfirm({
+    type: "danger",
+    title: "Удалить слайд?",
+    message: `Вы действительно хотите удалить слайд #${activeSlideIndex + 1}?\nВсе элементы на этом слайде будут удалены.`,
+    confirmText: "Удалить слайд",
+    cancelText: "Отмена"
+  });
+  if (!confirmed) return;
+
   currentProject.slides.splice(activeSlideIndex, 1);
   if (activeSlideIndex >= currentProject.slides.length) {
     activeSlideIndex = currentProject.slides.length - 1;
@@ -260,6 +540,7 @@ function deleteCurrentSlide() {
   renderDeckList();
   renderCanvas();
   renderInspector();
+  showCustomToast({ title: "Слайд удален", message: `Слайд успешно удален`, type: "info" });
 }
 
 function generateId() {
@@ -312,24 +593,26 @@ function getElementCanvasHTML(el, theme) {
   switch (el.type) {
     case "badge":
       return `
-        <div class="inline-block px-3.5 py-1 rounded border text-xs font-semibold tracking-wider uppercase pointer-events-auto"
-             style="background: ${theme.accent400}18; border-color: ${theme.accent400}44; color: ${theme.accent400};"
+        <div class="inline-block px-[1.2cqw] py-[0.4cqw] rounded border font-semibold tracking-wider uppercase pointer-events-auto leading-normal"
+             style="background: ${theme.accent400}18; border-color: ${theme.accent400}44; color: ${theme.accent400}; font-size: clamp(9px, 1.15cqw, 12px);"
              contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
           ${escapeHTML(el.text || 'Бейдж')}
         </div>
       `;
 
     case "title":
+      const titleFs = el.fontSize || 32;
       return `
-        <div class="font-serif font-bold text-white leading-tight" style="font-size: ${el.fontSize || 32}px; text-align: ${el.textAlign || 'left'};">
+        <div class="font-serif font-bold text-white leading-tight" style="font-size: clamp(15px, calc(${titleFs} * 0.105cqw), ${titleFs}px); text-align: ${el.textAlign || 'left'};">
           <span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">${escapeHTML(el.text || 'Заголовок')}</span>
           ${el.accentText ? `<br><span class="font-normal italic" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'accentText', this.innerText)">${escapeHTML(el.accentText)}</span>` : ''}
         </div>
       `;
 
     case "text":
+      const textFs = el.fontSize || 15;
       return `
-        <div class="text-sm md:text-base text-slate-300 font-light leading-relaxed" style="font-size: ${el.fontSize || 15}px; text-align: ${el.textAlign || 'left'};"
+        <div class="text-slate-300 font-light leading-relaxed" style="font-size: clamp(10px, calc(${textFs} * 0.105cqw), ${textFs}px); text-align: ${el.textAlign || 'left'};"
              contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
           ${escapeHTML(el.text || 'Текст описания или факта.')}
         </div>
@@ -338,29 +621,29 @@ function getElementCanvasHTML(el, theme) {
     case "image":
       const src = el.imageSrc ? getImagePreviewUrl(el.imageSrc) : "";
       return `
-        <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-2.5 shadow-2xl">
-          <div class="w-full h-44 md:h-60 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
+        <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl">
+          <div class="w-full aspect-[4/3] max-h-[30cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
             ${src ? `<img src="${src}" class="w-full h-full object-contain pointer-events-none" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><rect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22 rx=%222%22/><circle cx=%228.5%22 cy=%228.5%22 r=%221.5%22/><path d=%22M21 15l-5-5L5 21%22/></svg>'">` : `
               <div class="flex flex-col items-center justify-center text-slate-500 space-y-1">
                 <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span class="text-[10px]">Загрузите фото справа</span>
+                <span class="text-[clamp(9px,1.1cqw,11px)]">Загрузите фото справа</span>
               </div>
             `}
           </div>
-          ${el.imageCaption ? `<div class="text-center pt-2 text-[11px] text-slate-400 font-medium" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'imageCaption', this.innerText)">${escapeHTML(el.imageCaption)}</div>` : ''}
+          ${el.imageCaption ? `<div class="text-center pt-[0.8cqw] text-[clamp(9px,1.1cqw,11px)] text-slate-400 font-medium" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'imageCaption', this.innerText)">${escapeHTML(el.imageCaption)}</div>` : ''}
         </div>
       `;
 
     case "panel":
       return `
-        <div class="p-4 rounded-2xl panel-box space-y-2 text-xs md:text-sm" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor};">
-          <div class="font-bold flex items-center gap-2" style="color:${theme.accent400};">
-            <span class="text-base">${escapeHTML(el.icon || '✦')}</span>
+        <div class="p-[1.6cqw] rounded-xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: clamp(10px, 1.25cqw, 13px);">
+          <div class="font-bold flex items-center gap-1.5" style="color:${theme.accent400}; font-size: clamp(11px, 1.4cqw, 15px);">
+            <span class="text-[clamp(11px,1.5cqw,16px)]">${escapeHTML(el.icon || '✦')}</span>
             <span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title || 'Заголовок панели')}</span>
           </div>
-          ${el.description ? `<p class="text-slate-300 text-xs leading-relaxed" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'description', this.innerText)">${escapeHTML(el.description)}</p>` : ''}
+          ${el.description ? `<p class="text-slate-300 leading-relaxed text-[clamp(9px,1.18cqw,12px)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'description', this.innerText)">${escapeHTML(el.description)}</p>` : ''}
           ${(el.bullets && el.bullets.length > 0) ? `
-            <ul class="space-y-1 text-slate-300 text-xs pt-1">
+            <ul class="space-y-[0.5cqw] text-slate-300 text-[clamp(9px,1.18cqw,12px)] pt-0.5">
               ${el.bullets.map(b => `<li class="flex items-start gap-1.5"><span style="color:${theme.accent400}; font-bold;">${escapeHTML(b.icon || '•')}</span><span>${b.title ? `<b>${escapeHTML(b.title)}</b> ` : ''}${escapeHTML(b.text)}</span></li>`).join('')}
             </ul>
           ` : ''}
@@ -369,24 +652,24 @@ function getElementCanvasHTML(el, theme) {
 
     case "bullets":
       return `
-        <div class="p-4 rounded-2xl panel-box space-y-2 text-xs md:text-sm" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor};">
-          ${el.title ? `<div class="font-semibold text-white text-xs md:text-sm" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title)}</div>` : ''}
-          <ul class="space-y-1.5 text-slate-300 text-xs md:text-sm">
-            ${(el.bullets || []).map(b => `<li class="flex items-start gap-2"><span style="color:${theme.accent400}; font-bold;">${escapeHTML(b.icon || '•')}</span><span>${b.title ? `<b>${escapeHTML(b.title)}</b> ` : ''}${escapeHTML(b.text)}</span></li>`).join('')}
+        <div class="p-[1.6cqw] rounded-xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: clamp(10px, 1.25cqw, 13px);">
+          ${el.title ? `<div class="font-semibold text-white text-[clamp(11px,1.4cqw,15px)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title)}</div>` : ''}
+          <ul class="space-y-[0.6cqw] text-slate-300 text-[clamp(9.5px,1.2cqw,13px)]">
+            ${(el.bullets || []).map(b => `<li class="flex items-start gap-1.5"><span style="color:${theme.accent400}; font-bold;">${escapeHTML(b.icon || '•')}</span><span>${b.title ? `<b>${escapeHTML(b.title)}</b> ` : ''}${escapeHTML(b.text)}</span></li>`).join('')}
           </ul>
         </div>
       `;
 
     case "quote":
       return `
-        <div class="p-6 rounded-3xl panel-box space-y-3 text-center" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor};">
-          <div class="text-4xl leading-none select-none font-serif opacity-40" style="color:${theme.accent400};">“</div>
-          <blockquote class="text-lg md:text-xl font-serif italic text-white leading-relaxed" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
+        <div class="p-[2cqw] rounded-2xl panel-box space-y-[0.9cqw] text-center" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor};">
+          <div class="text-[clamp(18px,3.2cqw,36px)] leading-none select-none font-serif opacity-40" style="color:${theme.accent400};">“</div>
+          <blockquote class="font-serif italic text-white leading-relaxed text-[clamp(11px,1.5cqw,18px)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">
             «${escapeHTML(el.text || 'Текст важной мысли или цитаты')}»
           </blockquote>
-          <div class="pt-2 border-t border-slate-800">
-            <div class="font-bold text-sm font-serif" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteAuthor', this.innerText)">${escapeHTML(el.quoteAuthor || 'Автор цитаты')}</div>
-            <div class="text-[11px] text-slate-400 mt-0.5" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteRole', this.innerText)">${escapeHTML(el.quoteRole || 'Роль / Источник')}</div>
+          <div class="pt-1.5 border-t border-slate-800">
+            <div class="font-bold font-serif text-[clamp(10px,1.3cqw,14px)]" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteAuthor', this.innerText)">${escapeHTML(el.quoteAuthor || 'Автор цитаты')}</div>
+            <div class="text-[clamp(9px,1.05cqw,11px)] text-slate-400 mt-0.5" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteRole', this.innerText)">${escapeHTML(el.quoteRole || 'Роль / Источник')}</div>
           </div>
         </div>
       `;
@@ -1355,13 +1638,22 @@ async function submitExport() {
       resultBox.classList.remove("hidden");
       resultMsg.innerText = data.message;
       resultPath.innerText = `Файл: ${data.filePath}\nПапка фото: ${data.assetsPath}`;
+      showCustomToast({ title: "Экспорт выполнен", message: "Презентация успешно сохранена", type: "success" });
     } else {
-      alert("Ошибка при экспорте: " + (data.error || "Неизвестная ошибка"));
+      showCustomAlert({
+        type: "danger",
+        title: "Ошибка экспорта",
+        message: data.error || "Неизвестная ошибка при сохранении"
+      });
     }
   } catch (err) {
     submitBtn.disabled = false;
     submitBtn.innerText = "Сгенерировать и сохранить";
-    alert("Ошибка соединения: " + err.message);
+    showCustomAlert({
+      type: "danger",
+      title: "Ошибка соединения",
+      message: err.message
+    });
   }
 }
 
@@ -1391,9 +1683,6 @@ async function openFileInBrowser() {
   }
 }
 
-// =========================================================================
-// Save & Load Project JSON
-// =========================================================================
 
 function saveProjectJSON() {
   const jsonStr = JSON.stringify(currentProject, null, 2);
@@ -1423,18 +1712,25 @@ function loadProjectJSON(event) {
         renderDeckList();
         renderCanvas();
         renderInspector();
-        alert("Проект успешно загружен!");
+        showCustomToast({ title: "Проект загружен", message: "Презентация успешно открыта", type: "success" });
       } else {
-        alert("Файл не является корректным проектом презентации.");
+        showCustomAlert({
+          type: "warning",
+          title: "Некорректный файл",
+          message: "Файл не является корректным проектом презентации."
+        });
       }
     } catch (err) {
-      alert("Ошибка чтения JSON: " + err.message);
+      showCustomAlert({
+        type: "danger",
+        title: "Ошибка чтения JSON",
+        message: err.message
+      });
     }
   };
   reader.readAsText(file);
 }
 
-// Helper escape
 function escapeHTML(str) {
   if (!str) return "";
   return String(str)
@@ -1445,18 +1741,18 @@ function escapeHTML(str) {
     .replace(/'/g, "&#039;");
 }
 
-// =========================================================================
-// Open & Parse Presentation HTML File (Strict Algorithm Check)
-// =========================================================================
 
 function loadHTMLPresentation(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
 
-  // 1. Strict extension check: only .html or .htm allowed
   const fileName = file.name.toLowerCase();
   if (!fileName.endsWith(".html") && !fileName.endsWith(".htm")) {
-    alert("Ошибка: можно открывать только файлы презентаций с расширением .html или .htm!");
+    showCustomAlert({
+      type: "warning",
+      title: "Неверный формат",
+      message: "Можно открывать только файлы презентаций с расширением .html или .htm!"
+    });
     event.target.value = "";
     return;
   }
@@ -1466,11 +1762,14 @@ function loadHTMLPresentation(event) {
     try {
       const htmlContent = e.target.result;
 
-      // 2. Algorithm & signature check: looks for embedded SanichPoint data
       const match = htmlContent.match(/<script\s+id=["']sanichpoint-data["'][^>]*>([\s\S]*?)<\/script>/i);
 
       if (!match || !match[1] || !match[1].trim()) {
-        alert("Невозможно открыть данный файл!\n\nЭтот HTML-файл не является презентацией SanichPoint или был создан сторонней программой без структуры нашего алгоритма.\n\nОткрывать можно только файлы, сгенерированные в SanichPoint.");
+        showCustomAlert({
+          type: "warning",
+          title: "Файл не поддерживается",
+          message: "Этот HTML-файл не является презентацией SanichPoint или был создан сторонней программой без структуры нашего алгоритма.\n\nОткрывать можно только файлы, сгенерированные в SanichPoint."
+        });
         event.target.value = "";
         return;
       }
@@ -1478,12 +1777,15 @@ function loadHTMLPresentation(event) {
       const parsedProject = JSON.parse(match[1].trim());
 
       if (!parsedProject || !Array.isArray(parsedProject.slides) || parsedProject.slides.length === 0) {
-        alert("Ошибка формата: внутри HTML-файла повреждены данные слайдов презентации.");
+        showCustomAlert({
+          type: "danger",
+          title: "Повреждённый файл",
+          message: "Внутри HTML-файла повреждены данные слайдов презентации."
+        });
         event.target.value = "";
         return;
       }
 
-      // 3. Load into current project state
       currentProject = parsedProject;
       activeSlideIndex = 0;
       selectedElementId = null;
@@ -1493,25 +1795,34 @@ function loadHTMLPresentation(event) {
       renderCanvas();
       renderInspector();
 
-      alert(`Презентация успешно открыта!\n\nНазвание: «${currentProject.title || 'Без названия'}»\nКоличество слайдов: ${currentProject.slides.length}`);
+      showCustomAlert({
+        type: "success",
+        title: "Презентация открыта",
+        message: `Презентация «${currentProject.title || 'Без названия'}» успешно загружена!\n\nКоличество слайдов: ${currentProject.slides.length}`
+      });
     } catch (err) {
-      alert("Ошибка при чтении HTML-файла: " + err.message);
+      showCustomAlert({
+        type: "danger",
+        title: "Ошибка чтения",
+        message: "Ошибка при чтении HTML-файла: " + err.message
+      });
     } finally {
       event.target.value = "";
     }
   };
 
   reader.onerror = () => {
-    alert("Не удалось прочитать выбранный файл.");
+    showCustomAlert({
+      type: "danger",
+      title: "Ошибка чтения",
+      message: "Не удалось прочитать выбранный файл."
+    });
     event.target.value = "";
   };
 
   reader.readAsText(file);
 }
 
-// =========================================================================
-// AI Presentation Import & Layout Engine (SANICHPOINT_AI)
-// =========================================================================
 
 function openAIModal() {
   const modal = document.getElementById("aiModal");
@@ -1529,53 +1840,7 @@ function closeAIModal() {
   if (modal) modal.classList.add("hidden");
 }
 
-const AI_PROMPT_SKILL_TEXT = `Ты — генератор сценариев презентаций для графического редактора SanichPoint Studio.
-Твоя задача — создать профессиональный, содержательный и визуально привлекательный доклад по теме, которую запросит пользователь.
-
-СТРОГОЕ ПРАВИЛО: Результат должен быть ТОЛЬКО в виде блока компактного кода с префиксом \`SANICHPOINT_AI\`. Никакого HTML-кода, никаких долгих рассуждений до или после. Только чистый блок кода в следующем формате:
-
-SANICHPOINT_AI
-TITLE: Название презентации
-SUBTITLE: Развернутый подзаголовок доклада
-THEME: ruby
-MONOGRAM: 2-3 заглавные буквы (инициалы темы)
-
-=== СЛАЙД 1: Титульный слайд
-BADGE: Метка темы или периода
-TITLE: Главный заголовок | Акцентное слово
-TEXT: Краткое вводное предложение (1-2 строки).
-IMAGE: прямая ссылка на качественное фото (Wikimedia/Unsplash) | Подпись к фотографии
-BULLETS: Ключевые вехи темы:
-* 1952 год: | Первое событие или факт
-* 1975 год: | Второе событие или факт
-* 2000 год: | Третье событие или факт
-
-=== СЛАЙД 2: Становление и биография
-BADGE: Период или раздел
-TITLE: Заголовок второго слайда | Дополнительный акцент
-IMAGE: прямая ссылка на фото | Подпись к фотографии
-PANEL: ✦ Главная характеристика
-* Тезис 1: | Подробное описание важного факта.
-* Тезис 2: | Еще один существенный факт или цифра.
-
-=== СЛАЙД 3: Историческая цитата или кредо
-BADGE: Государственное кредо
-QUOTE: Текст важной цитаты или ключевой мысли | Имя Автора | Должность или год
-IMAGE: прямая ссылка на фото | Подпись к фотографии
-
-=== СЛАЙД 4: Стратегические направления и итоги
-BADGE: Итоги и результаты
-TITLE: Достижения и масштабы | Главный вектор
-PANEL: ❖ Ключевые результаты
-* Направление 1: | Результаты и показатели.
-* Направление 2: | Стратегическое значение.
-
-ПРАВИЛА ОФОРМЛЕНИЯ:
-1. Темы оформления (THEME): ruby (рубиновый/красный), gorkygold (золотой), sapphire (синий), emerald (зеленый), amethyst (фиолетовый), cyberpunk (неон), titan (титан).
-2. В TITLE символ "|" разделяет обычный заголовок и акцентный текст.
-3. В QUOTE формат: «Текст цитаты | Автор | Должность или дата».
-4. В IMAGE используй реальные прямые ссылки на фотографии из Wikimedia Commons или Unsplash.
-5. Делай от 4 до 7 содержательных слайдов.`;
+const AI_PROMPT_SKILL_TEXT = `Напиши мне презентацию используя этот скилл https://github.com/pavlyska/SanichPointAISkill на тему [Ваша Тема]`;
 
 function copyAIPromptInstruction() {
   navigator.clipboard.writeText(AI_PROMPT_SKILL_TEXT).then(() => {
@@ -1585,14 +1850,31 @@ function copyAIPromptInstruction() {
       btnText.innerText = "✓ Скопировано в буфер!";
       setTimeout(() => { btnText.innerText = orig; }, 2500);
     }
+    showCustomToast({ title: "Промпт скопирован", message: "Отправьте его нейросети с вашей темой", type: "success" });
   }).catch(() => {
-    alert("Скопируйте текст инструкции:\n\n" + AI_PROMPT_SKILL_TEXT);
+    showCustomAlert({
+      type: "info",
+      title: "Промпт для нейросети",
+      message: AI_PROMPT_SKILL_TEXT,
+      confirmText: "Закрыть"
+    });
   });
+}
+
+function clearAIInputError() {
+  const errBox = document.getElementById("aiInputError");
+  const input = document.getElementById("aiCodeInput");
+  if (errBox) errBox.classList.add("hidden");
+  if (input) {
+    input.classList.remove("border-red-500", "ring-2", "ring-red-500/30");
+    input.classList.add("border-slate-800");
+  }
 }
 
 function loadSampleAIPutin() {
   const input = document.getElementById("aiCodeInput");
   if (!input) return;
+  clearAIInputError();
   input.value = `SANICHPOINT_AI
 TITLE: Владимир Путин: Биография и эпоха
 SUBTITLE: От службы в разведке до руководства великой державой
@@ -1654,8 +1936,24 @@ IMAGE: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/President_Putin
 
 function applyAICode() {
   const input = document.getElementById("aiCodeInput");
+  const errBox = document.getElementById("aiInputError");
+  const errText = document.getElementById("aiInputErrorText");
+
   if (!input || !input.value.trim()) {
-    alert("Пожалуйста, вставьте код презентации от AI!");
+    if (input) {
+      input.classList.remove("border-slate-800");
+      input.classList.add("border-red-500", "ring-2", "ring-red-500/30");
+      input.focus();
+    }
+    if (errBox) {
+      if (errText) errText.innerText = "Пожалуйста, вставьте код презентации от AI!";
+      errBox.classList.remove("hidden");
+    }
+    showCustomToast({
+      title: "Поле пустое",
+      message: "Вставьте код от AI перед созданием презентации",
+      type: "warning"
+    });
     return;
   }
 
@@ -1671,9 +1969,23 @@ function applyAICode() {
     renderInspector();
 
     closeAIModal();
-    alert(`🎉 Презентация «${currentProject.title}» успешно создана!\n\nВсего слайдов: ${currentProject.slides.length}\nВыбранный стиль: ${currentProject.themeId}`);
+    showCustomAlert({
+      type: "success",
+      title: "✨ Презентация создана!",
+      message: `Презентация «${currentProject.title}» успешно создана!\n\nВсего слайдов: ${currentProject.slides.length}\nВыбранный стиль: ${currentProject.themeId}`,
+      confirmText: "Отлично"
+    });
   } catch (err) {
-    alert("Ошибка парсинга кода AI: " + err.message);
+    if (errBox) {
+      if (errText) errText.innerText = "Ошибка: " + err.message;
+      errBox.classList.remove("hidden");
+    }
+    showCustomAlert({
+      type: "danger",
+      title: "Ошибка парсинга кода AI",
+      message: err.message,
+      confirmText: "Исправить"
+    });
   }
 }
 
@@ -1685,7 +1997,6 @@ function parseAICode(rawText) {
   let text = rawText.trim();
   text = text.replace(/^```[a-z0-9_-]*\s*/i, "").replace(/\s*```$/i, "").trim();
 
-  // 1. Support direct JSON
   if (text.startsWith("{")) {
     try {
       const parsed = JSON.parse(text);
@@ -1693,11 +2004,9 @@ function parseAICode(rawText) {
         return parsed;
       }
     } catch (e) {
-      // not JSON, continue to DSL parser
     }
   }
 
-  // 2. Parse DSL
   const lines = text.split(/\r?\n/);
   const project = {
     title: "Презентация от AI",
@@ -1714,7 +2023,6 @@ function parseAICode(rawText) {
     const line = rawLine.trim();
     if (!line || line.startsWith("#") || line === "SANICHPOINT_AI") continue;
 
-    // Header metadata
     if (/^TITLE\s*:\s*/i.test(line)) {
       project.title = line.replace(/^TITLE\s*:\s*/i, "").trim();
       continue;
@@ -1735,7 +2043,6 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // Slide boundary
     if (/^(?:={3,}|-{3,})\s*(?:СЛАЙД|SLIDE)?\s*(\d*)\s*:?\s*(.*)$/i.test(line)) {
       const match = line.match(/^(?:={3,}|-{3,})\s*(?:СЛАЙД|SLIDE)?\s*(\d*)\s*:?\s*(.*)$/i);
       const sTitle = (match && match[2] && match[2].trim()) || ("Слайд " + (project.slides.length + 1));
@@ -1758,26 +2065,22 @@ function parseAICode(rawText) {
       project.slides.push(currentSlide);
     }
 
-    // LAYOUT: left-image | right-image | center | hero | split | two-columns | cards | grid | quote-hero
     if (/^LAYOUT\s*:\s*/i.test(line)) {
       currentSlide.layout = line.replace(/^LAYOUT\s*:\s*/i, "").trim().toLowerCase();
       continue;
     }
 
-    // ALIGN: left | center | right
     if (/^ALIGN\s*:\s*/i.test(line)) {
       currentSlide.align = line.replace(/^ALIGN\s*:\s*/i, "").trim().toLowerCase();
       continue;
     }
 
-    // BADGE: text
     if (/^BADGE\s*:\s*/i.test(line)) {
       currentSlide.rawItems.push({ type: "badge", text: line.replace(/^BADGE\s*:\s*/i, "").trim() });
       currentBulletsTarget = null;
       continue;
     }
 
-    // TITLE: Title | Accent
     if (/^TITLE\s*:\s*/i.test(line)) {
       const parts = line.replace(/^TITLE\s*:\s*/i, "").trim().split("|");
       currentSlide.rawItems.push({
@@ -1789,14 +2092,12 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // TEXT: text
     if (/^TEXT\s*:\s*/i.test(line)) {
       currentSlide.rawItems.push({ type: "text", text: line.replace(/^TEXT\s*:\s*/i, "").trim() });
       currentBulletsTarget = null;
       continue;
     }
 
-    // IMAGE: url | caption
     if (/^IMAGE\s*:\s*/i.test(line)) {
       const parts = line.replace(/^IMAGE\s*:\s*/i, "").trim().split("|");
       currentSlide.rawItems.push({
@@ -1808,7 +2109,6 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // METRIC / STAT: Value | Title | Description
     if (/^(?:METRIC|STAT)\s*:\s*/i.test(line)) {
       const parts = line.replace(/^(?:METRIC|STAT)\s*:\s*/i, "").trim().split("|");
       currentSlide.rawItems.push({
@@ -1821,7 +2121,6 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // PANEL: title | desc | icon
     if (/^PANEL\s*:\s*/i.test(line)) {
       const parts = line.replace(/^PANEL\s*:\s*/i, "").trim().split("|");
       let rawTitle = parts[0].trim();
@@ -1847,7 +2146,6 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // BULLETS: title
     if (/^BULLETS\s*:\s*/i.test(line)) {
       const bItem = {
         type: "bullets",
@@ -1859,7 +2157,6 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // QUOTE: text | author | role
     if (/^QUOTE\s*:\s*/i.test(line)) {
       const parts = line.replace(/^QUOTE\s*:\s*/i, "").trim().split("|");
       currentSlide.rawItems.push({
@@ -1872,7 +2169,6 @@ function parseAICode(rawText) {
       continue;
     }
 
-    // Bullets lines: * or -
     if (/^[*•-]\s+/i.test(line)) {
       const bContent = line.replace(/^[*•-]\s+/i, "").trim();
       const bParts = bContent.split("|");
@@ -1910,7 +2206,6 @@ function parseAICode(rawText) {
     throw new Error("Не удалось обнаружить слайды в коде. Проверьте разделители слайдов (например, === СЛАЙД 1).");
   }
 
-  // 3. Layout engine
   project.slides.forEach((slide, sIdx) => {
     slide.elements = layoutSlideElements(slide.rawItems || [], sIdx === 0, {
       layout: slide.layout,
@@ -1921,7 +2216,6 @@ function parseAICode(rawText) {
     delete slide.align;
   });
 
-  // Autogenerate monogram if not present
   if (!project.monogram && project.title) {
     const words = project.title.split(/\s+/).filter(Boolean);
     project.monogram = (words.length >= 2 ? words[0][0] + words[1][0] : words[0].slice(0, 2)).toUpperCase();
@@ -1937,7 +2231,6 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   const layout = slideConfig.layout || "right-image";
   const slideAlign = slideConfig.align || (layout === "center" || layout === "hero" ? "center" : "left");
 
-  // Normalize metrics into rich panels
   const normalizedItems = rawItems.map(item => {
     if (item.type === "metric") {
       return {
@@ -1955,7 +2248,6 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   const nonImages = normalizedItems.filter(i => i.type !== "image");
   const hasImages = images.length > 0;
 
-  // LAYOUT 1: Split / Two-Columns
   if (layout === "split" || layout === "two-columns") {
     let topY = 6;
     const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
@@ -2065,7 +2357,6 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     return elements;
   }
 
-  // LAYOUT 2: Cards / Grid (Multiple panels across the slide in a horizontal row)
   if (layout === "cards" || layout === "grid") {
     let topY = 6;
     const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
@@ -2156,7 +2447,6 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     return elements;
   }
 
-  // LAYOUT 3: Left-Image (Image on left, content on right)
   if (layout === "left-image") {
     if (images.length === 1) {
       elements.push({
@@ -2271,7 +2561,6 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     return elements;
   }
 
-  // LAYOUT 4: Center / Hero / Quote-Hero
   if (layout === "center" || layout === "hero" || layout === "quote-hero") {
     let currentY = 8;
     nonImages.forEach(item => {
@@ -2364,7 +2653,6 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     return elements;
   }
 
-  // DEFAULT VARIANT: Right-Image (Classic PowerPoint layout)
   if (images.length === 1) {
     elements.push({
       id: generateId(),

@@ -144,9 +144,6 @@ func GenerateHTML(p *Presentation, assetsRelativePath string) (string, error) {
   <header class="relative z-20 w-full px-6 lg:px-12 py-3.5 border-b border-slate-800 bg-[#0B0D12]/95 backdrop-blur-md flex items-center justify-between">
 
     <div class="flex items-center space-x-3">
-      <div class="w-8 h-8 rounded bg-accent-500/20 border border-accent-500/40 flex items-center justify-center font-serif font-bold text-accent-400 text-sm">
-        ` + html.EscapeString(monogram) + `
-      </div>
       <div>
         <h1 class="text-sm md:text-base font-semibold text-white tracking-wide">
           ` + html.EscapeString(title) + `
