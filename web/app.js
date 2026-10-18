@@ -932,8 +932,8 @@ function openCanvasContextMenu(x, y) {
     },
     {
       icon: MENU_ICONS.image,
-      label: "Добавить фото (пакетно)...",
-      action: () => triggerNewImageUpload()
+      label: "Добавить фото...",
+      action: () => openAddImageModal()
     },
     {
       icon: MENU_ICONS.panel,
@@ -1377,11 +1377,226 @@ function addCanvasElement(type) {
 }
 
 function triggerNewImageUpload() {
-  const uploader = document.getElementById("standaloneImageUploader");
-  if (uploader) {
-    uploader.value = "";
-    uploader.click();
+  openAddImageModal();
+}
+
+function openAddImageModal(initialTab = 'url') {
+  const modal = document.getElementById("addImageModal");
+  if (!modal) return;
+  modal.classList.remove("hidden");
+  switchAddImageTab(initialTab);
+
+  const urlInput = document.getElementById("modalImageUrlInput");
+  const captionInput = document.getElementById("modalImageCaptionInput");
+  if (urlInput) {
+    urlInput.value = "";
+    setTimeout(() => urlInput.focus(), 80);
   }
+  if (captionInput) captionInput.value = "";
+  resetModalImageUrlPreview();
+  initModalDropzone();
+}
+
+function closeAddImageModal() {
+  const modal = document.getElementById("addImageModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function switchAddImageTab(tab) {
+  const urlBtn = document.getElementById("tabBtnImageUrl");
+  const fileBtn = document.getElementById("tabBtnImageFile");
+  const urlPanel = document.getElementById("panelAddImageUrl");
+  const filePanel = document.getElementById("panelAddImageFile");
+
+  if (tab === 'file') {
+    if (urlBtn) urlBtn.className = "py-2 rounded-lg flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200 transition cursor-pointer";
+    if (fileBtn) fileBtn.className = "py-2 rounded-lg flex items-center justify-center gap-2 text-amber-400 bg-slate-800 border border-amber-500/30 shadow transition cursor-pointer";
+    if (urlPanel) urlPanel.classList.add("hidden");
+    if (filePanel) filePanel.classList.remove("hidden");
+  } else {
+    if (fileBtn) fileBtn.className = "py-2 rounded-lg flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200 transition cursor-pointer";
+    if (urlBtn) urlBtn.className = "py-2 rounded-lg flex items-center justify-center gap-2 text-amber-400 bg-slate-800 border border-amber-500/30 shadow transition cursor-pointer";
+    if (filePanel) filePanel.classList.add("hidden");
+    if (urlPanel) urlPanel.classList.remove("hidden");
+    const input = document.getElementById("modalImageUrlInput");
+    if (input) setTimeout(() => input.focus(), 50);
+  }
+}
+
+let modalUrlPreviewTimer = null;
+
+function handleModalImageUrlInput() {
+  clearTimeout(modalUrlPreviewTimer);
+  modalUrlPreviewTimer = setTimeout(() => {
+    updateModalImageUrlPreview();
+  }, 250);
+}
+
+function resetModalImageUrlPreview() {
+  const ph = document.getElementById("modalImageUrlPlaceholder");
+  const img = document.getElementById("modalImageUrlImg");
+  const err = document.getElementById("modalImageUrlError");
+  if (ph) ph.classList.remove("hidden");
+  if (img) {
+    img.classList.add("hidden");
+    img.src = "";
+  }
+  if (err) err.classList.add("hidden");
+}
+
+function updateModalImageUrlPreview() {
+  const input = document.getElementById("modalImageUrlInput");
+  const val = input ? input.value.trim() : "";
+  const ph = document.getElementById("modalImageUrlPlaceholder");
+  const img = document.getElementById("modalImageUrlImg");
+  const err = document.getElementById("modalImageUrlError");
+
+  if (!val) {
+    resetModalImageUrlPreview();
+    return;
+  }
+
+  if (ph) ph.classList.add("hidden");
+  if (err) err.classList.add("hidden");
+
+  img.onload = () => {
+    img.classList.remove("hidden");
+    if (err) err.classList.add("hidden");
+    if (ph) ph.classList.add("hidden");
+  };
+  img.onerror = () => {
+    img.classList.add("hidden");
+    if (err) err.classList.remove("hidden");
+    if (ph) ph.classList.add("hidden");
+  };
+  img.src = val;
+}
+
+function submitModalImageUrl() {
+  const input = document.getElementById("modalImageUrlInput");
+  const captionInput = document.getElementById("modalImageCaptionInput");
+  const url = input ? input.value.trim() : "";
+  const caption = captionInput ? captionInput.value.trim() : "";
+
+  if (!url) {
+    showCustomToast({
+      type: "warning",
+      title: "Ссылка не указана",
+      message: "Пожалуйста, укажите прямую ссылку на фото"
+    });
+    if (input) input.focus();
+    return;
+  }
+
+  addImageElementToSlide(url, caption);
+  closeAddImageModal();
+  showCustomToast({
+    type: "success",
+    title: "Фото добавлено",
+    message: "Изображение по ссылке успешно размещено на слайде"
+  });
+}
+
+function addImageElementToSlide(src, caption) {
+  const currentSlide = currentProject.slides[activeSlideIndex];
+  if (!currentSlide) return null;
+
+  const maxZ = (currentSlide.elements || []).reduce((acc, el) => Math.max(acc, el.zIndex || 1), 1);
+  const existingImages = currentSlide.elements.filter(e => e.type === 'image');
+  const count = existingImages.length;
+
+  let posX = 55;
+  let posY = 15;
+  let posW = 32;
+
+  if (count === 1) {
+    posX = 55; posY = 52; posW = 30;
+  } else if (count >= 2) {
+    posX = 20 + ((count % 3) * 26);
+    posY = 20 + (Math.floor(count / 3) * 32);
+    posW = 24;
+  }
+
+  const newEl = {
+    id: generateId(),
+    type: "image",
+    x: Math.min(75, posX),
+    y: Math.min(70, posY),
+    w: posW,
+    zIndex: maxZ + 1,
+    imageSrc: src,
+    imageCaption: caption || ""
+  };
+  currentSlide.elements.push(newEl);
+  renderCanvas();
+  selectElement(newEl.id);
+  renderDeckList();
+  return newEl;
+}
+
+function triggerModalFileInput() {
+  const fileInput = document.getElementById("modalFileInput");
+  if (fileInput) {
+    fileInput.value = "";
+    fileInput.click();
+  }
+}
+
+async function handleModalFileChosen(e) {
+  if (!e.target.files || e.target.files.length === 0) return;
+  const files = Array.from(e.target.files);
+  await uploadFilesFromModal(files);
+}
+
+async function uploadFilesFromModal(files) {
+  if (!files || files.length === 0) return;
+  closeAddImageModal();
+  showCustomToast({
+    type: "info",
+    title: "Загрузка фото...",
+    message: `Загружаем ${files.length} файл(ов) на слайд`
+  });
+  await uploadMultipleFilesToSlide(files);
+  showCustomToast({
+    type: "success",
+    title: "Фото загружены",
+    message: `Успешно добавлено ${files.length} изображений`
+  });
+}
+
+let modalDropzoneInitialized = false;
+
+function initModalDropzone() {
+  if (modalDropzoneInitialized) return;
+  modalDropzoneInitialized = true;
+
+  const dropzone = document.getElementById("modalImageDropzone");
+  if (!dropzone) return;
+
+  dropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.add("border-amber-400", "bg-amber-500/10");
+  });
+
+  dropzone.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.remove("border-amber-400", "bg-amber-500/10");
+  });
+
+  dropzone.addEventListener("drop", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.remove("border-amber-400", "bg-amber-500/10");
+
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith("image/"));
+      if (files.length > 0) {
+        await uploadFilesFromModal(files);
+      }
+    }
+  });
 }
 
 async function handleStandaloneImageUpload(e) {
@@ -1543,6 +1758,11 @@ function setupGlobalShortcuts() {
       }
       if (aiModal && !aiModal.classList.contains("hidden")) {
         closeAIModal();
+        return;
+      }
+      const addImageModal = document.getElementById("addImageModal");
+      if (addImageModal && !addImageModal.classList.contains("hidden")) {
+        closeAddImageModal();
         return;
       }
       if (selectedElementId) {
