@@ -99,4 +99,206 @@ func TestRomaniaSlideExport(t *testing.T) {
 	}
 }
 
+func TestNewComponentsAndBackgrounds(t *testing.T) {
+	p := Presentation{
+		Title:   "Уникальная презентация",
+		ThemeID: "gorkygold",
+		Slides: []Slide{
+			{
+				ID:             1,
+				Title:          "Слайд с градиентом и новыми компонентами",
+				BgType:         "gradient",
+				BgGradient:     "linear-gradient(135deg, #090A0F 0%, #151A2E 100%)",
+				Elements: []SlideElement{
+					{
+						ID:    "m_1",
+						Type:  ElemMetric,
+						X:     10,
+						Y:     15,
+						W:     35,
+						Title: "Эффективность",
+						Value: "+180%",
+						Trend: "↑ рекорд года",
+						Icon:  "▲",
+					},
+					{
+						ID:        "t_1",
+						Type:      ElemTimeline,
+						X:         10,
+						Y:     45,
+						W:         45,
+						StepBadge: "ФАЗА 01",
+						Title:     "Старт проекта",
+						Description: "Формирование команды и утверждение дорожной карты",
+					},
+					{
+						ID:      "c_1",
+						Type:    ElemCallout,
+						X:       58,
+						Y:       15,
+						W:       35,
+						Title:   "Внимание",
+						Text:    "Критически важный тезис презентации",
+						Variant: "warning",
+						Icon:    "⚠️",
+					},
+					{
+						ID:       "cd_1",
+						Type:     ElemCode,
+						X:        58,
+						Y:        45,
+						W:        35,
+						Title:    "deploy.sh",
+						Language: "BASH",
+						Code:     "echo 'Deployed successfully'",
+					},
+					{
+						ID:   "d_1",
+						Type: ElemDivider,
+						X:    10,
+						Y:    75,
+						W:    80,
+						Text: "РАЗДЕЛ II",
+					},
+					{
+						ID:   "b_1",
+						Type: ElemButton,
+						X:    10,
+						Y:    85,
+						W:    30,
+						Text: "Узнать больше",
+						Icon: "→",
+						URL:  "https://example.com",
+					},
+				},
+			},
+			{
+				ID:             2,
+				Title:          "Слайд с узором",
+				BgType:         "pattern",
+				BgPattern:      "blueprint",
+				BgColor:        "#070e1c",
+				Elements: []SlideElement{
+					{
+						ID:   "el_title",
+						Type: ElemTitle,
+						X:    10,
+						Y:    20,
+						W:    80,
+						Text: "Инженерная сетка",
+					},
+				},
+			},
+			{
+				ID:             3,
+				Title:          "Слайд с фото-фоном",
+				BgType:         "image",
+				BgImage:        "bg_abstract.jpg",
+				OverlayOpacity: 0.70,
+				Elements: []SlideElement{
+					{
+						ID:   "el_title2",
+						Type: ElemTitle,
+						X:    10,
+						Y:    20,
+						W:    80,
+						Text: "Фотографический фон",
+					},
+				},
+			},
+		},
+	}
 
+	htmlOut, err := GenerateHTML(&p, "assets/")
+	if err != nil {
+		t.Fatalf("GenerateHTML failed: %v", err)
+	}
+
+	// Verify background rendering
+	if !strings.Contains(htmlOut, "linear-gradient(135deg, #090A0F 0%, #151A2E 100%)") {
+		t.Errorf("HTML does not contain gradient background")
+	}
+	if !strings.Contains(htmlOut, "pattern-blueprint") {
+		t.Errorf("HTML does not contain pattern-blueprint class")
+	}
+	if !strings.Contains(htmlOut, "rgba(0,0,0,0.70)") {
+		t.Errorf("HTML does not contain image overlay opacity")
+	}
+
+	// Verify all 6 new element components
+	if !strings.Contains(htmlOut, "+180%") || !strings.Contains(htmlOut, "↑ рекорд года") {
+		t.Errorf("HTML does not contain metric component data")
+	}
+	if !strings.Contains(htmlOut, "ФАЗА 01") || !strings.Contains(htmlOut, "Старт проекта") {
+		t.Errorf("HTML does not contain timeline component data")
+	}
+	if !strings.Contains(htmlOut, "Критически важный тезис") || !strings.Contains(htmlOut, "#F59E0B") {
+		t.Errorf("HTML does not contain callout component data")
+	}
+	if !strings.Contains(htmlOut, "deploy.sh") || !strings.Contains(htmlOut, "Deployed successfully") {
+		t.Errorf("HTML does not contain code component data")
+	}
+	if !strings.Contains(htmlOut, "РАЗДЕЛ II") {
+		t.Errorf("HTML does not contain divider component data")
+	}
+	if !strings.Contains(htmlOut, "Узнать больше") || !strings.Contains(htmlOut, "https://example.com") {
+		t.Errorf("HTML does not contain button component data")
+	}
+}
+
+func TestImageAndPanelHeightAndCompact(t *testing.T) {
+	p := Presentation{
+		Title:   "Тест размеров и компактности",
+		ThemeID: "titanium",
+		Slides: []Slide{
+			{
+				ID:    1,
+				Title: "Слайд с компактными элементами",
+				Elements: []SlideElement{
+					{
+						ID:       "img_compact",
+						Type:     ElemImage,
+						X:        4,
+						Y:        26,
+						W:        44,
+						Compact:  true,
+						ImageSrc: "https://example.com/test1.jpg",
+					},
+					{
+						ID:       "img_custom_h",
+						Type:     ElemImage,
+						X:        4,
+						Y:        54,
+						W:        44,
+						H:        26,
+						ImageSrc: "https://example.com/test2.jpg",
+					},
+					{
+						ID:    "panel_custom_h",
+						Type:  ElemPanel,
+						X:     52,
+						Y:     26,
+						W:     44,
+						H:     30,
+						Title: "Панель с фиксированной высотой",
+					},
+				},
+			},
+		},
+	}
+
+	htmlOut, err := GenerateHTML(&p, "assets/")
+	if err != nil {
+		t.Fatalf("GenerateHTML failed: %v", err)
+	}
+
+	if !strings.Contains(htmlOut, "aspect-[16/10] max-h-[15cqw]") {
+		t.Errorf("HTML does not contain compact image aspect class")
+	}
+	if !strings.Contains(htmlOut, "height:calc(26.00 * 0.5625cqw)") {
+		t.Errorf("HTML does not contain calculated height for image with H:26")
+	}
+	if !strings.Contains(htmlOut, "height:calc(30.00 * 0.5625cqw)") {
+		t.Errorf("HTML does not contain calculated height for panel with H:30")
+	}
+}

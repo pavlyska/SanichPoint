@@ -175,6 +175,23 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
     .panel-box:hover {
       border-color: ` + theme.Accent400 + `55;
     }
+
+    .pattern-dots {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+    }
+    .pattern-grid {
+      background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .pattern-blueprint {
+      background-color: #070e1c !important;
+      background-image: linear-gradient(rgba(59,130,246,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.15) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .pattern-radial {
+      background: radial-gradient(circle at 50% 20%, rgba(59,130,246,0.18), transparent 70%);
+    }
   </style>
 </head>
 `)
@@ -192,11 +209,7 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
 		}
 
 		buf.WriteString(fmt.Sprintf(`    <section class="slide%s" data-slide="%d">`+"\n", activeClass, slideNum))
-		buf.WriteString(`      <div class="slide-stage">` + "\n")
-
-		renderCanvasElements(&buf, slide.Elements, theme, assetsRelativePath)
-
-		buf.WriteString(`      </div>` + "\n")
+		renderSlideStage(&buf, slide, theme, assetsRelativePath)
 		buf.WriteString("    </section>\n\n")
 	}
 
@@ -319,7 +332,20 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
         goToSlide(1);
       } else if (e.key === 'End') {
         goToSlide(totalSlides);
+      } else if (e.key === 'Escape') {
+        try {
+          if (window.parent && window.parent !== window && typeof window.parent.closeSlideshow === 'function') {
+            window.parent.closeSlideshow();
+          }
+        } catch(err) {}
       }
+    });
+
+    window.addEventListener('message', (e) => {
+      if (e.data === 'nextSlide') nextSlide();
+      else if (e.data === 'prevSlide') prevSlide();
+      else if (e.data === 'firstSlide') goToSlide(1);
+      else if (e.data === 'lastSlide') goToSlide(totalSlides);
     });
 
     document.addEventListener('click', (e) => {
@@ -503,6 +529,7 @@ func GenerateHTMLWithOptions(p *Presentation, assetsRelativePath string, opts Ge
 	buf.WriteString(`
     initDots();
     goToSlide(1);
+    try { window.focus(); } catch(e) {}
   </script>
 
   <script id="sanichpoint-data" type="application/json">` + string(projectJSON) + `</script>
@@ -527,6 +554,56 @@ func resolveImageSrc(src, assetsRelativePath string) string {
 		return strings.TrimSuffix(assetsRelativePath, "/") + "/" + src
 	}
 	return "assets/" + src
+}
+
+func renderSlideStage(buf *bytes.Buffer, slide Slide, t Theme, assetsRelativePath string) {
+	stageStyle := fmt.Sprintf("background-color:%s;", t.DarkBg)
+	extraClass := ""
+
+	switch slide.BgType {
+	case "color":
+		if slide.BgColor != "" {
+			stageStyle = fmt.Sprintf("background-color:%s;", slide.BgColor)
+		}
+	case "gradient":
+		if slide.BgGradient != "" {
+			stageStyle = fmt.Sprintf("background:%s;", slide.BgGradient)
+		}
+	case "pattern":
+		if slide.BgColor != "" {
+			stageStyle = fmt.Sprintf("background-color:%s;", slide.BgColor)
+		}
+		switch slide.BgPattern {
+		case "dots":
+			extraClass = " pattern-dots"
+		case "grid":
+			extraClass = " pattern-grid"
+		case "blueprint":
+			extraClass = " pattern-blueprint"
+		case "radial":
+			extraClass = " pattern-radial"
+		default:
+			extraClass = " pattern-dots"
+		}
+	case "image":
+		stageStyle = "background-color:#000;"
+	}
+
+	buf.WriteString(fmt.Sprintf(`      <div class="slide-stage%s" style="%s">`+"\n", extraClass, stageStyle))
+
+	if slide.BgType == "image" && slide.BgImage != "" {
+		resolved := resolveImageSrc(slide.BgImage, assetsRelativePath)
+		opacity := slide.OverlayOpacity
+		if opacity <= 0 {
+			opacity = 0.65
+		}
+		buf.WriteString(fmt.Sprintf(`        <div class="absolute inset-0 bg-cover bg-center pointer-events-none" style="background-image:url('%s'); z-index:0;"></div>`+"\n", html.EscapeString(resolved)))
+		buf.WriteString(fmt.Sprintf(`        <div class="absolute inset-0 pointer-events-none" style="background:rgba(0,0,0,%.2f); z-index:0;"></div>`+"\n", opacity))
+	}
+
+	renderCanvasElements(buf, slide.Elements, t, assetsRelativePath)
+
+	buf.WriteString(`      </div>` + "\n")
 }
 
 func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, assetsRelativePath string) {
@@ -574,19 +651,35 @@ func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, a
 			}
 			captionHtml := ""
 			if el.ImageCaption != "" {
-				captionHtml = fmt.Sprintf(`<div class="text-center pt-[0.8cqw] text-[max(10px,1.1cqw)] text-slate-400 font-medium">%s</div>`, html.EscapeString(el.ImageCaption))
+				captionHtml = fmt.Sprintf(`<div class="text-center pt-[0.8cqw] text-[max(10px,1.1cqw)] text-slate-400 font-medium shrink-0">%s</div>`, html.EscapeString(el.ImageCaption))
+			}
+			imgWrapStyle := ""
+			innerAspectClass := "aspect-[4/3] max-h-[46cqw]"
+			if el.H > 0 {
+				imgWrapStyle = fmt.Sprintf(` style="height:calc(%.2f * 0.5625cqw); display:flex; flex-direction:column;"`, el.H)
+				innerAspectClass = "flex-1 min-h-0"
+			} else if el.Compact {
+				innerAspectClass = "aspect-[16/10] max-h-[15cqw]"
+			}
+			fitClass := "object-contain"
+			if el.ObjectFit == "cover" {
+				fitClass = "object-cover"
 			}
 			buf.WriteString(fmt.Sprintf(`
-          <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border">
-            <div class="w-full aspect-[4/3] max-h-[46cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
-              <img src="%s" alt="" class="w-full h-full object-contain"%s>
+          <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border"%s>
+            <div class="w-full %s rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
+              <img src="%s" alt="" class="w-full h-full %s"%s>
             </div>
             %s
           </div>
-`, html.EscapeString(resolved), onerrorAttr, captionHtml))
+`, imgWrapStyle, innerAspectClass, html.EscapeString(resolved), fitClass, onerrorAttr, captionHtml))
 
 		case ElemPanel:
-			buf.WriteString(fmt.Sprintf(`          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:%s; border:1px solid %s; font-size:max(11px, 1.2cqw);">`+"\n", t.PanelBg, t.BorderColor))
+			panelWrapStyle := fmt.Sprintf(`background:%s; border:1px solid %s; font-size:max(11px, 1.2cqw);`, t.PanelBg, t.BorderColor)
+			if el.H > 0 {
+				panelWrapStyle += fmt.Sprintf(` height:calc(%.2f * 0.5625cqw); overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;`, el.H)
+			}
+			buf.WriteString(fmt.Sprintf(`          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="%s">`+"\n", panelWrapStyle))
 			if el.Title != "" || el.Icon != "" {
 				icon := el.Icon
 				if icon == "" {
@@ -615,7 +708,11 @@ func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, a
 			buf.WriteString(`          </div>` + "\n")
 
 		case ElemBullets:
-			buf.WriteString(fmt.Sprintf(`          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:%s; border:1px solid %s; font-size:max(11px, 1.2cqw);">`+"\n", t.PanelBg, t.BorderColor))
+			bulletsWrapStyle := fmt.Sprintf(`background:%s; border:1px solid %s; font-size:max(11px, 1.2cqw);`, t.PanelBg, t.BorderColor)
+			if el.H > 0 {
+				bulletsWrapStyle += fmt.Sprintf(` height:calc(%.2f * 0.5625cqw); overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;`, el.H)
+			}
+			buf.WriteString(fmt.Sprintf(`          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="%s">`+"\n", bulletsWrapStyle))
 			if el.Title != "" {
 				buf.WriteString(fmt.Sprintf(`            <div class="font-semibold text-white text-[max(12px,1.45cqw)]">%s</div>`+"\n", html.EscapeString(el.Title)))
 			}
@@ -645,6 +742,157 @@ func renderCanvasElements(buf *bytes.Buffer, elements []SlideElement, t Theme, a
 			}
 			buf.WriteString(`            </div>` + "\n")
 			buf.WriteString(`          </div>` + "\n")
+
+		case ElemMetric:
+			trendHtml := ""
+			if el.Trend != "" {
+				trendHtml = fmt.Sprintf(`<span class="inline-flex items-center gap-1 px-[0.8cqw] py-[0.2cqw] rounded-full font-bold text-[max(9.5px,1.0cqw)] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">%s</span>`, html.EscapeString(el.Trend))
+			}
+			iconHtml := ""
+			if el.Icon != "" {
+				iconHtml = fmt.Sprintf(`<span>%s</span> `, html.EscapeString(el.Icon))
+			}
+			val := el.Value
+			if val == "" {
+				val = el.Text
+			}
+			if val == "" {
+				val = "85%"
+			}
+			title := el.Title
+			if title == "" {
+				title = "Ключевой показатель"
+			}
+			buf.WriteString(fmt.Sprintf(`
+          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.6cqw] overflow-hidden" style="background:%s; border:1px solid %s;">
+            <div class="flex items-center justify-between text-slate-400 font-medium text-[max(11px,1.2cqw)]">
+              <span class="flex items-center gap-1.5">%s<span>%s</span></span>
+              %s
+            </div>
+            <div class="font-serif font-black tracking-tight leading-none" style="font-size:max(24px, 3.4cqw); color:%s;">
+              %s
+            </div>
+          </div>
+`, t.PanelBg, t.BorderColor, iconHtml, html.EscapeString(title), trendHtml, t.Accent400, html.EscapeString(val)))
+
+		case ElemTimeline:
+			icon := el.Icon
+			if icon == "" {
+				icon = "⏳"
+			}
+			stepBadge := el.StepBadge
+			if stepBadge == "" {
+				stepBadge = "Шаг 01"
+			}
+			title := el.Title
+			if title == "" {
+				title = "Этап развития"
+			}
+			buf.WriteString(fmt.Sprintf(`
+          <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw] relative" style="background:%s; border:1px solid %s;">
+            <div class="flex items-center gap-2">
+              <span class="px-[1cqw] py-[0.3cqw] rounded-lg font-mono font-bold text-[max(11px,1.2cqw)]" style="background:%s25; color:%s; border:1px solid %s50;">%s</span>
+              <span class="font-bold text-white text-[max(12px,1.45cqw)]">%s</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[max(11px,1.2cqw)]">%s</p>
+          </div>
+`, t.PanelBg, t.BorderColor, t.Accent400, t.Accent400, t.Accent400, html.EscapeString(stepBadge), html.EscapeString(title), html.EscapeString(el.Description)))
+
+		case ElemCallout:
+			icon := el.Icon
+			if icon == "" {
+				icon = "💡"
+			}
+			borderColor := t.Accent400
+			bgTint := t.PanelBg
+			if el.Variant == "warning" {
+				borderColor = "#F59E0B"
+			} else if el.Variant == "danger" {
+				borderColor = "#EF4444"
+			} else if el.Variant == "success" {
+				borderColor = "#10B981"
+			} else if el.Variant == "info" {
+				borderColor = "#38BDF8"
+			}
+			title := el.Title
+			if title == "" {
+				title = "Важная мысль"
+			}
+			text := el.Text
+			if text == "" {
+				text = el.Description
+			}
+			buf.WriteString(fmt.Sprintf(`
+          <div class="p-[1.6cqw] rounded-2xl relative shadow-xl space-y-[0.5cqw]" style="background:%s; border:1px solid %s22; border-left: 5px solid %s;">
+            <div class="flex items-center gap-2">
+              <span class="text-[max(14px,1.6cqw)]">%s</span>
+              <span class="font-bold text-white text-[max(12px,1.45cqw)]">%s</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[max(11px,1.2cqw)]">%s</p>
+          </div>
+`, bgTint, borderColor, borderColor, html.EscapeString(icon), html.EscapeString(title), html.EscapeString(text)))
+
+		case ElemDivider:
+			centerPart := ""
+			if el.Text != "" {
+				centerPart = fmt.Sprintf(`<span class="px-2.5 py-0.5 rounded-full text-[max(9px,0.95cqw)] font-bold tracking-widest uppercase" style="background:%s15; color:%s; border:1px solid %s35;">%s</span>`, t.Accent400, t.Accent400, t.Accent400, html.EscapeString(el.Text))
+			}
+			buf.WriteString(fmt.Sprintf(`
+          <div class="w-full flex items-center gap-3 my-[0.3cqw] py-[0.2cqw]">
+            <div class="h-[2px] flex-1 rounded-full" style="background: linear-gradient(90deg, transparent, %s, transparent);"></div>
+            %s
+            <div class="h-[2px] flex-1 rounded-full" style="background: linear-gradient(90deg, transparent, %s, transparent);"></div>
+          </div>
+`, t.Accent400, centerPart, t.Accent400))
+
+		case ElemCode:
+			lang := el.Language
+			if lang == "" {
+				lang = "Bash"
+			}
+			title := el.Title
+			if title == "" {
+				title = "terminal.sh"
+			}
+			codeText := el.Code
+			if codeText == "" {
+				codeText = el.Text
+			}
+			buf.WriteString(fmt.Sprintf(`
+          <div class="w-full rounded-2xl bg-[#090D16] border border-slate-800 p-[1.4cqw] shadow-2xl font-mono overflow-hidden box-border">
+            <div class="flex items-center justify-between pb-[0.8cqw] mb-[0.8cqw] border-b border-slate-800/80 text-[max(10px,1.05cqw)] text-slate-400">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+                <span class="ml-2 font-medium text-slate-300">%s</span>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-slate-800/80 font-bold uppercase text-[max(9px,0.95cqw)]" style="color:%s;">%s</span>
+            </div>
+            <pre class="text-slate-200 text-[max(10.5px,1.15cqw)] leading-relaxed whitespace-pre-wrap overflow-x-auto m-0"><code>%s</code></pre>
+          </div>
+`, html.EscapeString(title), t.Accent400, html.EscapeString(lang), html.EscapeString(codeText)))
+
+		case ElemButton:
+			btnText := el.Text
+			if btnText == "" {
+				btnText = "Подробнее"
+			}
+			icon := el.Icon
+			if icon == "" {
+				icon = "↗"
+			}
+			url := el.URL
+			if url == "" {
+				url = "#"
+			}
+			buf.WriteString(fmt.Sprintf(`
+          <div class="inline-block">
+            <a href="%s" target="_blank" class="inline-flex items-center gap-2 px-[1.6cqw] py-[0.7cqw] rounded-xl font-bold transition shadow-lg text-[max(11px,1.25cqw)]" style="background:%s; color:#000; box-shadow:0 0 20px %s44;">
+              <span>%s</span> <span>%s</span>
+            </a>
+          </div>
+`, html.EscapeString(url), t.Accent400, t.Accent400, html.EscapeString(btnText), html.EscapeString(icon)))
 		}
 
 		buf.WriteString(`        </div>` + "\n")

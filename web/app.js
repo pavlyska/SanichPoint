@@ -21,7 +21,14 @@ const MENU_ICONS = {
   image: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`,
   panel: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`,
   bullets: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`,
-  quote: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>`
+  quote: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>`,
+  metric: `<svg class="w-3.5 h-3.5 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`,
+  timeline: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  callout: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>`,
+  divider: `<svg class="w-3.5 h-3.5 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>`,
+  code: `<svg class="w-3.5 h-3.5 shrink-0 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>`,
+  button: `<svg class="w-3.5 h-3.5 shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>`,
+  palette: `<svg class="w-3.5 h-3.5 shrink-0 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 3.99 3.99 0 012-3.46V7a4 4 0 118 0v6.54A3.99 3.99 0 0115 17a4 4 0 01-4 4H7zM11 7a2 2 0 10-4 0v4h4V7z"/></svg>`
 };
 
 let currentProject = {
@@ -408,6 +415,125 @@ function getCurrentTheme() {
   };
 }
 
+const BG_COLOR_PRESETS = [
+  "#080A0F", "#0B0F19", "#0F172A", "#18181B", "#1C1917",
+  "#1E1B4B", "#064E3B", "#1E293B", "#31102B", "#111827",
+  "#1A130B", "#14213D", "#0A192F", "#1F1D2B", "#0D1117"
+];
+
+const BG_GRADIENT_PRESETS = [
+  { name: "Deep Space", value: "linear-gradient(135deg, #090A0F 0%, #151A2E 100%)" },
+  { name: "Midnight Blue", value: "linear-gradient(135deg, #020617 0%, #0F172A 50%, #1E293B 100%)" },
+  { name: "Golden Glow", value: "linear-gradient(135deg, #120D05 0%, #261B0B 50%, #0F0B05 100%)" },
+  { name: "Emerald Night", value: "linear-gradient(135deg, #022013 0%, #064E3B 50%, #02170D 100%)" },
+  { name: "Cyber Violet", value: "linear-gradient(135deg, #180828 0%, #3B0764 50%, #0F051D 100%)" },
+  { name: "Crimson Sunset", value: "linear-gradient(135deg, #240A0F 0%, #450A0A 50%, #170407 100%)" },
+  { name: "Slate Modern", value: "linear-gradient(180deg, #0F172A 0%, #1E293B 100%)" },
+  { name: "Dark Radial", value: "radial-gradient(circle at 50% 30%, #1E293B 0%, #020617 100%)" }
+];
+
+const BG_PATTERNS = [
+  { id: "dots", name: "Точки", desc: "Радиальные микро-точки" },
+  { id: "grid", name: "Сетка", desc: "Технологичная клетка" },
+  { id: "blueprint", name: "Чертёж", desc: "Синяя инженерная сетка" },
+  { id: "radial", name: "Сияние", desc: "Световой акцент" }
+];
+
+function applySlideBackground(targetEl, slide, theme) {
+  if (!targetEl) return;
+  targetEl.classList.remove("pattern-dots", "pattern-grid", "pattern-blueprint", "pattern-radial");
+  targetEl.style.backgroundImage = "";
+  targetEl.style.backgroundColor = "";
+
+  const bgType = (slide && slide.bgType) ? slide.bgType : "theme";
+  if (bgType === "color") {
+    targetEl.style.backgroundColor = slide.bgColor || theme.darkBg;
+  } else if (bgType === "gradient") {
+    targetEl.style.background = slide.bgGradient || theme.darkBg;
+  } else if (bgType === "pattern") {
+    targetEl.style.backgroundColor = slide.bgColor || theme.darkBg;
+    targetEl.classList.add(`pattern-${slide.bgPattern || 'dots'}`);
+  } else if (bgType === "image") {
+    targetEl.style.backgroundColor = "#000";
+  } else {
+    targetEl.style.backgroundColor = theme.darkBg;
+  }
+}
+
+function setSlideBackground(prop, val) {
+  const currentSlide = currentProject.slides[activeSlideIndex];
+  if (!currentSlide) return;
+  currentSlide[prop] = val;
+  renderCanvas();
+  renderDeckList();
+  renderInspector();
+}
+
+function setSlideBgType(type) {
+  const currentSlide = currentProject.slides[activeSlideIndex];
+  if (!currentSlide) return;
+  currentSlide.bgType = type;
+  const theme = getCurrentTheme();
+  if (type === "color" && !currentSlide.bgColor) {
+    currentSlide.bgColor = theme.darkBg;
+  } else if (type === "gradient" && !currentSlide.bgGradient) {
+    currentSlide.bgGradient = BG_GRADIENT_PRESETS[0].value;
+  } else if (type === "pattern" && !currentSlide.bgPattern) {
+    currentSlide.bgPattern = "dots";
+    if (!currentSlide.bgColor) currentSlide.bgColor = theme.darkBg;
+  } else if (type === "image" && (currentSlide.overlayOpacity === undefined || currentSlide.overlayOpacity === null)) {
+    currentSlide.overlayOpacity = 0.65;
+  }
+  renderCanvas();
+  renderDeckList();
+  renderInspector();
+}
+
+function applyBgToAllSlides() {
+  const currentSlide = currentProject.slides[activeSlideIndex];
+  if (!currentSlide) return;
+  const { bgType, bgColor, bgGradient, bgImage, overlayOpacity, bgPattern } = currentSlide;
+  currentProject.slides.forEach(s => {
+    s.bgType = bgType;
+    s.bgColor = bgColor;
+    s.bgGradient = bgGradient;
+    s.bgImage = bgImage;
+    s.overlayOpacity = overlayOpacity;
+    s.bgPattern = bgPattern;
+  });
+  renderDeckList();
+  renderCanvas();
+  showCustomToast({ message: "Фон применён ко всем слайдам презентации!", type: "success" });
+}
+
+function openSlideBgSettings() {
+  selectElement(null);
+  renderInspector();
+}
+
+function triggerSlideBgImageUpload() {
+  const uploader = document.getElementById("standaloneImageUploader");
+  if (!uploader) return;
+  uploader.onchange = async (e) => {
+    if (!e.target.files || !e.target.files[0]) return;
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      if (res.ok) {
+        const data = await res.json();
+        setSlideBackground("bgImage", data.fileName);
+      }
+    } catch (err) {
+      console.error("Upload bg image error:", err);
+    }
+  };
+  uploader.value = "";
+  uploader.click();
+}
+
 function getSlideThumbnailHTML(slide, theme, thumbWidth = 130) {
   const baseWidth = 960;
   const baseHeight = 540;
@@ -427,8 +553,34 @@ function getSlideThumbnailHTML(slide, theme, thumbWidth = 130) {
     `;
   });
 
+  let bgStyle = `background-color:${theme.darkBg};`;
+  let extraClass = "";
+  let bgLayerHTML = "";
+
+  const bgType = slide.bgType || "theme";
+  if (bgType === "color" && slide.bgColor) {
+    bgStyle = `background-color:${slide.bgColor};`;
+  } else if (bgType === "gradient" && slide.bgGradient) {
+    bgStyle = `background:${slide.bgGradient};`;
+  } else if (bgType === "pattern") {
+    if (slide.bgColor) {
+      bgStyle = `background-color:${slide.bgColor};`;
+    }
+    const pat = slide.bgPattern || "dots";
+    extraClass = ` pattern-${pat}`;
+  } else if (bgType === "image" && slide.bgImage) {
+    bgStyle = `background-color:#000;`;
+    const imgUrl = getImagePreviewUrl(slide.bgImage);
+    const opacity = (slide.overlayOpacity !== undefined && slide.overlayOpacity !== null && slide.overlayOpacity >= 0) ? slide.overlayOpacity : 0.65;
+    bgLayerHTML = `
+      <div style="position:absolute; inset:0; background-image:url('${imgUrl}'); background-size:cover; background-position:center; pointer-events:none; z-index:0;"></div>
+      <div style="position:absolute; inset:0; background:rgba(0,0,0,${opacity}); pointer-events:none; z-index:0;"></div>
+    `;
+  }
+
   return `
-    <div class="deck-thumb-inner" style="width:${baseWidth}px; height:${baseHeight}px; position:absolute; top:0; left:0; transform-origin:0 0; transform:scale(${scale}); pointer-events:none; user-select:none; background-color:${theme.darkBg}; container-type:inline-size; overflow:hidden; isolation:isolate;">
+    <div class="deck-thumb-inner${extraClass}" style="width:${baseWidth}px; height:${baseHeight}px; position:absolute; top:0; left:0; transform-origin:0 0; transform:scale(${scale}); pointer-events:none; user-select:none; ${bgStyle} container-type:inline-size; overflow:hidden; isolation:isolate;">
+      ${bgLayerHTML}
       ${elementsHTML}
     </div>
   `;
@@ -959,6 +1111,42 @@ function openCanvasContextMenu(x, y) {
       label: "Добавить цитату",
       action: () => addCanvasElement("quote")
     },
+    {
+      icon: MENU_ICONS.metric,
+      label: "Добавить показатель (метрику)",
+      action: () => addCanvasElement("metric")
+    },
+    {
+      icon: MENU_ICONS.timeline,
+      label: "Добавить этап (таймлайн)",
+      action: () => addCanvasElement("timeline")
+    },
+    {
+      icon: MENU_ICONS.callout,
+      label: "Добавить выноску (акцент)",
+      action: () => addCanvasElement("callout")
+    },
+    {
+      icon: MENU_ICONS.code,
+      label: "Добавить окно кода / консоль",
+      action: () => addCanvasElement("code")
+    },
+    {
+      icon: MENU_ICONS.divider,
+      label: "Добавить разделительную линию",
+      action: () => addCanvasElement("divider")
+    },
+    {
+      icon: MENU_ICONS.button,
+      label: "Добавить кнопку / ссылку",
+      action: () => addCanvasElement("button")
+    },
+    { divider: true },
+    {
+      icon: MENU_ICONS.palette,
+      label: "Настройки фона слайда...",
+      action: () => openSlideBgSettings()
+    },
     { divider: true },
     {
       icon: MENU_ICONS.addSlide,
@@ -1013,10 +1201,23 @@ function renderCanvas() {
   canvas.innerHTML = "";
 
   const theme = getCurrentTheme();
-  canvas.style.backgroundColor = theme.darkBg;
-
   const currentSlide = currentProject.slides[activeSlideIndex];
   if (!currentSlide) return;
+
+  applySlideBackground(canvas, currentSlide, theme);
+
+  if (currentSlide.bgType === "image" && currentSlide.bgImage) {
+    const bgUrl = getImagePreviewUrl(currentSlide.bgImage);
+    const opacity = (currentSlide.overlayOpacity !== undefined && currentSlide.overlayOpacity !== null && currentSlide.overlayOpacity >= 0) ? currentSlide.overlayOpacity : 0.65;
+    const bgDiv = document.createElement("div");
+    bgDiv.className = "absolute inset-0 pointer-events-none select-none";
+    bgDiv.style.zIndex = "0";
+    bgDiv.innerHTML = `
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('${bgUrl}');"></div>
+      <div class="absolute inset-0" style="background:rgba(0,0,0,${opacity});"></div>
+    `;
+    canvas.appendChild(bgDiv);
+  }
 
   (currentSlide.elements || []).forEach(el => {
     const isSelected = el.id === selectedElementId;
@@ -1089,23 +1290,36 @@ function getElementCanvasHTML(el, theme) {
 
     case "image":
       const src = el.imageSrc ? getImagePreviewUrl(el.imageSrc) : "";
+      let imgWrapStyle = "";
+      let innerAspectClass = "aspect-[4/3] max-h-[46cqw]";
+      if (el.h) {
+        imgWrapStyle = `height: calc(${el.h} * 0.5625cqw); display: flex; flex-direction: column;`;
+        innerAspectClass = "flex-1 min-h-0";
+      } else if (el.compact) {
+        innerAspectClass = "aspect-[16/10] max-h-[15cqw]";
+      }
+      const fitClass = el.objectFit === "cover" ? "object-cover" : "object-contain";
       return `
-        <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border">
-          <div class="w-full aspect-[4/3] max-h-[46cqw] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
-            ${src ? `<img src="${src}" class="w-full h-full object-contain pointer-events-none" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><rect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22 rx=%222%22/><circle cx=%228.5%22 cy=%228.5%22 r=%221.5%22/><path d=%22M21 15l-5-5L5 21%22/></svg>'">` : `
+        <div class="w-full rounded-2xl bg-slate-900 border border-slate-800 p-[1.2cqw] shadow-2xl overflow-hidden box-border" style="${imgWrapStyle}">
+          <div class="w-full ${innerAspectClass} rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
+            ${src ? `<img src="${src}" class="w-full h-full ${fitClass} pointer-events-none" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><rect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22 rx=%222%22/><circle cx=%228.5%22 cy=%228.5%22 r=%221.5%22/><path d=%22M21 15l-5-5L5 21%22/></svg>'">` : `
               <div class="flex flex-col items-center justify-center text-slate-500 space-y-1">
                 <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 <span class="text-[max(10px,1.1cqw)]">Загрузите фото справа</span>
               </div>
             `}
           </div>
-          ${el.imageCaption ? `<div class="text-center pt-[0.8cqw] text-[max(10px,1.1cqw)] text-slate-400 font-medium" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'imageCaption', this.innerText)">${escapeHTML(el.imageCaption)}</div>` : ''}
+          ${el.imageCaption ? `<div class="text-center pt-[0.8cqw] text-[max(10px,1.1cqw)] text-slate-400 font-medium shrink-0" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'imageCaption', this.innerText)">${escapeHTML(el.imageCaption)}</div>` : ''}
         </div>
       `;
 
     case "panel":
+      let panelWrapStyle = `background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: max(11px, 1.2cqw);`;
+      if (el.h) {
+        panelWrapStyle += ` height: calc(${el.h} * 0.5625cqw); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;`;
+      }
       return `
-        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: max(11px, 1.2cqw);">
+        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="${panelWrapStyle}">
           <div class="font-bold flex items-center gap-1.5" style="color:${theme.accent400}; font-size: max(12px, 1.45cqw);">
             <span class="text-[max(12px,1.5cqw)]">${escapeHTML(el.icon || '✦')}</span>
             <span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title || 'Заголовок панели')}</span>
@@ -1120,8 +1334,12 @@ function getElementCanvasHTML(el, theme) {
       `;
 
     case "bullets":
+      let bulletsWrapStyle = `background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: max(11px, 1.2cqw);`;
+      if (el.h) {
+        bulletsWrapStyle += ` height: calc(${el.h} * 0.5625cqw); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;`;
+      }
       return `
-        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="background:${theme.panelBg}; border: 1px solid ${theme.borderColor}; font-size: max(11px, 1.2cqw);">
+        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw]" style="${bulletsWrapStyle}">
           ${el.title ? `<div class="font-semibold text-white text-[max(12px,1.45cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(el.title)}</div>` : ''}
           <ul class="space-y-[0.6cqw] text-slate-300 text-[max(11px,1.2cqw)]">
             ${(el.bullets || []).map(b => `<li class="flex items-start gap-1.5"><span style="color:${theme.accent400}; font-bold;">${escapeHTML(b.icon || '•')}</span><span>${b.title ? `<b>${escapeHTML(b.title)}</b> ` : ''}${escapeHTML(b.text)}</span></li>`).join('')}
@@ -1140,6 +1358,97 @@ function getElementCanvasHTML(el, theme) {
             <div class="font-bold font-serif text-[max(11px,1.3cqw)]" style="color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteAuthor', this.innerText)">${escapeHTML(el.quoteAuthor || 'Автор цитаты')}</div>
             <div class="text-[max(10px,1.1cqw)] text-slate-400 mt-0.5" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'quoteRole', this.innerText)">${escapeHTML(el.quoteRole || 'Роль / Источник')}</div>
           </div>
+        </div>
+      `;
+
+    case "metric":
+      const mTrend = el.trend ? `<span class="inline-flex items-center gap-1 px-[0.8cqw] py-[0.2cqw] rounded-full font-bold text-[max(9.5px,1.0cqw)] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'trend', this.innerText)">${escapeHTML(el.trend)}</span>` : '';
+      const mIcon = el.icon ? `<span>${escapeHTML(el.icon)}</span> ` : '';
+      const mVal = el.value || el.text || '85%';
+      const mTitle = el.title || 'Ключевой показатель';
+      return `
+        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.6cqw] overflow-hidden" style="background:${theme.panelBg}; border:1px solid ${theme.borderColor};">
+          <div class="flex items-center justify-between text-slate-400 font-medium text-[max(11px,1.2cqw)]">
+            <span class="flex items-center gap-1.5">${mIcon}<span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(mTitle)}</span></span>
+            ${mTrend}
+          </div>
+          <div class="font-serif font-black tracking-tight leading-none" style="font-size:max(24px, 3.4cqw); color:${theme.accent400};" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'value', this.innerText)">
+            ${escapeHTML(mVal)}
+          </div>
+        </div>
+      `;
+
+    case "timeline":
+      const tBadge = el.stepBadge || 'Шаг 01';
+      const tTitle = el.title || 'Этап развития';
+      const tDesc = el.description || 'Описание этапа';
+      return `
+        <div class="p-[1.6cqw] rounded-2xl panel-box space-y-[0.8cqw] relative" style="background:${theme.panelBg}; border:1px solid ${theme.borderColor};">
+          <div class="flex items-center gap-2">
+            <span class="px-[1cqw] py-[0.3cqw] rounded-lg font-mono font-bold text-[max(11px,1.2cqw)]" style="background:${theme.accent400}25; color:${theme.accent400}; border:1px solid ${theme.accent400}50;" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'stepBadge', this.innerText)">${escapeHTML(tBadge)}</span>
+            <span class="font-bold text-white text-[max(12px,1.45cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(tTitle)}</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed text-[max(11px,1.2cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'description', this.innerText)">${escapeHTML(tDesc)}</p>
+        </div>
+      `;
+
+    case "callout":
+      const cIcon = el.icon || '💡';
+      let cBorder = theme.accent400;
+      if (el.variant === 'warning') cBorder = '#F59E0B';
+      else if (el.variant === 'danger') cBorder = '#EF4444';
+      else if (el.variant === 'success') cBorder = '#10B981';
+      else if (el.variant === 'info') cBorder = '#38BDF8';
+      const cTitle = el.title || 'Важная мысль';
+      const cText = el.text || el.description || 'Текст пояснения';
+      return `
+        <div class="p-[1.6cqw] rounded-2xl relative shadow-xl space-y-[0.5cqw]" style="background:${theme.panelBg}; border:1px solid ${cBorder}22; border-left: 5px solid ${cBorder};">
+          <div class="flex items-center gap-2">
+            <span class="text-[max(14px,1.6cqw)]">${escapeHTML(cIcon)}</span>
+            <span class="font-bold text-white text-[max(12px,1.45cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(cTitle)}</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed text-[max(11px,1.2cqw)]" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">${escapeHTML(cText)}</p>
+        </div>
+      `;
+
+    case "divider":
+      const dCenter = el.text ? `<span class="px-2.5 py-0.5 rounded-full text-[max(9px,0.95cqw)] font-bold tracking-widest uppercase" style="background:${theme.accent400}15; color:${theme.accent400}; border:1px solid ${theme.accent400}35;" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">${escapeHTML(el.text)}</span>` : '';
+      return `
+        <div class="w-full flex items-center gap-3 my-[0.3cqw] py-[0.2cqw] pointer-events-auto">
+          <div class="h-[2px] flex-1 rounded-full" style="background: linear-gradient(90deg, transparent, ${theme.accent400}, transparent);"></div>
+          ${dCenter}
+          <div class="h-[2px] flex-1 rounded-full" style="background: linear-gradient(90deg, transparent, ${theme.accent400}, transparent);"></div>
+        </div>
+      `;
+
+    case "code":
+      const cdLang = el.language || 'Bash';
+      const cdTitle = el.title || 'terminal.sh';
+      const cdCode = el.code || el.text || '# code';
+      return `
+        <div class="w-full rounded-2xl bg-[#090D16] border border-slate-800 p-[1.4cqw] shadow-2xl font-mono overflow-hidden box-border">
+          <div class="flex items-center justify-between pb-[0.8cqw] mb-[0.8cqw] border-b border-slate-800/80 text-[max(10px,1.05cqw)] text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+              <span class="ml-2 font-medium text-slate-300" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'title', this.innerText)">${escapeHTML(cdTitle)}</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-slate-800/80 font-bold uppercase text-[max(9px,0.95cqw)]" style="color:${theme.accent400};">${escapeHTML(cdLang)}</span>
+          </div>
+          <pre class="text-slate-200 text-[max(10.5px,1.15cqw)] leading-relaxed whitespace-pre-wrap overflow-x-auto m-0" contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'code', this.innerText)"><code>${escapeHTML(cdCode)}</code></pre>
+        </div>
+      `;
+
+    case "button":
+      const bText = el.text || 'Подробнее';
+      const bIcon = el.icon || '↗';
+      return `
+        <div class="inline-block pointer-events-auto">
+          <a href="javascript:void(0)" class="inline-flex items-center gap-2 px-[1.6cqw] py-[0.7cqw] rounded-xl font-bold transition shadow-lg text-[max(11px,1.25cqw)]" style="background:${theme.accent400}; color:#000; box-shadow:0 0 20px ${theme.accent400}44;">
+            <span contenteditable="true" onblur="handleInlineTextBlur('${el.id}', 'text', this.innerText)">${escapeHTML(bText)}</span>
+            <span>${escapeHTML(bIcon)}</span>
+          </a>
         </div>
       `;
   }
@@ -1401,6 +1710,61 @@ function addCanvasElement(type) {
       newEl.text = "Здесь можно написать важную цитату или ключевой тезис выступления.";
       newEl.quoteAuthor = "Автор цитаты";
       newEl.quoteRole = "Роль / 1948 год";
+      break;
+
+    case "metric":
+      newEl.x = 6;
+      newEl.y = 48;
+      newEl.w = 40;
+      newEl.title = "Рост эффективности";
+      newEl.value = "+140%";
+      newEl.trend = "↑ за 12 месяцев";
+      newEl.icon = "▲";
+      break;
+
+    case "timeline":
+      newEl.x = 6;
+      newEl.y = 48;
+      newEl.w = 55;
+      newEl.stepBadge = "ШАГ 01";
+      newEl.title = "Разработка концепции";
+      newEl.description = "Определение ключевых целей проекта, сбор требований и первичное планирование архитектуры.";
+      break;
+
+    case "callout":
+      newEl.x = 6;
+      newEl.y = 48;
+      newEl.w = 58;
+      newEl.icon = "💡";
+      newEl.title = "Важное замечание";
+      newEl.text = "Ключевой фактор успеха — регулярная проверка гипотез и фокус на ценности для пользователя.";
+      newEl.variant = "accent";
+      break;
+
+    case "divider":
+      newEl.x = 6;
+      newEl.y = 35;
+      newEl.w = 88;
+      newEl.text = "РАЗДЕЛ II • АНАЛИЗ";
+      break;
+
+    case "code":
+      newEl.x = 6;
+      newEl.y = 42;
+      newEl.w = 56;
+      newEl.title = "terminal - bash";
+      newEl.language = "BASH";
+      newEl.code = "$ git clone https://github.com/project\n$ npm install\n$ npm run build";
+      break;
+
+    case "button":
+      newEl.x = 6;
+      newEl.y = 75;
+      newEl.w = 32;
+      newEl.text = "Перейти к материалу";
+      newEl.icon = "↗";
+      newEl.url = "https://example.com";
+      newEl.variant = "primary";
       break;
   }
 
@@ -1772,6 +2136,37 @@ let clipboardElement = null;
 
 function setupGlobalShortcuts() {
   window.addEventListener("keydown", (e) => {
+    const slideshow = document.getElementById("slideshowModal");
+    const isSlideshowOpen = slideshow && !slideshow.classList.contains("hidden");
+
+    if (isSlideshowOpen) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeSlideshow();
+        return;
+      }
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+        e.preventDefault();
+        forwardSlideshowNav("nextSlide");
+        return;
+      }
+      if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        e.preventDefault();
+        forwardSlideshowNav("prevSlide");
+        return;
+      }
+      if (e.key === "Home") {
+        e.preventDefault();
+        forwardSlideshowNav("firstSlide");
+        return;
+      }
+      if (e.key === "End") {
+        e.preventDefault();
+        forwardSlideshowNav("lastSlide");
+        return;
+      }
+      return;
+    }
 
     if (e.key === "Escape") {
       const ctxMenu = document.getElementById("customContextMenu");
@@ -1779,13 +2174,8 @@ function setupGlobalShortcuts() {
         hideContextMenu();
         return;
       }
-      const slideshow = document.getElementById("slideshowModal");
       const exportModal = document.getElementById("exportModal");
       const aiModal = document.getElementById("aiModal");
-      if (slideshow && !slideshow.classList.contains("hidden")) {
-        closeSlideshow();
-        return;
-      }
       if (exportModal && !exportModal.classList.contains("hidden")) {
         closeExportModal();
         return;
@@ -1958,26 +2348,146 @@ function renderInspector() {
   const currentSlide = currentProject.slides[activeSlideIndex];
   if (!currentSlide) return;
 
+  const theme = getCurrentTheme();
   const el = currentSlide.elements.find(e => e.id === selectedElementId);
 
   if (!el) {
     if (badge) badge.innerText = "Слайд #" + (activeSlideIndex + 1);
+
+    const bgType = currentSlide.bgType || "theme";
+    const bgColor = currentSlide.bgColor || theme.darkBg;
+    const bgGradient = currentSlide.bgGradient || BG_GRADIENT_PRESETS[0].value;
+    const bgImage = currentSlide.bgImage || "";
+    const overlayOpacity = (currentSlide.overlayOpacity !== undefined && currentSlide.overlayOpacity !== null) ? currentSlide.overlayOpacity : 0.65;
+    const bgPattern = currentSlide.bgPattern || "dots";
+
     container.innerHTML = `
-      <div class="space-y-3 text-slate-400">
+      <div class="space-y-3.5 text-slate-300">
         <div>
           <label class="block text-[11px] font-semibold text-slate-300 mb-1">Название слайда:</label>
           <input type="text" class="input-luxury text-xs" value="${escapeHTML(currentSlide.title || '')}" oninput="updateSlideTitle(this.value)">
         </div>
 
-        <div class="pt-3 border-t border-slate-800 text-[11px] space-y-1.5 text-slate-400">
+        <div class="pt-2 border-t border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              ${MENU_ICONS.palette}
+              <span>Фон слайда</span>
+            </span>
+            <span class="text-[10px] text-slate-400 font-mono">${bgType}</span>
+          </div>
+
+          <!-- Переключатель типа фона -->
+          <div class="grid grid-cols-5 gap-1 p-1 bg-slate-900 rounded-lg border border-slate-800 text-[10px] font-semibold text-center">
+            <button onclick="setSlideBgType('theme')" class="py-1 rounded cursor-pointer transition ${bgType === 'theme' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-400 hover:text-white'}">Тема</button>
+            <button onclick="setSlideBgType('color')" class="py-1 rounded cursor-pointer transition ${bgType === 'color' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-400 hover:text-white'}">Цвет</button>
+            <button onclick="setSlideBgType('gradient')" class="py-1 rounded cursor-pointer transition ${bgType === 'gradient' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-400 hover:text-white'}">Град.</button>
+            <button onclick="setSlideBgType('image')" class="py-1 rounded cursor-pointer transition ${bgType === 'image' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-400 hover:text-white'}">Фото</button>
+            <button onclick="setSlideBgType('pattern')" class="py-1 rounded cursor-pointer transition ${bgType === 'pattern' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-400 hover:text-white'}">Узор</button>
+          </div>
+
+          <!-- Настройки в зависимости от типа фона -->
+          ${bgType === 'theme' ? `
+            <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 text-[11px] text-slate-400 space-y-1">
+              <div class="text-white font-medium">Фон наследуется от активной темы:</div>
+              <div class="flex items-center gap-2 pt-1">
+                <span class="w-4 h-4 rounded-full border border-white/20 shadow" style="background:${theme.darkBg};"></span>
+                <span class="font-mono text-xs text-slate-300">${theme.darkBg}</span>
+              </div>
+            </div>
+          ` : ''}
+
+          ${bgType === 'color' ? `
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <input type="color" class="w-8 h-8 rounded border border-slate-700 bg-transparent cursor-pointer p-0.5" value="${bgColor}" oninput="setSlideBackground('bgColor', this.value)">
+                <input type="text" class="input-luxury text-xs font-mono flex-1" value="${bgColor}" oninput="setSlideBackground('bgColor', this.value)">
+              </div>
+              <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Палитра оттенков:</div>
+              <div class="grid grid-cols-5 gap-1.5">
+                ${BG_COLOR_PRESETS.map(c => `
+                  <button onclick="setSlideBackground('bgColor', '${c}')" class="w-full h-6 rounded border ${c === bgColor ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-slate-800 hover:border-slate-600'} cursor-pointer transition" style="background-color:${c};" title="${c}"></button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          ${bgType === 'gradient' ? `
+            <div class="space-y-2">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Дизайнерские градиенты:</div>
+              <div class="grid grid-cols-2 gap-1.5">
+                ${BG_GRADIENT_PRESETS.map(g => `
+                  <button onclick="setSlideBackground('bgGradient', '${g.value}')" class="h-10 rounded-lg p-1.5 border text-left flex flex-col justify-end transition cursor-pointer ${g.value === bgGradient ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-slate-800 hover:border-slate-600'}" style="background:${g.value};">
+                    <span class="text-[9.5px] font-bold text-white drop-shadow">${g.name}</span>
+                  </button>
+                `).join('')}
+              </div>
+              <div class="pt-1">
+                <label class="block text-[10px] text-slate-400 mb-0.5">Пользовательский CSS-градиент:</label>
+                <input type="text" class="input-luxury text-[11px] font-mono" value="${escapeHTML(bgGradient)}" oninput="setSlideBackground('bgGradient', this.value)">
+              </div>
+            </div>
+          ` : ''}
+
+          ${bgType === 'image' ? `
+            <div class="space-y-2.5">
+              <button onclick="triggerSlideBgImageUpload()" class="w-full py-2 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/35 text-sky-300 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition">
+                <svg class="w-4 h-4 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                <span>Загрузить фон с компьютера</span>
+              </button>
+
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">Или ссылка / файл:</label>
+                <input type="text" class="input-luxury text-xs font-mono" placeholder="assets/photo.jpg или https://..." value="${escapeHTML(bgImage)}" oninput="setSlideBackground('bgImage', this.value)">
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between text-[11px] text-slate-300 mb-1">
+                  <span>Затемнение фона:</span>
+                  <span class="font-mono font-bold text-amber-400" id="overlayOpacityLabel">${Math.round(overlayOpacity * 100)}%</span>
+                </div>
+                <input type="range" min="0" max="1" step="0.05" class="w-full accent-amber-400 cursor-pointer" value="${overlayOpacity}" oninput="setSlideBackground('overlayOpacity', parseFloat(this.value)); document.getElementById('overlayOpacityLabel').innerText = Math.round(this.value * 100) + '%';">
+                <div class="text-[9.5px] text-slate-500 mt-0.5">Рекомендуется 60-70% для удобного чтения текста</div>
+              </div>
+            </div>
+          ` : ''}
+
+          ${bgType === 'pattern' ? `
+            <div class="space-y-2">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Тип узора:</div>
+              <div class="grid grid-cols-2 gap-1.5">
+                ${BG_PATTERNS.map(p => `
+                  <button onclick="setSlideBackground('bgPattern', '${p.id}')" class="p-2 rounded-lg border text-left transition cursor-pointer ${p.id === bgPattern ? 'bg-amber-500/15 border-amber-400 text-amber-300' : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'}">
+                    <div class="text-xs font-bold">${p.name}</div>
+                    <div class="text-[9px] text-slate-400">${p.desc}</div>
+                  </button>
+                `).join('')}
+              </div>
+              <div class="pt-1">
+                <label class="block text-[10px] text-slate-400 mb-0.5">Базовый цвет под узором:</label>
+                <div class="flex items-center gap-2">
+                  <input type="color" class="w-8 h-8 rounded border border-slate-700 bg-transparent cursor-pointer p-0.5" value="${bgColor}" oninput="setSlideBackground('bgColor', this.value)">
+                  <input type="text" class="input-luxury text-xs font-mono flex-1" value="${bgColor}" oninput="setSlideBackground('bgColor', this.value)">
+                </div>
+              </div>
+            </div>
+          ` : ''}
+
+          <div class="pt-2">
+            <button onclick="applyBgToAllSlides()" class="w-full py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer transition">
+              <span>🌟 Применить этот фон ко всем слайдам</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 text-[11px] space-y-1 text-slate-400">
           <div class="text-amber-400 font-bold flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            <span>Советы по работе:</span>
+            <span>Советы по оформлению:</span>
           </div>
-          <div>• Перетаскивайте любой блок или фото мышкой.</div>
-          <div>• Тяните за маркеры для изменения ширины.</div>
-          <div>• Добавляйте сколько угодно фото на один слайд.</div>
-          <div>• Двойной клик позволяет печатать прямо на слайде.</div>
+          <div>• Нажмите на любой блок для редактирования его свойств.</div>
+          <div>• Фон синхронизируется с презентацией 1 к 1.</div>
+          <div>• Добавляйте метрики, этапы, выноски и терминалы.</div>
         </div>
       </div>
     `;
@@ -1991,7 +2501,13 @@ function renderInspector() {
     image: "Фотография",
     panel: "Карточка (Panel Box)",
     bullets: "Список тезисов",
-    quote: "Цитата"
+    quote: "Цитата",
+    metric: "Метрика / Факт",
+    timeline: "Этап / Хронология",
+    callout: "Выноска / Акцент",
+    divider: "Разделитель",
+    code: "Окно кода / Консоль",
+    button: "Кнопка / Ссылка"
   };
 
   if (badge) badge.innerText = typeLabels[el.type] || el.type;
@@ -2092,6 +2608,14 @@ function renderInspectorFields(el) {
           </div>
 
           <div>
+            <label class="block text-[11px] text-slate-400 mb-0.5">Режим заполнения:</label>
+            <select class="input-luxury text-xs" onchange="updateElementProp('objectFit', this.value)">
+              <option value="contain" ${el.objectFit !== 'cover' ? 'selected' : ''}>Вписать целиком (contain)</option>
+              <option value="cover" ${el.objectFit === 'cover' ? 'selected' : ''}>Заполнить рамку без полей (cover)</option>
+            </select>
+          </div>
+
+          <div>
             <label class="block text-[11px] text-slate-400 mb-0.5">Запасной URL (fallback):</label>
             <input type="text" class="input-luxury text-xs font-mono" value="${escapeHTML(el.fallbackUrl || '')}" oninput="updateElementProp('fallbackUrl', this.value)">
           </div>
@@ -2164,6 +2688,127 @@ function renderInspectorFields(el) {
           <div>
             <label class="block text-[11px] text-slate-300 mb-0.5">Роль / Год:</label>
             <input type="text" class="input-luxury text-xs" value="${escapeHTML(el.quoteRole || '')}" oninput="updateElementProp('quoteRole', this.value)">
+          </div>
+        </div>
+      `;
+
+    case "metric":
+      return `
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] text-amber-400 mb-0.5 font-semibold">Значение (показатель / число):</label>
+            <input type="text" class="input-luxury font-serif font-black text-amber-300 text-base" value="${escapeHTML(el.value || el.text || '')}" oninput="updateElementProp('value', this.value)">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Подпись / название метрики:</label>
+            <input type="text" class="input-luxury text-xs" value="${escapeHTML(el.title || '')}" oninput="updateElementProp('title', this.value)">
+          </div>
+          <div>
+            <label class="block text-[11px] text-emerald-400 mb-0.5">Динамика / тренд (необязательно):</label>
+            <input type="text" class="input-luxury text-xs text-emerald-300 font-mono" placeholder="например: ↑ +45% за год" value="${escapeHTML(el.trend || '')}" oninput="updateElementProp('trend', this.value)">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-0.5">Иконка:</label>
+            <input type="text" class="input-luxury !w-16 text-center text-xs" placeholder="▲" value="${escapeHTML(el.icon || '▲')}" oninput="updateElementProp('icon', this.value)">
+          </div>
+        </div>
+      `;
+
+    case "timeline":
+      return `
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] text-amber-400 mb-0.5 font-semibold">Номер или дата этапа:</label>
+            <input type="text" class="input-luxury font-mono font-bold text-amber-300 text-xs" placeholder="ШАГ 01 или 2024" value="${escapeHTML(el.stepBadge || 'Шаг 01')}" oninput="updateElementProp('stepBadge', this.value)">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Название этапа:</label>
+            <input type="text" class="input-luxury text-xs font-bold" value="${escapeHTML(el.title || '')}" oninput="updateElementProp('title', this.value)">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Описание этапа:</label>
+            <textarea rows="3" class="input-luxury text-xs resize-none" oninput="updateElementProp('description', this.value)">${escapeHTML(el.description || '')}</textarea>
+          </div>
+        </div>
+      `;
+
+    case "callout":
+      return `
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-0.5">Иконка:</label>
+              <input type="text" class="input-luxury !w-12 text-center text-sm" value="${escapeHTML(el.icon || '💡')}" oninput="updateElementProp('icon', this.value)">
+            </div>
+            <div class="flex-1">
+              <label class="block text-[10px] text-slate-400 mb-0.5">Стиль / акцент:</label>
+              <select class="input-luxury text-xs" onchange="updateElementProp('variant', this.value)">
+                <option value="accent" ${el.variant === 'accent' || !el.variant ? 'selected' : ''}>✦ Акцент темы</option>
+                <option value="warning" ${el.variant === 'warning' ? 'selected' : ''}>⚠️ Внимание (Оранжевый)</option>
+                <option value="danger" ${el.variant === 'danger' ? 'selected' : ''}>🔥 Важно (Красный)</option>
+                <option value="success" ${el.variant === 'success' ? 'selected' : ''}>✅ Успех (Зеленый)</option>
+                <option value="info" ${el.variant === 'info' ? 'selected' : ''}>ℹ️ Инфо (Голубой)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Заголовок выноски:</label>
+            <input type="text" class="input-luxury text-xs font-bold" value="${escapeHTML(el.title || '')}" oninput="updateElementProp('title', this.value)">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Текст мысли:</label>
+            <textarea rows="3" class="input-luxury text-xs resize-none" oninput="updateElementProp('text', this.value)">${escapeHTML(el.text || el.description || '')}</textarea>
+          </div>
+        </div>
+      `;
+
+    case "divider":
+      return `
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Центральная плашка (необязательно):</label>
+            <input type="text" class="input-luxury text-xs uppercase tracking-wider" placeholder="например: РАЗДЕЛ II" value="${escapeHTML(el.text || '')}" oninput="updateElementProp('text', this.value)">
+          </div>
+          <div class="text-[10px] text-slate-500">Разделитель создает аккуратную неоновую линию в стилистике темы.</div>
+        </div>
+      `;
+
+    case "code":
+      return `
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="flex-1">
+              <label class="block text-[10px] text-slate-400 mb-0.5">Заголовок окна:</label>
+              <input type="text" class="input-luxury text-xs font-mono" placeholder="terminal.sh" value="${escapeHTML(el.title || '')}" oninput="updateElementProp('title', this.value)">
+            </div>
+            <div class="w-24">
+              <label class="block text-[10px] text-slate-400 mb-0.5">Язык:</label>
+              <input type="text" class="input-luxury text-xs uppercase font-mono text-center" placeholder="BASH" value="${escapeHTML(el.language || 'BASH')}" oninput="updateElementProp('language', this.value)">
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-0.5">Код / команды:</label>
+            <textarea rows="5" class="input-luxury text-xs font-mono resize-none leading-relaxed" oninput="updateElementProp('code', this.value)">${escapeHTML(el.code || el.text || '')}</textarea>
+          </div>
+        </div>
+      `;
+
+    case "button":
+      return `
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="flex-1">
+              <label class="block text-[11px] text-slate-300 mb-0.5">Текст кнопки:</label>
+              <input type="text" class="input-luxury text-xs font-bold" value="${escapeHTML(el.text || '')}" oninput="updateElementProp('text', this.value)">
+            </div>
+            <div class="w-16">
+              <label class="block text-[11px] text-slate-300 mb-0.5">Стрелка:</label>
+              <input type="text" class="input-luxury text-xs text-center" value="${escapeHTML(el.icon || '↗')}" oninput="updateElementProp('icon', this.value)">
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-0.5">Ссылка URL (откроется в новой вкладке):</label>
+            <input type="text" class="input-luxury text-xs font-mono" placeholder="https://..." value="${escapeHTML(el.url || '')}" oninput="updateElementProp('url', this.value)">
           </div>
         </div>
       `;
@@ -2276,11 +2921,56 @@ async function openSlideshow() {
     });
     if (res.ok) {
       const htmlText = await res.text();
+      frame.onload = () => {
+        try {
+          frame.contentWindow?.focus();
+          frame.focus();
+        } catch (e) {}
+      };
       frame.srcdoc = htmlText;
       modal.classList.remove("hidden");
+
+      setTimeout(() => {
+        try {
+          frame.contentWindow?.focus();
+          frame.focus();
+        } catch (e) {}
+      }, 50);
+      setTimeout(() => {
+        try {
+          frame.contentWindow?.focus();
+          frame.focus();
+        } catch (e) {}
+      }, 200);
     }
   } catch (err) {
     console.error("Slideshow preview error:", err);
+  }
+}
+
+function forwardSlideshowNav(action) {
+  const frame = document.getElementById("slideshowFrame");
+  if (!frame) return;
+  try {
+    const cw = frame.contentWindow;
+    if (cw) {
+      if (action === "nextSlide" && typeof cw.nextSlide === "function") {
+        cw.nextSlide();
+      } else if (action === "prevSlide" && typeof cw.prevSlide === "function") {
+        cw.prevSlide();
+      } else if (action === "firstSlide" && typeof cw.goToSlide === "function") {
+        cw.goToSlide(1);
+      } else if (action === "lastSlide" && typeof cw.goToSlide === "function") {
+        cw.goToSlide(cw.totalSlides || 999);
+      } else {
+        cw.postMessage(action, "*");
+      }
+      cw.focus();
+    }
+  } catch (err) {
+    try {
+      frame.contentWindow?.postMessage(action, "*");
+    } catch (e) {}
   }
 }
 
@@ -2290,13 +2980,6 @@ function closeSlideshow() {
   if (modal) modal.classList.add("hidden");
   if (frame) frame.srcdoc = "";
 }
-
-window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeSlideshow();
-    closeExportModal();
-  }
-});
 
 function openExportModal() {
   if (selectedElementId !== null) {
@@ -2815,12 +3498,14 @@ function parseAICode(rawText) {
 
   let currentSlide = null;
   let currentBulletsTarget = null;
+  let pendingCoords = null;
 
   for (let rawLine of lines) {
     const line = rawLine.trim();
     if (!line || line.startsWith("#") || line === "SANICHPOINT_AI") continue;
 
-    if (/^TITLE\s*:\s*/i.test(line)) {
+    // Check for global presentation header tags before slides
+    if (!currentSlide && /^TITLE\s*:\s*/i.test(line)) {
       project.title = line.replace(/^TITLE\s*:\s*/i, "").trim();
       continue;
     }
@@ -2850,6 +3535,7 @@ function parseAICode(rawText) {
       };
       project.slides.push(currentSlide);
       currentBulletsTarget = null;
+      pendingCoords = null;
       continue;
     }
 
@@ -2860,66 +3546,135 @@ function parseAICode(rawText) {
         rawItems: []
       };
       project.slides.push(currentSlide);
+      pendingCoords = null;
     }
 
-    if (/^LAYOUT\s*:\s*/i.test(line)) {
-      currentSlide.layout = line.replace(/^LAYOUT\s*:\s*/i, "").trim().toLowerCase();
+    // Direct coordinate directive: POS: x | y | w | [h] or AT: x, y, w
+    if (/^(?:POS|AT|COORDS?|POSITION)\s*:\s*/i.test(line)) {
+      const cStr = line.replace(/^(?:POS|AT|COORDS?|POSITION)\s*:\s*/i, "").trim();
+      const m = cStr.match(/^([0-9.]+)[,\s|]+([0-9.]+)[,\s|]+([0-9.]+)(?:[,\s|]+([0-9.]+))?/);
+      if (m) {
+        pendingCoords = {
+          x: parseFloat(m[1]),
+          y: parseFloat(m[2]),
+          w: parseFloat(m[3]),
+          h: m[4] ? parseFloat(m[4]) : undefined
+        };
+      }
       continue;
     }
 
-    if (/^ALIGN\s*:\s*/i.test(line)) {
-      currentSlide.align = line.replace(/^ALIGN\s*:\s*/i, "").trim().toLowerCase();
+    // Extract inline coordinate suffix @ x, y, w, [h]
+    let cleanLine = line;
+    let inlineCoords = null;
+    const atMatch = line.match(/\s+@\s*([0-9.]+)(?:[,\s|]+([0-9.]+))(?:[,\s|]+([0-9.]+))(?:[,\s|]+([0-9.]+))?\s*$/);
+    if (atMatch) {
+      cleanLine = line.substring(0, atMatch.index).trim();
+      inlineCoords = {
+        x: parseFloat(atMatch[1]),
+        y: parseFloat(atMatch[2]),
+        w: parseFloat(atMatch[3]),
+        h: atMatch[4] ? parseFloat(atMatch[4]) : undefined
+      };
+    }
+    const activeCoords = inlineCoords || pendingCoords;
+
+    function attachCoords(item) {
+      if (activeCoords) {
+        item.x = activeCoords.x;
+        item.y = activeCoords.y;
+        item.w = activeCoords.w;
+        if (activeCoords.h !== undefined) item.h = activeCoords.h;
+        pendingCoords = null;
+      }
+      return item;
+    }
+
+    if (/^LAYOUT\s*:\s*/i.test(cleanLine)) {
+      currentSlide.layout = cleanLine.replace(/^LAYOUT\s*:\s*/i, "").trim().toLowerCase();
       continue;
     }
 
-    if (/^BADGE\s*:\s*/i.test(line)) {
-      currentSlide.rawItems.push({ type: "badge", text: line.replace(/^BADGE\s*:\s*/i, "").trim() });
+    if (/^ALIGN\s*:\s*/i.test(cleanLine)) {
+      currentSlide.align = cleanLine.replace(/^ALIGN\s*:\s*/i, "").trim().toLowerCase();
+      continue;
+    }
+
+    if (/^BG\s*:\s*/i.test(cleanLine)) {
+      const bgVal = cleanLine.replace(/^BG\s*:\s*/i, "").trim();
+      const parts = bgVal.split("|").map(s => s.trim());
+      const first = parts[0].toLowerCase();
+      if (first === "color" || first.startsWith("#") || first.startsWith("rgb")) {
+        currentSlide.bgType = "color";
+        currentSlide.bgColor = first === "color" ? (parts[1] || "") : parts[0];
+      } else if (first === "gradient" || first.startsWith("linear-gradient") || first.startsWith("radial-gradient")) {
+        currentSlide.bgType = "gradient";
+        let grad = first === "gradient" ? (parts[1] || "") : parts[0];
+        const found = BG_GRADIENT_PRESETS.find(p => p.name.toLowerCase() === grad.toLowerCase() || p.name.toLowerCase().replace(/\s+/g, "-") === grad.toLowerCase());
+        currentSlide.bgGradient = found ? found.value : grad;
+      } else if (first === "pattern" || first === "dots" || first === "grid" || first === "blueprint" || first === "radial") {
+        currentSlide.bgType = "pattern";
+        currentSlide.bgPattern = first === "pattern" ? (parts[1] || "dots").toLowerCase() : first;
+        if (parts[2]) currentSlide.bgColor = parts[2];
+        else if (parts[1] && first !== "pattern") currentSlide.bgColor = parts[1];
+      } else if (first === "image" || first.startsWith("http") || first.startsWith("assets/") || first.includes(".jpg") || first.includes(".png") || first.includes(".webp")) {
+        currentSlide.bgType = "image";
+        currentSlide.bgImage = first === "image" ? (parts[1] || "") : parts[0];
+        if (parts[2]) currentSlide.overlayOpacity = parseFloat(parts[2]) || 0.65;
+        else if (parts[1] && first !== "image") currentSlide.overlayOpacity = parseFloat(parts[1]) || 0.65;
+        else currentSlide.overlayOpacity = 0.65;
+      }
+      continue;
+    }
+
+    if (/^BADGE\s*:\s*/i.test(cleanLine)) {
+      currentSlide.rawItems.push(attachCoords({ type: "badge", text: cleanLine.replace(/^BADGE\s*:\s*/i, "").trim() }));
       currentBulletsTarget = null;
       continue;
     }
 
-    if (/^TITLE\s*:\s*/i.test(line)) {
-      const parts = line.replace(/^TITLE\s*:\s*/i, "").trim().split("|");
-      currentSlide.rawItems.push({
+    if (/^TITLE\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^TITLE\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
         type: "title",
         text: parts[0].trim(),
         accentText: parts[1] ? parts[1].trim() : ""
-      });
+      }));
       currentBulletsTarget = null;
       continue;
     }
 
-    if (/^TEXT\s*:\s*/i.test(line)) {
-      currentSlide.rawItems.push({ type: "text", text: line.replace(/^TEXT\s*:\s*/i, "").trim() });
+    if (/^TEXT\s*:\s*/i.test(cleanLine)) {
+      currentSlide.rawItems.push(attachCoords({ type: "text", text: cleanLine.replace(/^TEXT\s*:\s*/i, "").trim() }));
       currentBulletsTarget = null;
       continue;
     }
 
-    if (/^IMAGE\s*:\s*/i.test(line)) {
-      const parts = line.replace(/^IMAGE\s*:\s*/i, "").trim().split("|");
-      currentSlide.rawItems.push({
+    if (/^IMAGE\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^IMAGE\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
         type: "image",
         url: parts[0].trim(),
         caption: parts[1] ? parts[1].trim() : ""
-      });
+      }));
       currentBulletsTarget = null;
       continue;
     }
 
-    if (/^(?:METRIC|STAT)\s*:\s*/i.test(line)) {
-      const parts = line.replace(/^(?:METRIC|STAT)\s*:\s*/i, "").trim().split("|");
-      currentSlide.rawItems.push({
+    if (/^(?:METRIC|STAT)\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^(?:METRIC|STAT)\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
         type: "metric",
         value: parts[0] ? parts[0].trim() : "",
         title: parts[1] ? parts[1].trim() : "",
         description: parts[2] ? parts[2].trim() : ""
-      });
+      }));
       currentBulletsTarget = null;
       continue;
     }
 
-    if (/^PANEL\s*:\s*/i.test(line)) {
-      const parts = line.replace(/^PANEL\s*:\s*/i, "").trim().split("|");
+    if (/^PANEL\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^PANEL\s*:\s*/i, "").trim().split("|");
       let rawTitle = parts[0].trim();
       let icon = "✦";
 
@@ -2938,36 +3693,106 @@ function parseAICode(rawText) {
         description: parts[1] ? parts[1].trim() : "",
         bullets: []
       };
-      currentSlide.rawItems.push(pItem);
+      currentSlide.rawItems.push(attachCoords(pItem));
       currentBulletsTarget = pItem.bullets;
       continue;
     }
 
-    if (/^BULLETS\s*:\s*/i.test(line)) {
+    if (/^BULLETS\s*:\s*/i.test(cleanLine)) {
       const bItem = {
         type: "bullets",
-        title: line.replace(/^BULLETS\s*:\s*/i, "").trim(),
+        title: cleanLine.replace(/^BULLETS\s*:\s*/i, "").trim(),
         bullets: []
       };
-      currentSlide.rawItems.push(bItem);
+      currentSlide.rawItems.push(attachCoords(bItem));
       currentBulletsTarget = bItem.bullets;
       continue;
     }
 
-    if (/^QUOTE\s*:\s*/i.test(line)) {
-      const parts = line.replace(/^QUOTE\s*:\s*/i, "").trim().split("|");
-      currentSlide.rawItems.push({
+    if (/^QUOTE\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^QUOTE\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
         type: "quote",
         text: parts[0].trim(),
         author: parts[1] ? parts[1].trim() : "",
         role: parts[2] ? parts[2].trim() : ""
-      });
+      }));
       currentBulletsTarget = null;
       continue;
     }
 
-    if (/^[*•-]\s+/i.test(line)) {
-      const bContent = line.replace(/^[*•-]\s+/i, "").trim();
+    if (/^(?:TIMELINE|STEP)\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^(?:TIMELINE|STEP)\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
+        type: "timeline",
+        stepBadge: parts[0] ? parts[0].trim() : "ШАГ 01",
+        title: parts[1] ? parts[1].trim() : "Этап",
+        description: parts[2] ? parts[2].trim() : ""
+      }));
+      currentBulletsTarget = null;
+      continue;
+    }
+
+    if (/^CALLOUT\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^CALLOUT\s*:\s*/i, "").trim().split("|");
+      let icon = "💡";
+      let title = parts[0] ? parts[0].trim() : "Важная мысль";
+      let text = parts[1] ? parts[1].trim() : "";
+      let variant = parts[2] ? parts[2].trim().toLowerCase() : "accent";
+
+      if (title.length <= 3) {
+        icon = title;
+        title = parts[1] ? parts[1].trim() : "Важная мысль";
+        text = parts[2] ? parts[2].trim() : "";
+        variant = parts[3] ? parts[3].trim().toLowerCase() : "accent";
+      }
+
+      currentSlide.rawItems.push(attachCoords({
+        type: "callout",
+        icon,
+        title,
+        text,
+        variant
+      }));
+      currentBulletsTarget = null;
+      continue;
+    }
+
+    if (/^CODE\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^CODE\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
+        type: "code",
+        title: parts[0] ? parts[0].trim() : "terminal.sh",
+        language: parts[1] ? parts[1].trim().toUpperCase() : "BASH",
+        code: parts.length > 2 ? parts.slice(2).join("|").trim() : ""
+      }));
+      currentBulletsTarget = null;
+      continue;
+    }
+
+    if (/^DIVIDER\s*:\s*/i.test(cleanLine)) {
+      currentSlide.rawItems.push(attachCoords({
+        type: "divider",
+        text: cleanLine.replace(/^DIVIDER\s*:\s*/i, "").trim()
+      }));
+      currentBulletsTarget = null;
+      continue;
+    }
+
+    if (/^BUTTON\s*:\s*/i.test(cleanLine)) {
+      const parts = cleanLine.replace(/^BUTTON\s*:\s*/i, "").trim().split("|");
+      currentSlide.rawItems.push(attachCoords({
+        type: "button",
+        text: parts[0] ? parts[0].trim() : "Подробнее",
+        url: parts[1] ? parts[1].trim() : "#",
+        icon: parts[2] ? parts[2].trim() : "↗"
+      }));
+      currentBulletsTarget = null;
+      continue;
+    }
+
+    if (/^[*•-]\s+/i.test(cleanLine)) {
+      const bContent = cleanLine.replace(/^[*•-]\s+/i, "").trim();
       const bParts = bContent.split("|");
       let bTitle = bParts[1] ? bParts[0].trim() : "";
       let bText = bParts[1] ? bParts[1].trim() : bParts[0].trim();
@@ -2992,7 +3817,7 @@ function parseAICode(rawText) {
           title: "",
           bullets: [bulletObj]
         };
-        currentSlide.rawItems.push(bList);
+        currentSlide.rawItems.push(attachCoords(bList));
         currentBulletsTarget = bList.bullets;
       }
       continue;
@@ -3021,37 +3846,263 @@ function parseAICode(rawText) {
   return project;
 }
 
-function estimateTextHeight(text, widthPercent) {
-  if (!text) return 0;
-  const charsPerLine = Math.max(22, Math.floor(widthPercent * 1.3));
-  const lines = Math.ceil(text.length / charsPerLine);
-  return Math.max(7, lines * 4.2 + 2.5);
+function rangesOverlap(a1, a2, b1, b2, tolerance = 1.0) {
+  return Math.max(a1, b1) < Math.min(a2, b2) - tolerance;
+}
+
+function doHorizontallyOverlap(a, b) {
+  const aW = a.w || 92;
+  const bW = b.w || 92;
+  return rangesOverlap(a.x, a.x + aW, b.x, b.x + bW, 1.2);
 }
 
 function estimateTitleHeight(title, accentText, widthPercent) {
-  const charsPerLine = Math.max(16, Math.floor(widthPercent * 0.7));
-  const lines = Math.ceil((title || "").length / charsPerLine);
-  let h = lines * 6.5 + 3;
+  const charsPerLine = Math.max(14, Math.floor((widthPercent || 92) * 0.55));
+  const lines = Math.max(1, Math.ceil((title || "").length / charsPerLine));
+  let h = lines * 5.8 + 2.0;
   if (accentText) {
-    h += 6.5;
+    const accLines = Math.max(1, Math.ceil((accentText || "").length / charsPerLine));
+    h += accLines * 5.5 + 1.0;
   }
-  return Math.max(10, h);
+  return Math.max(8, h);
+}
+
+function estimateTextHeight(text, widthPercent) {
+  if (!text) return 0;
+  const charsPerLine = Math.max(20, Math.floor((widthPercent || 92) * 1.1));
+  const lines = Math.ceil(text.length / charsPerLine);
+  return Math.max(5.5, lines * 3.8 + 2.0);
 }
 
 function estimatePanelHeight(item) {
-  let h = 8;
-  if (item.title) h += 4;
+  let h = 6;
+  if (item.title) h += 3.2;
   if (item.description) {
-    h += Math.max(5, Math.ceil(item.description.length / 42) * 3.8);
+    h += Math.max(3.5, Math.ceil(item.description.length / 60) * 3.2);
   }
   if (item.bullets && item.bullets.length > 0) {
     item.bullets.forEach(b => {
       const bLen = (b.title ? b.title.length + 2 : 0) + (b.text ? b.text.length : 0);
-      const bLines = Math.max(1, Math.ceil(bLen / 42));
-      h += bLines * 4.2 + 2;
+      const bLines = Math.max(1, Math.ceil(bLen / 60));
+      h += bLines * 3.4 + 1.2;
     });
   }
-  return Math.max(16, Math.min(h, 45));
+  return Math.max(13, Math.min(h, 28));
+}
+
+function estimateQuoteHeight(item, widthPercent) {
+  const w = widthPercent || item.w || 55;
+  const charsPerLine = Math.max(16, Math.floor(((w || 55) - 4) / 0.92));
+  const textLen = (item.text || "").length;
+  const lines = Math.max(1, Math.ceil(textLen / charsPerLine));
+  let h = 24 + lines * 4.9;
+  if (!item.author && !item.quoteAuthor) h -= 5;
+  return Math.max(22, Math.min(h, 54));
+}
+
+function pushBodyElement(targetArray, item, x, y, width, z) {
+  const finalX = item.x !== undefined ? item.x : x;
+  const finalY = item.y !== undefined ? item.y : y;
+  const finalW = item.w !== undefined ? item.w : width;
+
+  let h = 16;
+  const baseEl = {
+    id: generateId(),
+    type: item.type,
+    x: finalX,
+    y: finalY,
+    w: finalW,
+    zIndex: z
+  };
+  if (item.h !== undefined) {
+    baseEl.h = item.h;
+  }
+  if (item.compact !== undefined) {
+    baseEl.compact = item.compact;
+  }
+
+  switch (item.type) {
+    case "panel":
+      baseEl.icon = item.icon || "✦";
+      baseEl.title = item.title;
+      baseEl.description = item.description;
+      baseEl.bullets = item.bullets || [];
+      h = estimatePanelHeight(item) + 1.5;
+      break;
+
+    case "bullets":
+      baseEl.title = item.title;
+      baseEl.bullets = item.bullets || [];
+      h = estimatePanelHeight(item) + 1.5;
+      break;
+
+    case "quote":
+      baseEl.text = item.text;
+      baseEl.quoteAuthor = item.author || item.quoteAuthor || "Цитата";
+      baseEl.quoteRole = item.role || item.quoteRole || "";
+      h = estimateQuoteHeight(item, finalW);
+      break;
+
+    case "metric":
+      baseEl.icon = item.icon || "▲";
+      baseEl.title = item.title || "Показатель";
+      baseEl.value = item.value || "+100%";
+      baseEl.trend = item.trend || "";
+      baseEl.text = item.description || item.text || "";
+      h = 15;
+      break;
+
+    case "timeline":
+      baseEl.stepBadge = item.stepBadge || "ШАГ 01";
+      baseEl.title = item.title || "Этап развития";
+      baseEl.description = item.description || "";
+      h = 13.5;
+      break;
+
+    case "callout":
+      baseEl.icon = item.icon || "💡";
+      baseEl.title = item.title || "Важная мысль";
+      baseEl.text = item.text || item.description || "";
+      baseEl.variant = item.variant || "accent";
+      h = 13.5;
+      break;
+
+    case "divider":
+      baseEl.text = item.text || "";
+      h = 4;
+      break;
+
+    case "code":
+      baseEl.title = item.title || "terminal.sh";
+      baseEl.language = item.language || "BASH";
+      baseEl.code = item.code || item.text || "";
+      h = 22;
+      break;
+
+    case "button":
+      baseEl.text = item.text || "Подробнее";
+      baseEl.icon = item.icon || "↗";
+      baseEl.url = item.url || "#";
+      baseEl.w = Math.min(finalW, 36);
+      h = 8;
+      break;
+
+    default:
+      baseEl.title = item.title;
+      baseEl.description = item.description;
+      h = 14;
+  }
+
+  targetArray.push(baseEl);
+  return h;
+}
+
+function estimateElementHeight(el) {
+  if (el.h) return el.h;
+  switch (el.type) {
+    case "badge":
+      return 5.5;
+    case "title":
+      return estimateTitleHeight(el.text, el.accentText, el.w || 92);
+    case "text":
+      return estimateTextHeight(el.text, el.w || 92);
+    case "image":
+      if (el.compact) return 24;
+      return Math.min(42, Math.max(18, (el.w || 38) * 0.75 / 0.5625 + (el.imageCaption ? 3.5 : 1.5)));
+    case "panel":
+    case "bullets":
+      return estimatePanelHeight(el);
+    case "quote":
+      return estimateQuoteHeight(el, el.w);
+    case "metric":
+      return 15;
+    case "timeline":
+      return 13.5;
+    case "callout":
+      return 13.5;
+    case "divider":
+      return 4;
+    case "code":
+      return 22;
+    case "button":
+      return 8;
+    default:
+      return 14;
+  }
+}
+
+function resolveCollisions(elements) {
+  if (!elements || elements.length <= 1) return elements;
+
+  // Pass 1: Topological / Y-order collision push
+  elements.sort((a, b) => {
+    if (Math.abs(a.y - b.y) > 0.01) return a.y - b.y;
+    return a.x - b.x;
+  });
+
+  const gap = 1.8;
+
+  for (let i = 0; i < elements.length; i++) {
+    const el = elements[i];
+    let minAllowedY = el.y;
+
+    for (let j = 0; j < i; j++) {
+      const prev = elements[j];
+      if (doHorizontallyOverlap(prev, el)) {
+        const prevH = estimateElementHeight(prev);
+        const requiredY = prev.y + prevH + gap;
+        if (requiredY > minAllowedY) {
+          minAllowedY = requiredY;
+        }
+      }
+    }
+
+    if (minAllowedY > el.y) {
+      el.y = minAllowedY;
+    }
+  }
+
+  // Pass 2: Bottom Floor Protection (stay within <= 86%)
+  let maxBottom = 0;
+  elements.forEach(el => {
+    maxBottom = Math.max(maxBottom, el.y + estimateElementHeight(el));
+  });
+
+  if (maxBottom > 86) {
+    let minY = 100;
+    elements.forEach(el => {
+      if (el.type !== "badge") minY = Math.min(minY, el.y);
+    });
+
+    const span = maxBottom - minY;
+    if (span > 0) {
+      const scale = (86 - minY) / span;
+      if (scale > 0.65 && scale < 1.0) {
+        elements.forEach(el => {
+          if (el.type !== "badge" && el.y > minY) {
+            el.y = minY + (el.y - minY) * scale;
+          }
+        });
+
+        // Re-enforce non-overlap rule after scaling
+        for (let i = 0; i < elements.length; i++) {
+          const el = elements[i];
+          for (let j = 0; j < i; j++) {
+            const prev = elements[j];
+            if (doHorizontallyOverlap(prev, el)) {
+              const prevH = estimateElementHeight(prev);
+              const minPostY = prev.y + prevH + 1.0;
+              if (el.y < minPostY) {
+                el.y = minPostY;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return elements;
 }
 
 function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
@@ -3064,11 +4115,13 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   const normalizedItems = rawItems.map(item => {
     if (item.type === "metric") {
       return {
-        type: "panel",
-        icon: "📈",
-        title: item.value ? `${item.value} • ${item.title}` : item.title,
-        description: item.description,
-        bullets: []
+        ...item,
+        type: "metric",
+        icon: item.icon || "▲",
+        title: item.title || "Показатель",
+        value: item.value || "+100%",
+        trend: item.trend || "",
+        text: item.description || item.text || ""
       };
     }
     return item;
@@ -3078,211 +4131,255 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   const nonImages = normalizedItems.filter(i => i.type !== "image");
   const hasImages = images.length > 0;
 
-  if (layout === "split" || layout === "two-columns") {
-    let topY = 6;
-    const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
-    const bodyItems = nonImages.filter(i => i.type === "panel" || i.type === "bullets" || i.type === "quote");
+  // Mode: Custom / Absolute placement
+  if (layout === "custom" || layout === "absolute" || layout === "manual" || layout === "freeform") {
+    let autoY = 8;
+    normalizedItems.forEach(item => {
+      let finalX = item.x !== undefined ? item.x : (slideAlign === "center" ? 10 : 4);
+      let finalY = item.y !== undefined ? item.y : autoY;
+      let finalW = item.w !== undefined ? item.w : (item.type === "badge" ? 42 : (item.type === "image" ? 44 : 92));
 
-    headerItems.forEach(item => {
       if (item.type === "badge") {
         elements.push({
           id: generateId(),
           type: "badge",
-          x: 4, y: topY, w: 42,
+          x: finalX, y: finalY, w: finalW,
           zIndex: zCounter++,
           text: item.text
         });
-        topY += 7.5;
+        autoY = Math.max(autoY, finalY + 7.0);
       } else if (item.type === "title") {
         elements.push({
           id: generateId(),
           type: "title",
-          x: 4, y: topY, w: 92,
+          x: finalX, y: finalY, w: finalW,
           zIndex: zCounter++,
           text: item.text,
           accentText: item.accentText || "",
           fontSize: isCover ? 38 : 30,
           textAlign: slideAlign
         });
-        topY += estimateTitleHeight(item.text, item.accentText, 92);
+        autoY = Math.max(autoY, finalY + estimateTitleHeight(item.text, item.accentText, finalW));
       } else if (item.type === "text") {
         elements.push({
           id: generateId(),
           type: "text",
-          x: 4, y: topY, w: 92,
+          x: finalX, y: finalY, w: finalW,
+          zIndex: zCounter++,
+          text: item.text,
+          fontSize: 15,
+          textAlign: slideAlign
+        });
+        autoY = Math.max(autoY, finalY + estimateTextHeight(item.text, finalW));
+      } else if (item.type === "image") {
+        elements.push({
+          id: generateId(),
+          type: "image",
+          x: finalX, y: finalY, w: finalW,
+          h: item.h,
+          compact: item.compact || (item.h !== undefined && item.h <= 30),
+          zIndex: zCounter++,
+          imageSrc: item.url,
+          imageCaption: item.caption,
+          fallbackURL: item.url
+        });
+        autoY = Math.max(autoY, finalY + (item.h || 32));
+      } else {
+        const addedH = pushBodyElement(elements, item, finalX, finalY, finalW, zCounter++);
+        autoY = Math.max(autoY, finalY + addedH + 2);
+      }
+    });
+    return resolveCollisions(elements);
+  }
+
+  // Layout: split / two-columns
+  if (layout === "split" || layout === "two-columns") {
+    let topY = 6;
+    const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
+    const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
+
+    headerItems.forEach(item => {
+      const hX = item.x !== undefined ? item.x : 4;
+      const hY = item.y !== undefined ? item.y : topY;
+      const hW = item.w !== undefined ? item.w : (item.type === "badge" ? 42 : 92);
+      if (item.type === "badge") {
+        elements.push({
+          id: generateId(),
+          type: "badge",
+          x: hX, y: hY, w: hW,
+          zIndex: zCounter++,
+          text: item.text
+        });
+        if (item.y === undefined) topY += 7.0;
+      } else if (item.type === "title") {
+        elements.push({
+          id: generateId(),
+          type: "title",
+          x: hX, y: hY, w: hW,
+          zIndex: zCounter++,
+          text: item.text,
+          accentText: item.accentText || "",
+          fontSize: isCover ? 38 : 30,
+          textAlign: slideAlign
+        });
+        if (item.y === undefined) topY += estimateTitleHeight(item.text, item.accentText, hW);
+      } else if (item.type === "text") {
+        elements.push({
+          id: generateId(),
+          type: "text",
+          x: hX, y: hY, w: hW,
           zIndex: zCounter++,
           text: item.text,
           fontSize: 14,
           textAlign: slideAlign
         });
-        topY += estimateTextHeight(item.text, 92);
+        if (item.y === undefined) topY += estimateTextHeight(item.text, hW);
       }
     });
 
-    const bodyY = Math.max(topY + 2, 32);
-    if (images.length === 1 && bodyItems.length >= 1) {
+    const bodyY = Math.max(topY + 1.5, 26);
+    if (images.length === 1) {
+      const hasLeftSibling = bodyItems.length >= 3 || bodyItems.some(b => b.x !== undefined && b.x < 48);
+      const imgH = images[0].h !== undefined ? images[0].h : (hasLeftSibling ? 25 : undefined);
+
       elements.push({
         id: generateId(),
         type: "image",
-        x: 4, y: bodyY, w: 44,
+        x: images[0].x !== undefined ? images[0].x : 4,
+        y: images[0].y !== undefined ? images[0].y : bodyY,
+        w: images[0].w !== undefined ? images[0].w : 44,
+        h: imgH,
+        compact: hasLeftSibling,
         zIndex: zCounter++,
         imageSrc: images[0].url,
         imageCaption: images[0].caption,
         fallbackURL: images[0].url
       });
+
       let rightY = bodyY;
+      let leftY = bodyY + 27;
+
       bodyItems.forEach(b => {
-        elements.push({
-          id: generateId(),
-          type: b.type,
-          x: 52, y: rightY, w: 44,
-          zIndex: zCounter++,
-          icon: b.icon || "✦",
-          title: b.title,
-          description: b.description,
-          bullets: b.bullets || [],
-          text: b.text || "",
-          quoteAuthor: b.author || "Цитата",
-          quoteRole: b.role || ""
-        });
-        rightY += estimatePanelHeight(b) + 3;
+        if (b.x !== undefined && b.y !== undefined) {
+          pushBodyElement(elements, b, b.x, b.y, b.w || 44, zCounter++);
+        } else if (rightY <= 54) {
+          rightY += pushBodyElement(elements, b, 52, rightY, 44, zCounter++) + 2;
+        } else if (leftY < 80) {
+          leftY += pushBodyElement(elements, b, 4, leftY, 44, zCounter++) + 2;
+        } else {
+          rightY += pushBodyElement(elements, b, 52, rightY, 44, zCounter++) + 2;
+        }
       });
     } else if (bodyItems.length >= 2) {
-      elements.push({
-        id: generateId(),
-        type: bodyItems[0].type,
-        x: 4, y: bodyY, w: 44,
-        zIndex: zCounter++,
-        icon: bodyItems[0].icon || "✦",
-        title: bodyItems[0].title,
-        description: bodyItems[0].description,
-        bullets: bodyItems[0].bullets || []
-      });
-      elements.push({
-        id: generateId(),
-        type: bodyItems[1].type,
-        x: 52, y: bodyY, w: 44,
-        zIndex: zCounter++,
-        icon: bodyItems[1].icon || "❖",
-        title: bodyItems[1].title,
-        description: bodyItems[1].description,
-        bullets: bodyItems[1].bullets || []
+      let lY = bodyY;
+      let rY = bodyY;
+      bodyItems.forEach((b, idx) => {
+        if (b.x !== undefined && b.y !== undefined) {
+          pushBodyElement(elements, b, b.x, b.y, b.w || 44, zCounter++);
+        } else if (idx % 2 === 0) {
+          lY += pushBodyElement(elements, b, 4, lY, 44, zCounter++) + 2;
+        } else {
+          rY += pushBodyElement(elements, b, 52, rY, 44, zCounter++) + 2;
+        }
       });
     } else {
       let cy = bodyY;
       bodyItems.forEach(b => {
-        elements.push({
-          id: generateId(),
-          type: b.type,
-          x: 4, y: cy, w: 92,
-          zIndex: zCounter++,
-          icon: b.icon || "✦",
-          title: b.title,
-          description: b.description,
-          bullets: b.bullets || []
-        });
-        cy += estimatePanelHeight(b) + 3;
+        cy += pushBodyElement(elements, b, b.x !== undefined ? b.x : 4, b.y !== undefined ? b.y : cy, b.w !== undefined ? b.w : 92, zCounter++) + 2;
       });
     }
-    return elements;
+    return resolveCollisions(elements);
   }
 
+  // Layout: cards / grid
   if (layout === "cards" || layout === "grid") {
     let topY = 6;
     const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
-    const bodyCards = nonImages.filter(i => i.type === "panel" || i.type === "bullets" || i.type === "quote");
+    const bodyCards = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
 
+    const headerW = images.length > 0 ? 58 : 92;
     headerItems.forEach(item => {
+      const hX = item.x !== undefined ? item.x : 4;
+      const hY = item.y !== undefined ? item.y : topY;
+      const hW = item.w !== undefined ? item.w : (item.type === "badge" ? 42 : headerW);
       if (item.type === "badge") {
         elements.push({
           id: generateId(),
           type: "badge",
-          x: 4, y: topY, w: 42,
+          x: hX, y: hY, w: hW,
           zIndex: zCounter++,
           text: item.text
         });
-        topY += 7.5;
+        if (item.y === undefined) topY += 7.0;
       } else if (item.type === "title") {
         elements.push({
           id: generateId(),
           type: "title",
-          x: 4, y: topY, w: 92,
+          x: hX, y: hY, w: hW,
           zIndex: zCounter++,
           text: item.text,
           accentText: item.accentText || "",
           fontSize: isCover ? 38 : 32,
           textAlign: slideAlign
         });
-        topY += estimateTitleHeight(item.text, item.accentText, 92);
+        if (item.y === undefined) topY += estimateTitleHeight(item.text, item.accentText, hW);
       } else if (item.type === "text") {
         elements.push({
           id: generateId(),
           type: "text",
-          x: 4, y: topY, w: 92,
+          x: hX, y: hY, w: hW,
           zIndex: zCounter++,
           text: item.text,
           fontSize: 14,
           textAlign: slideAlign
         });
-        topY += estimateTextHeight(item.text, 92);
+        if (item.y === undefined) topY += estimateTextHeight(item.text, hW);
       }
     });
 
-    const cardY = Math.max(topY + 2.5, 32);
-    const count = bodyCards.length;
-    if (count === 1) {
+    if (images.length === 1) {
       elements.push({
         id: generateId(),
-        type: bodyCards[0].type,
-        x: 10, y: cardY, w: 80,
+        type: "image",
+        x: images[0].x !== undefined ? images[0].x : 65,
+        y: images[0].y !== undefined ? images[0].y : 6,
+        w: images[0].w !== undefined ? images[0].w : 31,
+        h: images[0].h !== undefined ? images[0].h : 20,
+        compact: true,
         zIndex: zCounter++,
-        icon: bodyCards[0].icon || "✦",
-        title: bodyCards[0].title,
-        description: bodyCards[0].description,
-        bullets: bodyCards[0].bullets || []
+        imageSrc: images[0].url,
+        imageCaption: images[0].caption,
+        fallbackURL: images[0].url
       });
+    }
+
+    const cardY = Math.max(topY + 2.5, 33);
+    const count = bodyCards.length;
+    if (count === 1) {
+      pushBodyElement(elements, bodyCards[0], bodyCards[0].x !== undefined ? bodyCards[0].x : 10, bodyCards[0].y !== undefined ? bodyCards[0].y : cardY, bodyCards[0].w !== undefined ? bodyCards[0].w : 80, zCounter++);
     } else if (count === 2) {
-      bodyCards.forEach((c, idx) => {
-        elements.push({
-          id: generateId(),
-          type: c.type,
-          x: idx === 0 ? 4 : 52,
-          y: cardY,
-          w: 44,
-          zIndex: zCounter++,
-          icon: c.icon || (idx === 0 ? "✦" : "❖"),
-          title: c.title,
-          description: c.description,
-          bullets: c.bullets || []
-        });
-      });
+      pushBodyElement(elements, bodyCards[0], bodyCards[0].x !== undefined ? bodyCards[0].x : 4, bodyCards[0].y !== undefined ? bodyCards[0].y : cardY, bodyCards[0].w !== undefined ? bodyCards[0].w : 44, zCounter++);
+      pushBodyElement(elements, bodyCards[1], bodyCards[1].x !== undefined ? bodyCards[1].x : 52, bodyCards[1].y !== undefined ? bodyCards[1].y : cardY, bodyCards[1].w !== undefined ? bodyCards[1].w : 44, zCounter++);
     } else if (count >= 3) {
       const cardW = 28.5;
       const gaps = [4, 35.75, 67.5];
       bodyCards.slice(0, 3).forEach((c, idx) => {
-        elements.push({
-          id: generateId(),
-          type: c.type,
-          x: gaps[idx] || (4 + idx * 30),
-          y: cardY,
-          w: cardW,
-          zIndex: zCounter++,
-          icon: c.icon || "✦",
-          title: c.title,
-          description: c.description,
-          bullets: c.bullets || []
-        });
+        pushBodyElement(elements, c, c.x !== undefined ? c.x : gaps[idx] || (4 + idx * 30), c.y !== undefined ? c.y : cardY, c.w !== undefined ? c.w : cardW, zCounter++);
       });
     }
-    return elements;
+    return resolveCollisions(elements);
   }
 
+  // Layout: left-image
   if (layout === "left-image") {
     if (images.length === 1) {
       elements.push({
         id: generateId(),
         type: "image",
-        x: 4, y: 10, w: 38,
+        x: images[0].x !== undefined ? images[0].x : 4,
+        y: images[0].y !== undefined ? images[0].y : 10,
+        w: images[0].w !== undefined ? images[0].w : 38,
+        h: images[0].h,
         zIndex: zCounter++,
         imageSrc: images[0].url,
         imageCaption: images[0].caption,
@@ -3292,7 +4389,9 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
       elements.push({
         id: generateId(),
         type: "image",
-        x: 4, y: 10, w: 19,
+        x: images[0].x !== undefined ? images[0].x : 4,
+        y: images[0].y !== undefined ? images[0].y : 10,
+        w: images[0].w !== undefined ? images[0].w : 19,
         zIndex: zCounter++,
         imageSrc: images[0].url,
         imageCaption: images[0].caption,
@@ -3301,7 +4400,9 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
       elements.push({
         id: generateId(),
         type: "image",
-        x: 25, y: 10, w: 19,
+        x: images[1].x !== undefined ? images[1].x : 25,
+        y: images[1].y !== undefined ? images[1].y : 10,
+        w: images[1].w !== undefined ? images[1].w : 19,
         zIndex: zCounter++,
         imageSrc: images[1].url,
         imageCaption: images[1].caption,
@@ -3317,186 +4418,176 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
 
     headerItems.forEach(item => {
+      const elX = item.x !== undefined ? item.x : rightX;
+      const elY = item.y !== undefined ? item.y : currentY;
+      const elW = item.w !== undefined ? item.w : contentWidth;
       switch (item.type) {
         case "badge":
           elements.push({
             id: generateId(),
             type: "badge",
-            x: rightX, y: currentY, w: Math.min(contentWidth, 42),
+            x: elX, y: elY, w: Math.min(elW, 42),
             zIndex: zCounter++,
             text: item.text
           });
-          currentY += 7.5;
+          if (item.y === undefined) currentY += 7.0;
           break;
         case "title":
           elements.push({
             id: generateId(),
             type: "title",
-            x: rightX, y: currentY, w: contentWidth,
+            x: elX, y: elY, w: elW,
             zIndex: zCounter++,
             text: item.text,
             accentText: item.accentText || "",
             fontSize: isCover ? 38 : 30,
             textAlign: slideAlign
           });
-          currentY += estimateTitleHeight(item.text, item.accentText, contentWidth);
+          if (item.y === undefined) currentY += estimateTitleHeight(item.text, item.accentText, elW);
           break;
         case "text":
           elements.push({
             id: generateId(),
             type: "text",
-            x: rightX, y: currentY, w: contentWidth,
+            x: elX, y: elY, w: elW,
             zIndex: zCounter++,
             text: item.text,
             fontSize: 15,
             textAlign: slideAlign
           });
-          currentY += estimateTextHeight(item.text, contentWidth);
+          if (item.y === undefined) currentY += estimateTextHeight(item.text, elW);
           break;
       }
     });
 
     bodyItems.forEach(item => {
-      switch (item.type) {
-        case "panel":
-          elements.push({
-            id: generateId(),
-            type: "panel",
-            x: rightX, y: currentY, w: contentWidth,
-            zIndex: zCounter++,
-            icon: item.icon || "✦",
-            title: item.title,
-            description: item.description,
-            bullets: item.bullets || []
-          });
-          currentY += estimatePanelHeight(item) + 2.5;
-          break;
-        case "bullets":
-          elements.push({
-            id: generateId(),
-            type: "bullets",
-            x: rightX, y: currentY, w: contentWidth,
-            zIndex: zCounter++,
-            title: item.title,
-            bullets: item.bullets || []
-          });
-          currentY += estimatePanelHeight(item) + 2.5;
-          break;
-        case "quote":
-          elements.push({
-            id: generateId(),
-            type: "quote",
-            x: rightX, y: currentY, w: contentWidth,
-            zIndex: zCounter++,
-            text: item.text,
-            quoteAuthor: item.author || "Цитата",
-            quoteRole: item.role || ""
-          });
-          currentY += 28;
-          break;
-      }
+      currentY += pushBodyElement(elements, item, rightX, currentY, contentWidth, zCounter++) + 2;
     });
-    return elements;
+    return resolveCollisions(elements);
   }
 
+  // Layout: center / hero / quote-hero
   if (layout === "center" || layout === "hero" || layout === "quote-hero") {
     let currentY = 8;
     const headerItems = nonImages.filter(i => i.type === "badge" || i.type === "title" || i.type === "text");
     const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
 
+    const hasQuoteAndImage = images.length === 1 && bodyItems.some(i => i.type === "quote");
+
+    if (hasQuoteAndImage) {
+      elements.push({
+        id: generateId(),
+        type: "image",
+        x: images[0].x !== undefined ? images[0].x : 8,
+        y: images[0].y !== undefined ? images[0].y : 16,
+        w: images[0].w !== undefined ? images[0].w : 26,
+        h: images[0].h,
+        zIndex: zCounter++,
+        imageSrc: images[0].url,
+        imageCaption: images[0].caption,
+        fallbackURL: images[0].url
+      });
+
+      let rightY = 8;
+      headerItems.forEach(item => {
+        const elX = item.x !== undefined ? item.x : 37;
+        const elY = item.y !== undefined ? item.y : rightY;
+        const elW = item.w !== undefined ? item.w : 55;
+        if (item.type === "badge") {
+          elements.push({
+            id: generateId(),
+            type: "badge",
+            x: elX, y: elY, w: Math.min(elW, 42),
+            zIndex: zCounter++,
+            text: item.text
+          });
+          if (item.y === undefined) rightY += 7.0;
+        } else if (item.type === "title") {
+          elements.push({
+            id: generateId(),
+            type: "title",
+            x: elX, y: elY, w: elW,
+            zIndex: zCounter++,
+            text: item.text,
+            accentText: item.accentText || "",
+            fontSize: isCover ? 36 : 28,
+            textAlign: "left"
+          });
+          if (item.y === undefined) rightY += estimateTitleHeight(item.text, item.accentText, elW);
+        }
+      });
+
+      rightY = Math.max(rightY, 16);
+      bodyItems.forEach(item => {
+        rightY += pushBodyElement(elements, item, item.x !== undefined ? item.x : 37, item.y !== undefined ? item.y : rightY, item.w !== undefined ? item.w : 55, zCounter++) + 2;
+      });
+      return resolveCollisions(elements);
+    }
+
     headerItems.forEach(item => {
+      const elX = item.x !== undefined ? item.x : (item.type === "badge" ? 29 : 8);
+      const elY = item.y !== undefined ? item.y : currentY;
+      const elW = item.w !== undefined ? item.w : (item.type === "badge" ? 42 : 84);
       switch (item.type) {
         case "badge":
           elements.push({
             id: generateId(),
             type: "badge",
-            x: 29, y: currentY, w: 42,
+            x: elX, y: elY, w: elW,
             zIndex: zCounter++,
             text: item.text
           });
-          currentY += 8;
+          if (item.y === undefined) currentY += 7.0;
           break;
         case "title":
           elements.push({
             id: generateId(),
             type: "title",
-            x: 8, y: currentY, w: 84,
+            x: elX, y: elY, w: elW,
             zIndex: zCounter++,
             text: item.text,
             accentText: item.accentText || "",
             fontSize: isCover ? 42 : 34,
             textAlign: "center"
           });
-          currentY += estimateTitleHeight(item.text, item.accentText, 84);
+          if (item.y === undefined) currentY += estimateTitleHeight(item.text, item.accentText, elW);
           break;
         case "text":
           elements.push({
             id: generateId(),
             type: "text",
-            x: 12, y: currentY, w: 76,
+            x: elX, y: elY, w: elW,
             zIndex: zCounter++,
             text: item.text,
             fontSize: 16,
             textAlign: "center"
           });
-          currentY += estimateTextHeight(item.text, 76);
+          if (item.y === undefined) currentY += estimateTextHeight(item.text, 76);
           break;
       }
     });
 
     bodyItems.forEach(item => {
-      switch (item.type) {
-        case "quote":
-          elements.push({
-            id: generateId(),
-            type: "quote",
-            x: 8, y: currentY, w: 84,
-            zIndex: zCounter++,
-            text: item.text,
-            quoteAuthor: item.author || "Цитата",
-            quoteRole: item.role || ""
-          });
-          currentY += 30;
-          break;
-        case "panel":
-          elements.push({
-            id: generateId(),
-            type: "panel",
-            x: 15, y: currentY, w: 70,
-            zIndex: zCounter++,
-            icon: item.icon || "✦",
-            title: item.title,
-            description: item.description,
-            bullets: item.bullets || []
-          });
-          currentY += estimatePanelHeight(item) + 2.5;
-          break;
-        case "bullets":
-          elements.push({
-            id: generateId(),
-            type: "bullets",
-            x: 15, y: currentY, w: 70,
-            zIndex: zCounter++,
-            title: item.title,
-            bullets: item.bullets || []
-          });
-          currentY += estimatePanelHeight(item) + 2.5;
-          break;
-      }
+      const posX = item.x !== undefined ? item.x : (item.type === "button" ? 38 : (item.type === "quote" ? 8 : 15));
+      const posW = item.w !== undefined ? item.w : (item.type === "quote" ? 84 : 70);
+      currentY += pushBodyElement(elements, item, posX, currentY, posW, zCounter++) + 2;
     });
 
     if (images.length === 1) {
       elements.push({
         id: generateId(),
         type: "image",
-        x: 30, y: Math.max(currentY, 44), w: 40,
+        x: images[0].x !== undefined ? images[0].x : 32,
+        y: images[0].y !== undefined ? images[0].y : Math.min(currentY, 52),
+        w: images[0].w !== undefined ? images[0].w : 36,
+        h: images[0].h,
         zIndex: zCounter++,
         imageSrc: images[0].url,
         imageCaption: images[0].caption,
         fallbackURL: images[0].url
       });
     }
-    return elements;
+    return resolveCollisions(elements);
   }
 
   // Default: right-image
@@ -3504,7 +4595,10 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     elements.push({
       id: generateId(),
       type: "image",
-      x: 58, y: 10, w: 38,
+      x: images[0].x !== undefined ? images[0].x : 58,
+      y: images[0].y !== undefined ? images[0].y : 10,
+      w: images[0].w !== undefined ? images[0].w : 38,
+      h: images[0].h,
       zIndex: zCounter++,
       imageSrc: images[0].url,
       imageCaption: images[0].caption,
@@ -3514,7 +4608,9 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     elements.push({
       id: generateId(),
       type: "image",
-      x: 53, y: 10, w: 21,
+      x: images[0].x !== undefined ? images[0].x : 53,
+      y: images[0].y !== undefined ? images[0].y : 10,
+      w: images[0].w !== undefined ? images[0].w : 21,
       zIndex: zCounter++,
       imageSrc: images[0].url,
       imageCaption: images[0].caption,
@@ -3523,7 +4619,9 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
     elements.push({
       id: generateId(),
       type: "image",
-      x: 76, y: 10, w: 21,
+      x: images[1].x !== undefined ? images[1].x : 76,
+      y: images[1].y !== undefined ? images[1].y : 10,
+      w: images[1].w !== undefined ? images[1].w : 21,
       zIndex: zCounter++,
       imageSrc: images[1].url,
       imageCaption: images[1].caption,
@@ -3539,88 +4637,52 @@ function layoutSlideElements(rawItems, isCover, slideConfig = {}) {
   const bodyItems = nonImages.filter(i => i.type !== "badge" && i.type !== "title" && i.type !== "text");
 
   headerItems.forEach(item => {
+    const elX = item.x !== undefined ? item.x : leftX;
+    const elY = item.y !== undefined ? item.y : currentY;
+    const elW = item.w !== undefined ? item.w : contentWidth;
     switch (item.type) {
       case "badge":
         elements.push({
           id: generateId(),
           type: "badge",
-          x: leftX, y: currentY, w: Math.min(contentWidth, 42),
+          x: elX, y: elY, w: Math.min(elW, 42),
           zIndex: zCounter++,
           text: item.text
         });
-        currentY += 7.5;
+        if (item.y === undefined) currentY += 7.0;
         break;
       case "title":
         elements.push({
           id: generateId(),
           type: "title",
-          x: leftX, y: currentY, w: contentWidth,
+          x: elX, y: elY, w: elW,
           zIndex: zCounter++,
           text: item.text,
           accentText: item.accentText || "",
           fontSize: isCover ? 38 : 30,
           textAlign: slideAlign
         });
-        currentY += estimateTitleHeight(item.text, item.accentText, contentWidth);
+        if (item.y === undefined) currentY += estimateTitleHeight(item.text, item.accentText, elW);
         break;
       case "text":
         elements.push({
           id: generateId(),
           type: "text",
-          x: leftX, y: currentY, w: contentWidth,
+          x: elX, y: elY, w: elW,
           zIndex: zCounter++,
           text: item.text,
           fontSize: 15,
           textAlign: slideAlign
         });
-        currentY += estimateTextHeight(item.text, contentWidth);
+        if (item.y === undefined) currentY += estimateTextHeight(item.text, elW);
         break;
     }
   });
 
   bodyItems.forEach(item => {
-    switch (item.type) {
-      case "panel":
-        elements.push({
-          id: generateId(),
-          type: "panel",
-          x: leftX, y: currentY, w: contentWidth,
-          zIndex: zCounter++,
-          icon: item.icon || "✦",
-          title: item.title,
-          description: item.description,
-          bullets: item.bullets || []
-        });
-        currentY += estimatePanelHeight(item) + 2.5;
-        break;
-      case "bullets":
-        elements.push({
-          id: generateId(),
-          type: "bullets",
-          x: leftX, y: currentY, w: contentWidth,
-          zIndex: zCounter++,
-          title: item.title,
-          bullets: item.bullets || []
-        });
-        currentY += estimatePanelHeight(item) + 2.5;
-        break;
-      case "quote":
-        elements.push({
-          id: generateId(),
-          type: "quote",
-          x: hasImages ? leftX : 10,
-          y: currentY,
-          w: hasImages ? contentWidth : 80,
-          zIndex: zCounter++,
-          text: item.text,
-          quoteAuthor: item.author || "Цитата",
-          quoteRole: item.role || ""
-        });
-        currentY += 28;
-        break;
-    }
+    currentY += pushBodyElement(elements, item, leftX, currentY, contentWidth, zCounter++) + 2;
   });
 
-  return elements;
+  return resolveCollisions(elements);
 }
 

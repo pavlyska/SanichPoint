@@ -3,13 +3,19 @@ package main
 type ElementType string
 
 const (
-	ElemTitle   ElementType = "title"
-	ElemText    ElementType = "text"
-	ElemBadge   ElementType = "badge"
-	ElemImage   ElementType = "image"
-	ElemPanel   ElementType = "panel"
-	ElemBullets ElementType = "bullets"
-	ElemQuote   ElementType = "quote"
+	ElemTitle    ElementType = "title"
+	ElemText     ElementType = "text"
+	ElemBadge    ElementType = "badge"
+	ElemImage    ElementType = "image"
+	ElemPanel    ElementType = "panel"
+	ElemBullets  ElementType = "bullets"
+	ElemQuote    ElementType = "quote"
+	ElemMetric   ElementType = "metric"
+	ElemTimeline ElementType = "timeline"
+	ElemCallout  ElementType = "callout"
+	ElemDivider  ElementType = "divider"
+	ElemCode     ElementType = "code"
+	ElemButton   ElementType = "button"
 )
 
 type BulletItem struct {
@@ -25,6 +31,7 @@ type SlideElement struct {
 	Y            float64      `json:"y"`
 	W            float64      `json:"w"`
 	H            float64      `json:"h,omitempty"`
+	Compact      bool         `json:"compact,omitempty"`
 	ZIndex       int          `json:"zIndex"`
 	Text         string       `json:"text"`
 	AccentText   string       `json:"accentText"`
@@ -36,18 +43,34 @@ type SlideElement struct {
 	ImageSrc     string       `json:"imageSrc"`
 	ImageCaption string       `json:"imageCaption"`
 	FallbackURL  string       `json:"fallbackUrl"`
+	ObjectFit    string       `json:"objectFit,omitempty"`
 	Icon         string       `json:"icon"`
 	Title        string       `json:"title"`
 	Description  string       `json:"description"`
 	Bullets      []BulletItem `json:"bullets"`
 	QuoteAuthor  string       `json:"quoteAuthor"`
 	QuoteRole    string       `json:"quoteRole"`
+	// Новые поля для компонентов
+	Value     string `json:"value,omitempty"`
+	Trend     string `json:"trend,omitempty"`
+	StepBadge string `json:"stepBadge,omitempty"`
+	Variant   string `json:"variant,omitempty"`
+	Code      string `json:"code,omitempty"`
+	Language  string `json:"language,omitempty"`
+	URL       string `json:"url,omitempty"`
+	Style     string `json:"style,omitempty"`
 }
 
 type Slide struct {
-	ID       int            `json:"id"`
-	Title    string         `json:"title"`
-	Elements []SlideElement `json:"elements"`
+	ID             int            `json:"id"`
+	Title          string         `json:"title"`
+	Elements       []SlideElement `json:"elements"`
+	BgType         string         `json:"bgType,omitempty"`         // "theme", "color", "gradient", "image", "pattern"
+	BgColor        string         `json:"bgColor,omitempty"`        // custom color hex
+	BgGradient     string         `json:"bgGradient,omitempty"`     // CSS gradient
+	BgImage        string         `json:"bgImage,omitempty"`        // image url or local path
+	OverlayOpacity float64        `json:"overlayOpacity,omitempty"` // 0.0 - 1.0 (default 0.65)
+	BgPattern      string         `json:"bgPattern,omitempty"`      // "dots", "grid", "blueprint", "radial"
 }
 
 type Theme struct {
